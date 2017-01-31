@@ -35,7 +35,7 @@ from PIL import Image, ImageSequence
 import imageio
 # import psutil
 import csv
-import zero_crystal,single_crystal
+import zero_crystal,single_crystal,double_crystal
 import random, string
 
 
@@ -61,6 +61,9 @@ class compute:
 			return 1
 		elif self.cumpute_dict['schem'] == 'single_crystal':
 			single_crystal.do_it(self.cumpute_dict)
+			return 1
+		elif self.cumpute_dict['schem'] == 'double_crystal':
+			double_crystal.do_it(self.cumpute_dict)
 			return 1
 		else:
 			return 1

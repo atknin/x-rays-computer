@@ -152,6 +152,7 @@ def monohromator_curve(teta, itta):
 		
 	R=(2*eps-X0)/Xh/C
 	return abs(R)*abs(R)
+	
 def gif(path_gif):
 	filenam = os.listdir(path_gif)
 	filenames_a = sorted(filenam)
