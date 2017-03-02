@@ -46,6 +46,8 @@ import email_module
 
 def do_it(input_data):
 	print('do_it for:')
+	msge = {}
+
 	print(input_data)
 	koef = 2 # для компьютера
 
@@ -62,7 +64,7 @@ def do_it(input_data):
 	X0 = complex(input_data['X0'])*1e-7
 	Xh = complex(input_data['Xh'])*1e-7
 
-
+	bragg =  float(input_data['bragg'])
 	# sigmaX = 0.5*1e-3 # полуширина излучающего пятна рентгеновской трубки
 	# b = -1
 	# C = 1
@@ -88,7 +90,8 @@ def do_it(input_data):
 		surf_plot_y_lim = [right, left]
 
 
-
+	b = -1
+	C = 1
 	svertka_plot_x_lim = [-200,300]  # для линейной шкалы
 	svertka_plot_shkala = 'Nonlog'
 
@@ -112,59 +115,59 @@ def do_it(input_data):
 	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600) 
 	dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
 	dTeta_shag = math.radians(10/3600)
-	print('параметры успешно определены')
+	print('параметры успешно определены: single crystla experiment')
 
 	# -----------Аппаратная функция-------------------
-def sample_curve(dTeta,teta,itta):
-	# # X0 = complex(-31.745*1e-7, 0.1606*1e-7)  
-	# # Xh = complex(0.121*1e-5, 0.1392*1e-7) 
-	# # tetaprmtr = math.radians(21.68) 
+	def sample_curve(dTeta,teta,itta):
+		# # X0 = complex(-31.745*1e-7, 0.1606*1e-7)  
+		# # Xh = complex(0.121*1e-5, 0.1392*1e-7) 
+		# # tetaprmtr = math.radians(21.68) 
 
-	# X0 = -31.745*1e-7 + 0.1606j*1e-7
-	# Xh = 19.210*1e-7 + 0.15j*1e-7
-	# # print(math.degrees(dTeta)*3600)
-	tetaprmtr = math.radians(10.6436)
-	sample = dTeta+teta-(itta-1)*math.tan(tetaprmtr)
-	alfa = -4*math.sin(tetaprmtr)*(math.sin(tetaprmtr+sample)-math.sin(tetaprmtr)) # угловая отстройка падающего излучения от угла Брегга
-	prover = (1/4)*(X0*(b+1)-b*alfa+cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
-	if prover.imag < float(0):
-			eps = (1/4)*(X0*(b+1)-b*alfa-cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
-	else:
-		eps = prover
-		
-	R=(2*eps-X0)/Xh/C
-	return abs(R)*abs(R)
-#-----------образец-----------
-def monohromator_curve(teta, itta):
-	# X0 = -31.745*1e-7 + 0.1606j*1e-7
-	# Xh = 0.121*1e-5 + 0.1392j*1e-7
-	# X0 = complex(-31.745*1e-7, 0.1606*1e-7)  
-	# Xh = complex(19.210*1e-7, 0.15*1e-7) 
-	# tetaprmtr = 21.679
-	tetaprmtr = math.radians(10.6436)
-	monohrom = teta-(itta-1)*math.tan(tetaprmtr)
-	alfa = -4*math.sin(tetaprmtr)*(math.sin(tetaprmtr+monohrom)-math.sin(tetaprmtr)) # угловая отстройка падающего излучения от угла Брегга
-	prover = (1/4)*(X0*(b+1)-b*alfa+cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
-	if prover.imag < 0:
-			eps = (1/4)*(X0*(b+1)-b*alfa-cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
-	else:
-		eps = prover
-		
-	R=(2*eps-X0)/Xh/C
-	return abs(R)*abs(R)
-def gif(path_gif):
-	filenam = os.listdir(path_gif)
-	filenames_a = sorted(filenam)
-	filenames = filter(lambda x: x.endswith('.png'), filenames_a)
-	images = []
-	i = 0
-	for filename in filenames:
-		print(path_gif+str(i)+'.png')
-		images.append(imageio.imread(path_gif+str(i)+'.png'))
-		i+=1
-	print('!creating: ... |',path + name_gif + '.gif')
-	imageio.mimsave(path + name_gif + '.gif', images)
-	print('!done:',path + name_gif + '.gif')
+		# X0 = -31.745*1e-7 + 0.1606j*1e-7
+		# Xh = 19.210*1e-7 + 0.15j*1e-7
+		# # print(math.degrees(dTeta)*3600)
+		tetaprmtr = math.radians(bragg)
+		sample = dTeta+teta-(itta-1)*math.tan(tetaprmtr)
+		alfa = -4*math.sin(tetaprmtr)*(math.sin(tetaprmtr+sample)-math.sin(tetaprmtr)) # угловая отстройка падающего излучения от угла Брегга
+		prover = (1/4)*(X0*(b+1)-b*alfa+cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+		if prover.imag < float(0):
+				eps = (1/4)*(X0*(b+1)-b*alfa-cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+		else:
+			eps = prover
+			
+		R=(2*eps-X0)/Xh/C
+		return abs(R)*abs(R)
+	#-----------образец-----------
+	def monohromator_curve(teta, itta):
+		# X0 = -31.745*1e-7 + 0.1606j*1e-7
+		# Xh = 0.121*1e-5 + 0.1392j*1e-7
+		# X0 = complex(-31.745*1e-7, 0.1606*1e-7)  
+		# Xh = complex(19.210*1e-7, 0.15*1e-7) 
+		# tetaprmtr = 21.679
+		tetaprmtr = math.radians(bragg)
+		monohrom = teta-(itta-1)*math.tan(tetaprmtr)
+		alfa = -4*math.sin(tetaprmtr)*(math.sin(tetaprmtr+monohrom)-math.sin(tetaprmtr)) # угловая отстройка падающего излучения от угла Брегга
+		prover = (1/4)*(X0*(b+1)-b*alfa+cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+		if prover.imag < 0:
+				eps = (1/4)*(X0*(b+1)-b*alfa-cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+		else:
+			eps = prover
+			
+		R=(2*eps-X0)/Xh/C
+		return abs(R)*abs(R)
+	def gif(path_gif):
+		filenam = os.listdir(path_gif)
+		filenames_a = sorted(filenam)
+		filenames = filter(lambda x: x.endswith('.png'), filenames_a)
+		images = []
+		i = 0
+		for filename in filenames:
+			print(path_gif+str(i)+'.png')
+			images.append(imageio.imread(path_gif+str(i)+'.png'))
+			i+=1
+		print('!creating: ... |',path + name_gif + '.gif')
+		imageio.mimsave(path + name_gif + '.gif', images)
+		print('!done:',path + name_gif + '.gif')
 
 
 #-----------спектральная функция-----------
@@ -243,7 +246,71 @@ def gif(path_gif):
 		sys.stdout.write("\rPercent: [{0}] {1}%".format(hashes + spaces, int(round(percent))))
 		sys.stdout.flush()
 
-	def one(dTeta): # скан одной щелью относительно второй
+	def omega(dTeta): # скан одной щелью относительно второй
+		# csvfile =  open(path+'eggs.csv', 'w') 
+		# writer = csv.writer(csvfile)
+		i = 0
+		sv_x = []
+		sv_y = []
+
+
+		while dTeta <=dTeta_end:
+			# print(psutil.virtual_memory())
+			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
+		#1-------------------------------------------------------------------------------------------------------------------
+			# print(int(math.degrees(dTeta)*3600))
+			itta =  itta_1
+			x_itta = []
+			y_teta = []
+			z_intese = []
+			z_intese_lin = []
+			while itta <= itta_2:
+				#----3----------------------------------------------------------------------------------------------------
+				# print(math.degrees(dTeta)*3600)
+				teta = -teta_2
+				x_promegutochn = []
+				y_promegutochn = []
+				z_promegutochn = []
+				z_promegutochn_lin = []
+				while teta <= teta_2:
+					P = g_lambd(itta)*gauss(600,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta)
+					# P = g_lambd(itta)*sample_curve(dTeta, teta, itta)*gauss(100,0,math.degrees(teta)*3600)*monohromator_curve(teta, itta)
+					x_promegutochn.append(itta*wavelength_1*1e10)
+					y_promegutochn.append(math.degrees(teta)*3600)
+					z_promegutochn.append(math.log10(P))
+					z_promegutochn_lin.append(P)
+					teta += shag_teta
+
+				#----3----------------------------------------------------------------------------------------------------
+				x_itta.append(x_promegutochn)
+				y_teta.append(y_promegutochn)
+				z_intese.append(z_promegutochn)
+				z_intese_lin.append(z_promegutochn_lin)
+				itta += shag_itta
+				#-2------------------------------------------------------------------------------------------------------------
+
+			sdvigka = 0
+			
+
+			if svertka_plot_shkala == 'log':
+				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))	
+			else:
+				sv_y.append(svertka(x_itta,y_teta,z_intese_lin,sdvigka))
+
+			sv_x.append((math.degrees(dTeta)*3600))
+
+			# surface_plot(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka)
+			# svertka_plot(sv_x,sv_y,i)
+			PLOT_all(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka, sv_x,sv_y,i)
+
+			i+=1
+			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
+				dTeta+=shagi_po_Dtheta_uvellichenie[2]
+			else:		
+				dTeta+=dTeta_shag
+
+
+	def theta(dTeta): # скан одной щелью относительно второй
 		# csvfile =  open(path+'eggs.csv', 'w') 
 		# writer = csv.writer(csvfile)
 		i = 0
@@ -308,20 +375,30 @@ def gif(path_gif):
 
 
 
+	print('начался расчет...')
+
 	if not os.path.exists(path + name_gif + '/'):
 		os.makedirs(path + name_gif + '/')
 		print('создаем папку: ' + path + name_gif + '/')
-	print('начался расчет...')
+	
+	if input_data['scan'] == '2theta':
+		print('Поворот детектором')
+		theta(dTeta)
+		msge['title'] = 'Расчет: "Однокристальная. Движение детектора с щелью."'
+	else:
+		print('Поворот образцом')
+		omega(dTeta)
+		msge['title'] = 'Расчет: "Однокристальная. Движение кристалла."'
 
-	one(dTeta)
+
 	print('сбока анимации...')
 	
 	gif(path + name_gif + '/')
-	msge = {}
-	msge['title'] = 'Расчет: "Однокристальная. Движение щелью."'
+		
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
 	msge['files'] = path + name_gif + '.gif'
 	email_module.sendEmail(msge,input_data['id_email'])
+	print('Писмо отправлено')
 
 
 			

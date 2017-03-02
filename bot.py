@@ -15,7 +15,10 @@ getpost = requests.get(
 	url='https://api.telegram.org/bot{0}/{1}'.format(token, method),
 	# data={'allowed_updates': ['message'] }
 ).json()
-id_start = getpost['result'][-1]['message']['message_id']+1
+for mes in getpost['result']:
+	print(mes)
+	print('---------------')
+id_start = getpost['result'][-1]['message']['message_id']
 print('start', id_start)
 
 def to_dict(string):
@@ -49,13 +52,14 @@ def do_something(sc):
 		time.sleep(15)
 
 	try:
-		print('состояние нормальное: ',time.asctime(time.localtime(time.time()) ))
+		print('состояние нормальное: ',time.asctime(time.localtime(time.time()) ), 'id_mess: ', id_start)
 		for mes in getpost['result']:
 			current_id = mes['message']['message_id']
-			if current_id == id_start:
+			if current_id > id_start:
 				res = str(mes['message']['text'])
+				print('id to compute: ',id_start)
 				compute(to_dict(res))
-				id_start+=1
+				id_start = current_id
 		# json_acceptable_string = res.replace("'", "\"") # для преобразования в словарь
 		# d = json.loads(json_acceptable_string)# для преобразования в словарь
 		
