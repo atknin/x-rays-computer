@@ -11,7 +11,7 @@ from email.utils import COMMASPACE, formatdate
 # from email.header import Header
 
 def sendEmail(msge,email):
-	me = 'admin@x-rays.world'
+	me = 'Calc'
 	you = email
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = u"Ваш Результат: "+ msge['title']
@@ -321,8 +321,8 @@ def sendEmail(msge,email):
 	with open(msge['files'],'rb') as fil:
 		part2 = MIMEImage(fil.read(),name = os.path.basename(msge['files']))
 		msg.attach(part2)
-	s = smtplib.SMTP('smtp.yandex.ru', 465)
-	s.starttls()
-	s.login('admin@x-rays.world','vfntvfnbrf43')
+	s = smtplib.SMTP('mail.crys.ras.ru', 25)
+	#s.starttls()
+	s.login('info','62syHMgV')
 	s.sendmail(me, you, msg.as_string())
 	s.quit()

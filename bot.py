@@ -18,7 +18,7 @@ getpost = requests.get(
 for mes in getpost['result']:
 	print(mes)
 	print('---------------')
-id_start = getpost['result'][-1]['message']['message_id']
+id_start = getpost['result'][-1]['message']['message_id']-1
 print('start', id_start)
 
 def to_dict(string):

@@ -50,7 +50,7 @@ def do_it(input_data):
 	msge = {}
 
 	print(input_data)
-	koef = float(abs(input_data['step_detail'])) # для компьютера
+	koef = abs(float(input_data['step_detail'])) # для компьютера
 
 	path = os.path.dirname(os.path.abspath(__file__))+'/results/'
 	# path_0 = os.path.dirname(os.path.abspath(__file__))+'/'
