@@ -11,7 +11,7 @@ from email.utils import COMMASPACE, formatdate
 # from email.header import Header
 
 def sendEmail(msge,email):
-	me = 'Calc'
+	me = 'info@crys.ras.ru'
 	you = email
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = u"Ваш Результат: "+ msge['title']

@@ -11,7 +11,7 @@ def sample_curve(dTeta,teta,itta,X0,Xh,tetaprmtr_deg,fi):
 	C = 1
 	sample = dTeta+teta-(itta-1)*math.tan(tetaprmtr)
 	alfa = -4*math.sin(tetaprmtr)*(math.sin(tetaprmtr+sample)-math.sin(tetaprmtr)) # угловая отстройка падающего излучения от угла Брегга
-	prover = (1/4)*(X0*(b+1)-b*alfa+cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+	prover = (1/4/gamma_0)*(X0*(1-b)-b*alfa+cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa))-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
 	if prover.imag < float(0):
 		eps = (1/4/gamma_0)*(X0*(1-b)-b*alfa-cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa))-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
 	else:
@@ -29,7 +29,7 @@ def monohromator_curve(teta, itta,X0,Xh,tetaprmtr_deg,fi):
 	C = 1
 	monohrom = teta-(itta-1)*math.tan(tetaprmtr)
 	alfa = -4*math.sin(tetaprmtr)*(math.sin(tetaprmtr+monohrom)-math.sin(tetaprmtr)) # угловая отстройка падающего излучения от угла Брегга
-	prover = (1/4)*(X0*(b+1)-b*alfa+cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+	prover = (1/4/gamma_0)*(X0*(1-b)-b*alfa+cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa))-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
 	if prover.imag < float(0):
 		eps = (1/4/gamma_0)*(X0*(1-b)-b*alfa-cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa))-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
 	else:

@@ -50,7 +50,7 @@ def do_it(input_data):
 	msge = {}
 
 	print(input_data)
-	koef = abs(float(input_data['step_detail'])) # для компьютера
+	koef = 2*abs(float(input_data['step_detail'])) # для компьютера
 
 	path = os.path.dirname(os.path.abspath(__file__))+'/results/'
 	# path_0 = os.path.dirname(os.path.abspath(__file__))+'/'
@@ -289,12 +289,16 @@ def do_it(input_data):
 		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Тета-2Тета."',"v")
 		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Тета-2Тета."',"n")
 		theta(dTeta)
+		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"n")
+		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"v")
 	else:
 		print('Поворот образцом')
 		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Омега."',"v")
 		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Омега."',"n")
 		msge['title'] = 'Расчет: "Двухркристальная. Омега. "'
 		omega(dTeta)
+		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"n")
+		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"v")
 	print('сбока анимации...')
 	gif(path + name_gif + '/')
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
