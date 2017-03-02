@@ -8,24 +8,15 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email.utils import COMMASPACE, formatdate
-from email.header import Header
+# from email.header import Header
 
 def sendEmail(msge,email):
-	 # name = 'Марченков Никита Владимирович'
-	# me == my email address
-	# you == recipient's email address
-	me = 'info@crys.ras.ru'
-	# me = 'rcc-2016@yandex.ru'
+	me = 'admin@x-rays.world'
 	you = email
-	# you = '1414-88@mail.ru'
-
-	# Create message container - the correct MIME type is multipart/alternative.
 	msg = MIMEMultipart('alternative')
 	msg['Subject'] = u"Ваш Результат: "+ msge['title']
 	msg['From'] = me
 	msg['To'] = you
-	# Create the body of the message (a plain-text and an HTML version).
-	# text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttps://www.python.org"
 	html = """\
 	<!doctype html>
 	<html>
@@ -330,11 +321,8 @@ def sendEmail(msge,email):
 	with open(msge['files'],'rb') as fil:
 		part2 = MIMEImage(fil.read(),name = os.path.basename(msge['files']))
 		msg.attach(part2)
-	# Send the message via local SMTP server.
-	s = smtplib.SMTP('mail.crys.ras.ru', 25)
-	# s.starttls()
-	s.login('info','62syHMgV')
-	# sendmail function takes 3 arguments: sender's address, recipient's address
-	# and message to send - here it is sent as one string.
+	s = smtplib.SMTP('smtp.yandex.ru', 465)
+	s.starttls()
+	s.login('admin@x-rays.world','vfntvfnbrf43')
 	s.sendmail(me, you, msg.as_string())
 	s.quit()
