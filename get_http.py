@@ -34,6 +34,7 @@ def compute(input_data):
 
 
 def do_something(sc): 
+	global url
 	try:
 		payload = {'check': comp}
 		data = parse.urlencode(payload)

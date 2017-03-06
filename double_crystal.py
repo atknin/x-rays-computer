@@ -284,21 +284,37 @@ def do_it(input_data):
 		os.makedirs(path + name_gif + '/')
 		print('создаем папку: ' + path + name_gif + '/')
 	if input_data['scan'] == '2theta':
-		print('Поворот детектором')
+		
 		msge['title'] = 'Расчет: "Двухркристальная. Тета-2Тета."'
-		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Тета-2Тета."',"v")
-		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Тета-2Тета."',"n")
+		try:
+			sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Тета-2Тета."',"v")
+			sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Тета-2Тета."',"n")
+		except Exception as e:
+			print('ФН компьютер: "Двухркристальная. Тета-2Тета.')
+		
 		theta(dTeta)
-		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"n")
-		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"v")
+		try:
+			sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"n")
+			sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"v")
+		except Exception as e:
+			print('ФН компьютер: Расчет окончен для '+str(input_data['id_email']))
+		
 	else:
-		print('Поворот образцом')
-		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Омега."',"v")
-		sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Омега."',"n")
+		
+		try:
+			sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Омега."',"v")
+			sent_to_atknin_bot('ФН компьютер: "Двухркристальная. Омега."',"n")
+		except Exception as e:
+			print('ПРасчет: "Двухркристальная. Омега.')
+		
 		msge['title'] = 'Расчет: "Двухркристальная. Омега. "'
 		omega(dTeta)
-		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"n")
-		sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"v")
+		try:
+			sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"n")
+			sent_to_atknin_bot('ФН компьютер: Расчет окончен для '+str(input_data['id_email']),"v")
+		except Exception as e:
+			print('ФН компьютер: Расчет окончен для '+str(input_data['id_email']))
+		
 	print('сбока анимации...')
 	gif(path + name_gif + '/')
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
