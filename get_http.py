@@ -9,8 +9,8 @@ import json
 import ast
 import main
 import time
+from computer import *
 
-comp = '1'
 url = 'http://x-rays.world/diffraction/compute/'
 s = sched.scheduler(time.time, time.sleep)
 print('started')
@@ -33,7 +33,7 @@ def compute(input_data):
 		print(e)
 
 
-def do_something(sc): 
+def do_something(sc):
 	global url
 	try:
 		payload = {'check': comp}
@@ -56,21 +56,8 @@ def do_something(sc):
 		print(e)
 		time.sleep(15)
 
-	
+
 	s.enter(60, 1, do_something, (sc,))
 
 s.enter(2, 1, do_something, (s,))
 s.run()
-
-
-
-# method = 'sendMessage'
-# response = requests.post(
-#     url='https://api.telegram.org/bot{0}/{1}'.format(token, method),
-#     data={'chat_id': 180380877, 'text': 'Првиет'}
-# ).json()
-# print(response)
-
-# print('---------------------------------')
-	
-

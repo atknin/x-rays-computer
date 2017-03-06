@@ -48,7 +48,7 @@ class compute:
 	def randomword(self, length):
 		valid_letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 		return ''.join((random.choice(valid_letters) for i in range(length)))
-		
+
 	def get_scheme(self):
 		if self.cumpute_dict['schem'] == 'zero_crystal':
 			return 'Схема: "прямой пучок"'
@@ -67,5 +67,3 @@ class compute:
 			return 1
 		else:
 			return 1
-
-		

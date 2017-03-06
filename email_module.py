@@ -9,6 +9,15 @@ from email.mime.image import MIMEImage
 from email.mime.base import MIMEBase
 from email.utils import COMMASPACE, formatdate
 # from email.header import Header
+from bot_inform import sent_to_atknin_bot
+from computer import *
+def notification(message):
+
+    try:
+        sent_to_atknin_bot(comp_name + message,"n")
+        sent_to_atknin_bot(comp_name + message,"v")
+    except Exception as e:
+        print(comp_name + message+' (bad telegram)')
 
 def sendEmail(msge,email):
 	me = 'info@crys.ras.ru'
@@ -39,7 +48,7 @@ def sendEmail(msge,email):
 	        font-size: 14px;
 	        line-height: 1.4;
 	        margin: 0;
-	        padding: 0; 
+	        padding: 0;
 	        -ms-text-size-adjust: 100%;
 	        -webkit-text-size-adjust: 100%; }
 	      table {
@@ -252,7 +261,7 @@ def sendEmail(msge,email):
 	          font-size: inherit !important;
 	          font-weight: inherit !important;
 	          line-height: inherit !important;
-	          text-decoration: none !important; } 
+	          text-decoration: none !important; }
 	        .btn-primary table td:hover {
 	          background-color: #34495e !important; }
 	        .btn-primary a:hover {
@@ -274,7 +283,7 @@ def sendEmail(msge,email):
 	              <!-- START MAIN CONTENT AREA -->
 	              <tr>
 	                <td class="wrapper">
-	                  
+
 
 					 <p>Расчет окончен* Успешно. <p/>
 					 <p>"""+msge['text']+"""</p>
@@ -300,7 +309,7 @@ def sendEmail(msge,email):
 	            </div>
 
 	            <!-- END FOOTER -->
-	            
+
 	<!-- END CENTERED WHITE CONTAINER --></div>
 	        </td>
 	        <td>&nbsp;</td>
