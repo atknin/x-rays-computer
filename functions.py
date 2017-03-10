@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import math, cmath
 # -----------Аппаратная функция-------------------
 
-def sample_curve(dTeta,teta,itta,X0,Xh,tetaprmtr_deg,fi): 
+def sample_curve(dTeta,teta,itta,X0,Xh,tetaprmtr_deg,fi):
 	tetaprmtr = math.radians(tetaprmtr_deg)
 	gamma_0 = math.sin(math.radians(90-fi) + tetaprmtr)
 	gamma_h = math.sin(math.radians(90-fi) - tetaprmtr)
@@ -18,9 +18,9 @@ def sample_curve(dTeta,teta,itta,X0,Xh,tetaprmtr_deg,fi):
 		eps = prover
 	R = (2*eps*gamma_0-X0)/Xh/C
 	return (gamma_h/gamma_0)*abs(R)*abs(R)
-				
-				
-#-----------Монохроматор-----------	
+
+
+#-----------Монохроматор-----------
 def monohromator_curve(teta, itta,X0,Xh,tetaprmtr_deg,fi):
 	tetaprmtr = math.radians(tetaprmtr_deg)
 	gamma_0 = math.sin(math.radians(90-fi) + tetaprmtr)

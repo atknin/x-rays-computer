@@ -42,7 +42,7 @@ from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 from email.header import Header
 import email_module
-from email_module import notification
+
 
 from functions import *
 
@@ -58,6 +58,8 @@ def do_it(input_data):
 	# path_0 = os.path.dirname(os.path.abspath(__file__))+'/'
 	wavelength_1 = float(input_data['anod1']) * 1e-10
 	wavelength_2 = float(input_data['anod2']) * 1e-10
+
+	sigma = float(input_data['source_divergence_arc'])
 
 	S1 = float(input_data['input_size_slit1']) * 1e-3 # S1, S2 - ширина колимирующих щелей
 	S2 = float(input_data['input_size_slit2']) * 1e-3
@@ -205,7 +207,7 @@ def do_it(input_data):
 				z_promegutochn = []
 				z_promegutochn_lin = []
 				while teta <= teta_2:
-					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(600,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom)
+					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom)
 					x_promegutochn.append(itta*wavelength_1*1e10)
 					y_promegutochn.append(math.degrees(teta)*3600)
 					z_promegutochn.append(math.log10(P))
@@ -245,20 +247,20 @@ def do_it(input_data):
 			z_intese = []
 			z_intese_lin = []
 			while itta <= itta_2:
-				#----3----------------------------------------------------------------------------------------------------
+				#3-----------------------------------------------------------------------------------------------------------
 				teta = -teta_2
 				x_promegutochn = []
 				y_promegutochn = []
 				z_promegutochn = []
 				z_promegutochn_lin = []
 				while teta <= teta_2:
-					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(600,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom)
+					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom)
 					x_promegutochn.append(itta*wavelength_1*1e10)
 					y_promegutochn.append(math.degrees(teta)*3600)
 					z_promegutochn.append(math.log10(P))
 					z_promegutochn_lin.append(P)
 					teta += shag_teta
-				#----3----------------------------------------------------------------------------------------------------
+				#----3---------------------------------------------------------------------------------------------------------
 				x_itta.append(x_promegutochn)
 				y_teta.append(y_promegutochn)
 				z_intese.append(z_promegutochn)
@@ -287,14 +289,14 @@ def do_it(input_data):
 		print('создаем папку: ' + path + name_gif + '/')
 	if input_data['scan'] == '2theta':
 		msge['title'] = 'Расчет: "Двухркристальная. Тета-2Тета."'
-		notification("Старт. Двухркристальная. Тета-2Тета.")
+		email_module.notification("Старт. Двухркристальная. Тета-2Тета.")
 		theta(dTeta)
-		notification('Расчет окончен для '+str(input_data['id_email']))
+		email_module.notification('Расчет окончен для '+str(input_data['id_email']))
 	else:
-		notification(" Старт.Двухркристальная. Омега скан.")
+		email_module.notification(" Старт.Двухркристальная. Омега скан.")
 		msge['title'] = 'Расчет: "Двухркристальная. Омега. "'
 		omega(dTeta)
-		notification('Расчет окончен для '+str(input_data['id_email']))
+		email_module.notification('Расчет окончен для '+str(input_data['id_email']))
 
 
 	print('сбока анимации...')

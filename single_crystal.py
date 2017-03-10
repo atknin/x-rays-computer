@@ -41,7 +41,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 from email.header import Header
- 
+
 import email_module
 
 def do_it(input_data):
@@ -70,19 +70,19 @@ def do_it(input_data):
 	# C = 1
 
 	name_gif = input_data['name_result']
-	slits = [1,1,1,1] # 1(движется)  и 2(не движется) щели 
+	slits = [1,1,1,1] # 1(движется)  и 2(не движется) щели
 	slits[0] = -math.degrees(math.atan(S2/2/L2x))*3600# 2 щель (движется)- перед детектором
 	slits[1] =  math.degrees(math.atan(S2/2/L2x))*3600# 2 щель(движется)- перед детектором
 	slits[2] =  -math.degrees(math.atan(S1/2/L1x))*3600 #1 щель(не движется)
 	slits[3] =  math.degrees(math.atan(S1/2/L1x))*3600 #1 щель(не движется)
 
 
-	shagi_po_Dtheta_uvellichenie = [-40,40, math.radians(2/3600)]  
-	surf_plot_x_lim = [-300,300] 
+	shagi_po_Dtheta_uvellichenie = [-40,40, math.radians(2/3600)]
+	surf_plot_x_lim = [-300,300]
 
 	left = float(input_data['anod1']) - 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
 	right = float(input_data['anod2']) + 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
-	
+
 
 	if wavelength_2 > wavelength_1:
 		surf_plot_y_lim = [left, right]
@@ -100,7 +100,7 @@ def do_it(input_data):
 	#--------------------------------------------шаг по длине волны------------------------------------------------
 	shag_itta = math.radians(5/3600)* koef
 	itta_1 = 0.996 # предел интегрирования от
-	itta_2 = 1.01# предел интегрирования до 
+	itta_2 = 1.01# предел интегрирования до
 	n_itta = int((itta_2 - itta_1)/shag_itta)
 
 	#--------------------------------------------шаг по углу, разлет от источника------------------------------------------------
@@ -112,16 +112,16 @@ def do_it(input_data):
 
 	# -----------------------------------------------------Шаг, поворот образца----------------------------------------------------------------------
 	n_teta = int(2*teta_2/shag_teta)
-	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600) 
+	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
 	dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
 	dTeta_shag = math.radians(10/3600)
 	print('параметры успешно определены: single crystla experiment')
 
 	# -----------Аппаратная функция-------------------
 	def sample_curve(dTeta,teta,itta):
-		# # X0 = complex(-31.745*1e-7, 0.1606*1e-7)  
-		# # Xh = complex(0.121*1e-5, 0.1392*1e-7) 
-		# # tetaprmtr = math.radians(21.68) 
+		# # X0 = complex(-31.745*1e-7, 0.1606*1e-7)
+		# # Xh = complex(0.121*1e-5, 0.1392*1e-7)
+		# # tetaprmtr = math.radians(21.68)
 
 		# X0 = -31.745*1e-7 + 0.1606j*1e-7
 		# Xh = 19.210*1e-7 + 0.15j*1e-7
@@ -134,15 +134,15 @@ def do_it(input_data):
 				eps = (1/4)*(X0*(b+1)-b*alfa-cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
 		else:
 			eps = prover
-			
+
 		R=(2*eps-X0)/Xh/C
 		return abs(R)*abs(R)
 	#-----------образец-----------
 	def monohromator_curve(teta, itta):
 		# X0 = -31.745*1e-7 + 0.1606j*1e-7
 		# Xh = 0.121*1e-5 + 0.1392j*1e-7
-		# X0 = complex(-31.745*1e-7, 0.1606*1e-7)  
-		# Xh = complex(19.210*1e-7, 0.15*1e-7) 
+		# X0 = complex(-31.745*1e-7, 0.1606*1e-7)
+		# Xh = complex(19.210*1e-7, 0.15*1e-7)
 		# tetaprmtr = 21.679
 		tetaprmtr = math.radians(bragg)
 		monohrom = teta-(itta-1)*math.tan(tetaprmtr)
@@ -152,7 +152,7 @@ def do_it(input_data):
 				eps = (1/4)*(X0*(b+1)-b*alfa-cmath.sqrt(((X0*(b-1)-b*alfa)*(X0*(b-1)-b*alfa))+4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
 		else:
 			eps = prover
-			
+
 		R=(2*eps-X0)/Xh/C
 		return abs(R)*abs(R)
 	def gif(path_gif):
@@ -178,14 +178,14 @@ def do_it(input_data):
 		d_lambd2 = wavelength_2*3e-4
 		return 2/3/math.pi*((d_lambd1/wavelength_1)/(math.pow((itta-1),2)+math.pow(d_lambd1/wavelength_1,2))+0.5*(d_lambd2/wavelength_1)/(math.pow((itta-wavelength_2/wavelength_1),2)+math.pow((d_lambd2/wavelength_1),2)))
 
-	#-----------Монохроматор-----------	
-	
+	#-----------Монохроматор-----------
+
 
 #-------------------вресмя уменьшилось на 10 процентов
 	def svertka(x_itta, y_teta, z_intese, sdvig = 0):
 		dlina = len(z_intese)
 		dlina_2 = len(z_intese[0])
-		suma = 0 
+		suma = 0
 		for i in range(dlina):
 			for j in range(dlina_2):
 				if (slits[2])<y_teta[i][j]<(slits[3]):
@@ -202,7 +202,7 @@ def do_it(input_data):
 		mpl.rcParams.update({'font.size': 15})
 		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-4, vmax=0)
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-		
+
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
 		ax1.broken_barh([(slits[0]+sdvig-0.25+(slits[1] - slits[0])/2, 0.5)], (0.5, 0.5), facecolors='red',alpha = 0.4)
 		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
@@ -221,7 +221,7 @@ def do_it(input_data):
 		ax1 = plt.subplot(2,1,2)
 		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-		
+
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
 		ax1.broken_barh([(slits[0]+sdvig+(slits[1] - slits[0])/2, 1)], (0.5, 0.5), facecolors='red',alpha = 0.3)
 		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
@@ -247,7 +247,7 @@ def do_it(input_data):
 		sys.stdout.flush()
 
 	def omega(dTeta): # скан одной щелью относительно второй
-		# csvfile =  open(path+'eggs.csv', 'w') 
+		# csvfile =  open(path+'eggs.csv', 'w')
 		# writer = csv.writer(csvfile)
 		i = 0
 		sv_x = []
@@ -290,10 +290,10 @@ def do_it(input_data):
 				#-2------------------------------------------------------------------------------------------------------------
 
 			sdvigka = 0
-			
+
 
 			if svertka_plot_shkala == 'log':
-				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))	
+				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))
 			else:
 				sv_y.append(svertka(x_itta,y_teta,z_intese_lin,sdvigka))
 
@@ -306,12 +306,12 @@ def do_it(input_data):
 			i+=1
 			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
 				dTeta+=shagi_po_Dtheta_uvellichenie[2]
-			else:		
+			else:
 				dTeta+=dTeta_shag
 
 
 	def theta(dTeta): # скан одной щелью относительно второй
-		# csvfile =  open(path+'eggs.csv', 'w') 
+		# csvfile =  open(path+'eggs.csv', 'w')
 		# writer = csv.writer(csvfile)
 		i = 0
 		sv_x = []
@@ -354,10 +354,10 @@ def do_it(input_data):
 				#-2------------------------------------------------------------------------------------------------------------
 
 			sdvigka = -2*(math.degrees(dTeta)*3600)
-			
+
 
 			if svertka_plot_shkala == 'log':
-				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))	
+				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))
 			else:
 				sv_y.append(svertka(x_itta,y_teta,z_intese_lin,sdvigka))
 
@@ -370,7 +370,7 @@ def do_it(input_data):
 			i+=1
 			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
 				dTeta+=shagi_po_Dtheta_uvellichenie[2]
-			else:		
+			else:
 				dTeta+=dTeta_shag
 
 
@@ -380,7 +380,7 @@ def do_it(input_data):
 	if not os.path.exists(path + name_gif + '/'):
 		os.makedirs(path + name_gif + '/')
 		print('создаем папку: ' + path + name_gif + '/')
-	
+
 	if input_data['scan'] == '2theta':
 		print('Поворот детектором')
 		theta(dTeta)
@@ -392,17 +392,10 @@ def do_it(input_data):
 
 
 	print('сбока анимации...')
-	
+
 	gif(path + name_gif + '/')
-		
+
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
 	msge['files'] = path + name_gif + '.gif'
 	email_module.sendEmail(msge,input_data['id_email'])
 	print('Писмо отправлено')
-
-
-			
-
-		
-		
-
