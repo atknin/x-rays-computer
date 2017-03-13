@@ -65,7 +65,7 @@ def do_it(input_data):
 	slits[1] =  math.degrees(math.atan(S2/2/L2x))*3600# 2 щель(движется)- перед детектором
 	slits[2] =  -math.degrees(math.atan(S1/2/L1x))*3600 #1 щель(не движется)
 	slits[3] =  math.degrees(math.atan(S1/2/L1x))*3600 #1 щель(не движется)
-	shagi_po_Dtheta_uvellichenie = [-40,40, math.radians(2/3600)]
+	shagi_po_Dtheta_uvellichenie = [-20,20, math.radians(0.5/3600)]
 	surf_plot_x_lim = [float(input_data['teta_start']), float(input_data['teta_end'])]
 	left = float(input_data['anod1']) - 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
 	right = float(input_data['anod2']) + 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
@@ -126,7 +126,7 @@ def do_it(input_data):
 		suma = 0
 		for i in range(dlina):
 			for j in range(dlina_2):
-				if (slits[2])<y_teta[i][j]<(slits[3]):
+				if (slits[2]*10)<y_teta[i][j]<(slits[3]*10):
 					if (slits[0]+sdvig)<y_teta[i][j]<(slits[1]+sdvig):
 						suma+=z_intese[i][j]
 		return suma
@@ -206,7 +206,7 @@ def do_it(input_data):
 				z_promegutochn = []
 				z_promegutochn_lin = []
 				while teta <= teta_2:
-					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*frenel_slit(itta*wavelength_1*1e10,teta,S1,L1x)
+					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*frenel_slit(itta*wavelength_1,teta,S1,L1x)
 					x_promegutochn.append(itta*wavelength_1*1e10)
 					y_promegutochn.append(math.degrees(teta)*3600)
 					z_promegutochn.append(math.log10(P))
