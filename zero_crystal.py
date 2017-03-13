@@ -44,7 +44,7 @@ from email.header import Header
 
 import email_module
 
-from functions import (g_lambd,gauss)
+from functions import (g_lambd,gauss,frenel_slit)
 
 def do_it(input_data):
 	print('do_it for:')
@@ -150,27 +150,27 @@ def do_it(input_data):
 		p2 = plt.plot(svert_x,svert_y)
 		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
 		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
+		# print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
 		plt.close()
 
-	def surface_plot(X,Y,Z,dTeta, sdvig = 0):
-		ax1 = plt.subplot(2,1,2)
-		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
-		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
-		ax1.broken_barh([(slits[0]+sdvig+(slits[1] - slits[0])/2, 1)], (0.5, 0.5), facecolors='red',alpha = 0.3)
-		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
-		plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
-		plt.colorbar()
-
-
-	def svertka_plot(X,Y,i):
-		ax1 = plt.subplot(2,1,1)
-		p1 = plt.plot(X,Y)
-		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
-		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
-		plt.close()
+	# def surface_plot(X,Y,Z,dTeta, sdvig = 0):
+	# 	ax1 = plt.subplot(2,1,2)
+	# 	p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
+	# 	ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
+	# 	ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
+	# 	ax1.broken_barh([(slits[0]+sdvig+(slits[1] - slits[0])/2, 1)], (0.5, 0.5), facecolors='red',alpha = 0.3)
+	# 	plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
+	# 	plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
+	# 	plt.colorbar()
+	#
+	#
+	# def svertka_plot(X,Y,i):
+	# 	ax1 = plt.subplot(2,1,1)
+	# 	p1 = plt.plot(X,Y)
+	# 	plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
+	# 	plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
+	# 	print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
+	# 	plt.close()
 
 
 
@@ -206,7 +206,7 @@ def do_it(input_data):
 				z_promegutochn = []
 				z_promegutochn_lin = []
 				while teta <= teta_2:
-					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)
+					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*frenel_slit(itta*wavelength_1*1e10,teta,S1,L1x)
 					x_promegutochn.append(itta*wavelength_1*1e10)
 					y_promegutochn.append(math.degrees(teta)*3600)
 					z_promegutochn.append(math.log10(P))

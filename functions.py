@@ -45,3 +45,18 @@ def g_lambd(itta,wavelength_1,wavelength_2):
 	d_lambd1 = wavelength_1*3e-4
 	d_lambd2 = wavelength_2*3e-4
 	return 2/3/math.pi*((d_lambd1/wavelength_1)/(math.pow((itta-1),2)+math.pow(d_lambd1/wavelength_1,2))+0.5*(d_lambd2/wavelength_1)/(math.pow((itta-wavelength_2/wavelength_1),2)+math.pow((d_lambd2/wavelength_1),2)))
+
+def frenel_slit(lam,phi,slit,L,I0=1):
+	if abs(phi)<1:
+		argument = phi
+	else:
+		argument = math.radians(phi/3600)
+		
+    stright_ray = math.atan(slit/2/L)
+	if stright_ray>abs(argument):
+        return I0
+    else:
+        znak = argument/abs(argument)
+        argument = (abs(argument) - stright_ray)*znak
+        u = math.pi*slit/lam*math.sin(argument)
+        return I0*math.pow(math.sin(u)/u,2)
