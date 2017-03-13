@@ -396,6 +396,6 @@ def do_it(input_data):
 	gif(path + name_gif + '/')
 
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-	msge['files'] = path + name_gif + '.gif'
+	msge['gif'] = path + name_gif + '.gif'
 	email_module.sendEmail(msge,input_data['id_email'])
 	print('Писмо отправлено')

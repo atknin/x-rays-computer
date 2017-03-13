@@ -188,7 +188,7 @@ def do_it(input_data):
 		i = 0
 		sv_x = []
 		sv_y = []
-
+		f = open(path + name_gif + '.dat', 'w')
 
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
@@ -222,14 +222,16 @@ def do_it(input_data):
 				#-2------------------------------------------------------------------------------------------------------------
 
 			sdvigka = -2*(math.degrees(dTeta)*3600)
-
+			f.write('%14.8f' % sdvigka)
+			f.write('%14.8f' % svertka(x_itta,y_teta,z_intese_lin,sdvigka))
+			f.write('\n')
 
 			if svertka_plot_shkala == 'log':
 				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))
 			else:
 				sv_y.append(svertka(x_itta,y_teta,z_intese_lin,sdvigka))
 
-			sv_x.append((sdvigka))
+			sv_x.append(sdvigka)
 
 			PLOT_all(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka, sv_x,sv_y,i)
 
@@ -239,7 +241,7 @@ def do_it(input_data):
 			else:
 				dTeta+=dTeta_shag
 
-
+		f.close()
 
 	if not os.path.exists(path + name_gif + '/'):
 		os.makedirs(path + name_gif + '/')
@@ -254,5 +256,6 @@ def do_it(input_data):
 	msge = {}
 	msge['title'] = 'Расчет: "Прямой пучок"'
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-	msge['files'] = path + name_gif + '.gif'
+	msge['gif'] = path + name_gif + '.gif'
+	msge['dat'] = path + name_gif + '.dat'
 	email_module.sendEmail(msge,input_data['id_email'])
