@@ -126,7 +126,8 @@ def do_it(input_data):
 		suma = 0
 		for i in range(dlina):
 			for j in range(dlina_2):
-				if (slits[2]*10)<y_teta[i][j]<(slits[3]*10):
+				# if (slits[2]*10)<y_teta[i][j]<(slits[3]*10):
+				if (slits[2])<y_teta[i][j]<(slits[3]):
 					if (slits[0]+sdvig)<y_teta[i][j]<(slits[1]+sdvig):
 						suma+=z_intese[i][j]
 		return suma
@@ -206,7 +207,7 @@ def do_it(input_data):
 				z_promegutochn = []
 				z_promegutochn_lin = []
 				while teta <= teta_2:
-					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*frenel_slit(itta*wavelength_1,teta,S1,L1x)
+					P = g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)
 					x_promegutochn.append(itta*wavelength_1*1e10)
 					y_promegutochn.append(math.degrees(teta)*3600)
 					z_promegutochn.append(math.log10(P))
@@ -254,8 +255,9 @@ def do_it(input_data):
 
 	gif(path + name_gif + '/')
 	msge = {}
-	msge['title'] = 'Расчет: "Прямой пучок"'
+	msge['title'] = 'Расчет: "Прямой пучок" (' + input_data['input_size_slit1']+'--'+input_data['input_size_slit2']+')'
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
 	msge['gif'] = path + name_gif + '.gif'
-	msge['dat'] = path + name_gif + '.dat'
+	msge['dat'] = []
+	msge['dat'].append(path + name_gif + '.dat')
 	email_module.sendEmail(msge,input_data['id_email'])
