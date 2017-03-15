@@ -258,17 +258,16 @@ def do_it(input_data):
 
 
 	print('начался расчет...')
+	msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
 	if not os.path.exists(path + name_gif + '/'):
 		os.makedirs(path + name_gif + '/')
 		print('создаем папку: ' + path + name_gif + '/')
 	if input_data['scan'] == '2theta':
-		msge['title'] = 'Расчет: "Двухркристальная. Тета-2Тета."'
-		email_module.notification("Старт. Двухркристальная. Тета-2Тета.")
+		email_module.notification(" Старт: " + str(input_data['id_comment_calc']))
 		theta(dTeta)
 		email_module.notification('Расчет окончен для '+str(input_data['id_email']))
 	else:
-		email_module.notification(" Старт.Двухркристальная. Омега скан.")
-		msge['title'] = 'Расчет: "Двухркристальная. Омега. "'
+		email_module.notification(" Старт: " + str(input_data['id_comment_calc']))
 		omega(dTeta)
 		email_module.notification('Расчет окончен для '+str(input_data['id_email']))
 	print('сбока анимации...')

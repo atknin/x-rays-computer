@@ -206,13 +206,13 @@ def do_it(input_data):
 		os.makedirs(path + name_gif + '/')
 		print('создаем папку: ' + path + name_gif + '/')
 	print('начался расчет...')
-	email_module.notification('Расчет начался. Прямой пучок.')
+	msge['title'] = 'Расчет: '+ str(input_data['id_comment_calc'])
+	email_module.notification('Расчет начался' + str(input_data['id_comment_calc']))
 	one(dTeta)
-	email_module.notification('Расчет окончен. Прямой пучок.')
+	email_module.notification('Расчет окончен для '+str(input_data['id_email']))
 	print('сбока анимации...')
 	gif(path + name_gif + '/')
 	msge = {}
-	msge['title'] = 'Расчет: "Прямой пучок" (' + input_data['input_size_slit1']+'--'+input_data['input_size_slit2']+')'
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
 	msge['gif'] = path + name_gif + '.gif'
 	msge['dat'] = []
