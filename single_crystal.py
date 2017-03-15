@@ -115,7 +115,7 @@ def do_it(input_data):
 		plt.style.use('ggplot')
 		ax1 = plt.subplot(2,1,2)
 		mpl.rcParams.update({'font.size': 15})
-		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-4, vmax=0)
+		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
 		ax1.broken_barh([(slits[0]+sdvig-0.25+(slits[1] - slits[0])/2, 0.5)], (0.5, 0.5), facecolors='red',alpha = 0.4)
@@ -126,24 +126,6 @@ def do_it(input_data):
 		p2 = plt.plot(svert_x,svert_y)
 		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
 		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		plt.close()
-
-	def surface_plot(X,Y,Z,dTeta, sdvig = 0):
-		ax1 = plt.subplot(2,1,2)
-		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
-		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
-		ax1.broken_barh([(slits[0]+sdvig+(slits[1] - slits[0])/2, 1)], (0.5, 0.5), facecolors='red',alpha = 0.3)
-		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
-		plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
-		plt.colorbar()
-
-	def svertka_plot(X,Y,i):
-		ax1 = plt.subplot(2,1,1)
-		p1 = plt.plot(X,Y)
-		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
-		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
 		plt.close()
 
 	def cli_progress_test(end_val, bar_length=20):
