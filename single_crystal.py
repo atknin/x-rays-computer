@@ -170,7 +170,7 @@ def do_it(input_data):
 				itta += shag_itta
 				#-2------------------------------------------------------------------------------------------------------------
 			sdvigka = 0
-			f.write('%14.8f' % math.degrees(dTeta)*3600)
+			f.write('%14.8f' % (math.degrees(dTeta)*3600))
 			f.write('%14.8f' % svertka(x_itta,y_teta,z_intese_lin,sdvigka))
 			f.write('\n')
 			if svertka_plot_shkala == 'log':
@@ -256,4 +256,8 @@ def do_it(input_data):
 	msge['gif'] = path + name_gif + '.gif'
 	msge['dat'] = []
 	msge['dat'].append(path + name_gif + '.dat')
-	email_module.sendEmail(msge,input_data['id_email'])
+	try:
+		email_module.sendEmail(msge,input_data['id_email'])
+	except Exception as e:
+		del msge['gif']
+		email_module.sendEmail(msge,input_data['id_email'])

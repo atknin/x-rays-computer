@@ -276,4 +276,8 @@ def do_it(input_data):
 	msge['gif'] = path + name_gif + '.gif'
 	msge['dat'] = []
 	msge['dat'].append(path + name_gif + '.dat')
-	email_module.sendEmail(msge,input_data['id_email'])
+	try:
+		email_module.sendEmail(msge,input_data['id_email'])
+	except Exception as e:
+		del msge['gif']
+		email_module.sendEmail(msge,input_data['id_email'])
