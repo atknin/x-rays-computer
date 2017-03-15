@@ -50,35 +50,24 @@ from functions import *
 def do_it(input_data):
 	print('do_it for:')
 	msge = {}
-
 	print(input_data)
 	koef = 2*abs(float(input_data['step_detail'])) # для компьютера
-
 	path = os.path.dirname(os.path.abspath(__file__))+'/results/'
-	# path_0 = os.path.dirname(os.path.abspath(__file__))+'/'
 	wavelength_1 = float(input_data['anod1']) * 1e-10
 	wavelength_2 = float(input_data['anod2']) * 1e-10
-
 	sigma = float(input_data['source_divergence_arc'])
-
 	S1 = float(input_data['input_size_slit1']) * 1e-3 # S1, S2 - ширина колимирующих щелей
 	S2 = float(input_data['input_size_slit2']) * 1e-3
 	L1x =float(input_data['input_l_slit1']) # L1, L2 - оптические расстояния между щелей и рентгеновской трубкой
 	L2x = float(input_data['input_l_slit2'])
-
 	X0_1 = complex(input_data['X0_1'])*1e-7
 	Xh_1 = complex(input_data['Xh_1'])*1e-7
-
 	X0_2 = complex(input_data['X0_2'])*1e-7
 	Xh_2 = complex(input_data['Xh_2'])*1e-7
-
 	bragg_1 =  float(input_data['bragg_1'])
 	bragg_2 =  float(input_data['bragg_2'])
-
 	fi_monohrom =  float(input_data['fi_1'])
 	fi_sample =  float(input_data['fi_2'])
-	# sigmaX = 0.5*1e-3 # полуширина излучающего пятна рентгеновской трубки
-
 	name_gif = input_data['name_result']
 	slits = [1,1,1,1] # 1(движется)  и 2(не движется) щели
 	slits[0] = -math.degrees(math.atan(S2/2/L2x))*3600# 2 щель (движется)- перед детектором
@@ -110,7 +99,6 @@ def do_it(input_data):
 	dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
 	dTeta_shag = math.radians(10/3600)
 	print('параметры успешно определены: double crystla experiment')
-
 	def gif(path_gif):
 		filenam = os.listdir(path_gif)
 		filenames_a = sorted(filenam)
@@ -124,8 +112,6 @@ def do_it(input_data):
 		print('!creating: ... |',path + name_gif + '.gif')
 		imageio.mimsave(path + name_gif + '.gif', images)
 		print('!done:',path + name_gif + '.gif')
-
-
 #-------------------вресмя уменьшилось на 10 процентов
 	def svertka(x_itta, y_teta, z_intese, sdvig = 0):
 		dlina = len(z_intese)
@@ -137,7 +123,6 @@ def do_it(input_data):
 					if (slits[0]+sdvig)<y_teta[i][j]<(slits[1]+sdvig):
 						suma+=z_intese[i][j]
 		return suma
-
 
 	def PLOT_all(X,Y,Z,dTeta, sdvig, svert_x,svert_y,i):
 		plt.style.use('ggplot')
@@ -159,27 +144,6 @@ def do_it(input_data):
 		print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
 		plt.close()
 
-	def surface_plot(X,Y,Z,dTeta, sdvig = 0):
-		ax1 = plt.subplot(2,1,2)
-		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
-		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
-		ax1.broken_barh([(slits[0]+sdvig+(slits[1] - slits[0])/2, 1)], (0.5, 0.5), facecolors='red',alpha = 0.3)
-		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
-		plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
-		plt.colorbar()
-
-
-	def svertka_plot(X,Y,i):
-		ax1 = plt.subplot(2,1,1)
-		p1 = plt.plot(X,Y)
-		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
-		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
-		plt.close()
-
-
-
 	def cli_progress_test(end_val, bar_length=20):
 		percent = end_val
 		hashes = '#' * int(round(percent * bar_length)/100)
@@ -191,6 +155,8 @@ def do_it(input_data):
 		i = 0
 		sv_x = []
 		sv_y = []
+		f = open(path + name_gif + '.dat', 'w')
+
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
 		#1-------------------------------------------------------------------------------------------------------------------
@@ -221,6 +187,10 @@ def do_it(input_data):
 				itta += shag_itta
 				#-2------------------------------------------------------------------------------------------------------------
 			sdvigka = -2*(math.degrees(dTeta)*3600)
+			f.write('%14.8f' % -sdvigka)
+			f.write('%14.8f' % svertka(x_itta,y_teta,z_intese_lin,sdvigka))
+			f.write('\n')
+
 			if svertka_plot_shkala == 'log':
 				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))
 			else:
@@ -232,12 +202,14 @@ def do_it(input_data):
 				dTeta+=shagi_po_Dtheta_uvellichenie[2]
 			else:
 				dTeta+=dTeta_shag
+		f.close()
 
 
 	def theta(dTeta): # скан одной щелью относительно второй
 		i = 0
 		sv_x = []
 		sv_y = []
+		f = open(path + name_gif + '.dat', 'w')
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
 		#1-------------------------------------------------------------------------------------------------------------------
@@ -268,6 +240,9 @@ def do_it(input_data):
 				itta += shag_itta
 				#-2------------------------------------------------------------------------------------------------------------
 			sdvigka = 0
+			f.write('%14.8f' % math.degrees(dTeta)*3600)
+			f.write('%14.8f' % svertka(x_itta,y_teta,z_intese_lin,sdvigka))
+			f.write('\n')
 			if svertka_plot_shkala == 'log':
 				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))
 			else:
@@ -279,8 +254,7 @@ def do_it(input_data):
 				dTeta+=shagi_po_Dtheta_uvellichenie[2]
 			else:
 				dTeta+=dTeta_shag
-
-
+		f.close()
 
 
 	print('начался расчет...')
@@ -297,10 +271,10 @@ def do_it(input_data):
 		msge['title'] = 'Расчет: "Двухркристальная. Омега. "'
 		omega(dTeta)
 		email_module.notification('Расчет окончен для '+str(input_data['id_email']))
-
-
 	print('сбока анимации...')
 	gif(path + name_gif + '/')
 	msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1)  + '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
 	msge['gif'] = path + name_gif + '.gif'
+	msge['dat'] = []
+	msge['dat'].append(path + name_gif + '.dat')
 	email_module.sendEmail(msge,input_data['id_email'])

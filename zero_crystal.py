@@ -51,7 +51,6 @@ def do_it(input_data):
 	print(input_data)
 	koef = 4*abs(float(input_data['step_detail'])) # для компьютера
 	path = os.path.dirname(os.path.abspath(__file__))+'/results/'
-	# path_0 = os.path.dirname(os.path.abspath(__file__))+'/'
 	wavelength_1 = float(input_data['anod1']) * 1e-10
 	wavelength_2 = float(input_data['anod2']) * 1e-10
 	S1 = float(input_data['input_size_slit1']) * 1e-3 # S1, S2 - ширина колимирующих щелей
@@ -69,31 +68,21 @@ def do_it(input_data):
 	surf_plot_x_lim = [float(input_data['teta_start']), float(input_data['teta_end'])]
 	left = float(input_data['anod1']) - 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
 	right = float(input_data['anod2']) + 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
-
-
 	if wavelength_2 > wavelength_1:
 		surf_plot_y_lim = [left, right]
 	else:
 		surf_plot_y_lim = [right, left]
-
-
-
 	svertka_plot_x_lim = [ float(input_data['teta_start']), float(input_data['teta_end'])] # для линейной шкалы
 	svertka_plot_shkala = 'Nonlog'
-
-	# svertka_plot_x_lim = [-200,300]  # для logarifmic шкалы
-	# svertka_plot_shkala = 'log'
 	#--------------------------------------------шаг по длине волны------------------------------------------------
 	shag_itta = math.radians(5/3600)* koef
 	itta_1 = 0.996 # предел интегрирования от
 	itta_2 = 1.01# предел интегрирования до
 	n_itta = int((itta_2 - itta_1)/shag_itta)
-
 	#--------------------------------------------шаг по углу, разлет от источника------------------------------------------------
 	shag_teta = math.radians(float(1/3600))/8 * koef
 	teta_1 = math.radians(surf_plot_x_lim[0]/3600)
 	teta_2 =math.radians(surf_plot_x_lim[1]/3600)
-
 	# -----------------------------------------------------Шаг, поворот образца----------------------------------------------------------------------
 	n_teta = int(2*teta_2/shag_teta)
 	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
@@ -139,40 +128,16 @@ def do_it(input_data):
 		mpl.rcParams.update({'font.size': 15})
 		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-4, vmax=0)
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
 		ax1.broken_barh([(slits[0]+sdvig-0.25+(slits[1] - slits[0])/2, 0.5)], (0.5, 0.5), facecolors='red',alpha = 0.4)
 		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
 		plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
 		plt.colorbar()
-
-
 		ax2 = plt.subplot(2,1,1)
 		p2 = plt.plot(svert_x,svert_y)
 		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
 		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		# print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
 		plt.close()
-
-	# def surface_plot(X,Y,Z,dTeta, sdvig = 0):
-	# 	ax1 = plt.subplot(2,1,2)
-	# 	p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
-	# 	ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
-	# 	ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
-	# 	ax1.broken_barh([(slits[0]+sdvig+(slits[1] - slits[0])/2, 1)], (0.5, 0.5), facecolors='red',alpha = 0.3)
-	# 	plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
-	# 	plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
-	# 	plt.colorbar()
-	#
-	#
-	# def svertka_plot(X,Y,i):
-	# 	ax1 = plt.subplot(2,1,1)
-	# 	p1 = plt.plot(X,Y)
-	# 	plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
-	# 	plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-	# 	print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
-	# 	plt.close()
-
 
 
 	def cli_progress_test(end_val, bar_length=20):
@@ -181,9 +146,6 @@ def do_it(input_data):
 		spaces = ' ' * (bar_length - len(hashes))
 		sys.stdout.write("\rPercent: [{0}] {1}%".format(hashes + spaces, int(round(percent))))
 		sys.stdout.flush()
-
-
-
 
 	def one(dTeta): # скан одной щелью относительно второй
 		i = 0
@@ -231,17 +193,13 @@ def do_it(input_data):
 				sv_y.append(math.log10(0.00000000000001+svertka(x_itta,y_teta,z_intese_lin,sdvigka)))
 			else:
 				sv_y.append(svertka(x_itta,y_teta,z_intese_lin,sdvigka))
-
 			sv_x.append(sdvigka)
-
 			PLOT_all(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka, sv_x,sv_y,i)
-
 			i+=1
 			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
 				dTeta+=shagi_po_Dtheta_uvellichenie[2]
 			else:
 				dTeta+=dTeta_shag
-
 		f.close()
 
 	if not os.path.exists(path + name_gif + '/'):
@@ -252,7 +210,6 @@ def do_it(input_data):
 	one(dTeta)
 	email_module.notification('Расчет окончен. Прямой пучок.')
 	print('сбока анимации...')
-
 	gif(path + name_gif + '/')
 	msge = {}
 	msge['title'] = 'Расчет: "Прямой пучок" (' + input_data['input_size_slit1']+'--'+input_data['input_size_slit2']+')'
