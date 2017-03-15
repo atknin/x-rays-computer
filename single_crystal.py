@@ -62,7 +62,6 @@ def do_it(input_data):
 	slits[1] =  math.degrees(math.atan(S2/2/L2x))*3600# 2 щель(движется)- перед детектором
 	slits[2] =  -math.degrees(math.atan(S1/2/L1x))*3600 #1 щель(не движется)
 	slits[3] =  math.degrees(math.atan(S1/2/L1x))*3600 #1 щель(не движется)
-	shagi_po_Dtheta_uvellichenie = [-40,40, math.radians(2/3600)]
 	surf_plot_x_lim = [float(input_data['teta_start']), float(input_data['teta_end'])]
 	left = float(input_data['anod1']) - 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
 	right = float(input_data['anod2']) + 0.5*abs(float(input_data['anod2']) - float(input_data['anod1']))
@@ -85,7 +84,7 @@ def do_it(input_data):
 	n_teta = int(2*teta_2/shag_teta)
 	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
 	dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
-	dTeta_shag = math.radians(10/3600)
+	dTeta_shag = math.radians(2/3600)
 	print('параметры успешно определены: single crystla experiment')
 	def gif(path_gif):
 		filenam = os.listdir(path_gif)
@@ -199,10 +198,8 @@ def do_it(input_data):
 			sv_x.append(math.degrees(dTeta)*3600)
 			PLOT_all(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka, sv_x,sv_y,i)
 			i+=1
-			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
-				dTeta+=shagi_po_Dtheta_uvellichenie[2]
-			else:
-				dTeta+=dTeta_shag
+
+			dTeta+=dTeta_shag
 		f.close()
 
 
@@ -251,10 +248,7 @@ def do_it(input_data):
 			sv_x.append(sdvigka)
 			PLOT_all(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka, sv_x,sv_y,i)
 			i+=1
-			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
-				dTeta+=shagi_po_Dtheta_uvellichenie[2]
-			else:
-				dTeta+=dTeta_shag
+			dTeta+=dTeta_shag
 		f.close()
 
 
