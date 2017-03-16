@@ -127,7 +127,7 @@ def do_it(input_data):
 		plt.style.use('ggplot')
 		ax1 = plt.subplot(2,1,2)
 		mpl.rcParams.update({'font.size': 15})
-		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-10, vmax=0)
+		p1 = plt.pcolormesh(Y, X, Z,shading='gouraud', cmap='jet', vmin=-14, vmax=0)
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3], surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red',alpha = 0.2)
 
 		ax1.broken_barh([(surf_plot_x_lim[0], slits[0]-surf_plot_x_lim[0]+sdvig), (slits[1]+sdvig, surf_plot_x_lim[1]-slits[1]-sdvig)], (0.5, 0.5), facecolors='grey',alpha = 0.2)
@@ -135,7 +135,6 @@ def do_it(input_data):
 		plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
 		plt.ylim(surf_plot_y_lim[0],surf_plot_y_lim[1])
 		plt.colorbar()
-
 		ax2 = plt.subplot(2,1,1)
 		p2 = plt.plot(svert_x,svert_y)
 		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
@@ -185,7 +184,7 @@ def do_it(input_data):
 				itta += shag_itta
 				#-2------------------------------------------------------------------------------------------------------------
 			sdvigka = -2*(math.degrees(dTeta)*3600)
-			f.write('%14.8f' % -sdvigka)
+			f.write('%14.8f' % (-sdvigka))
 			f.write('%14.8f' % svertka(x_itta,y_teta,z_intese_lin,sdvigka))
 			f.write('\n')
 
@@ -238,7 +237,7 @@ def do_it(input_data):
 				itta += shag_itta
 				#-2------------------------------------------------------------------------------------------------------------
 			sdvigka = 0
-			f.write('%14.8f' % math.degrees(dTeta)*3600)
+			f.write('%14.8f' % (math.degrees(dTeta)*3600))
 			f.write('%14.8f' % svertka(x_itta,y_teta,z_intese_lin,sdvigka))
 			f.write('\n')
 			if svertka_plot_shkala == 'log':
