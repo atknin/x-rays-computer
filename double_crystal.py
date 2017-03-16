@@ -140,7 +140,6 @@ def do_it(input_data):
 		p2 = plt.plot(svert_x,svert_y)
 		plt.xlim(svertka_plot_x_lim[0],svertka_plot_x_lim[1])
 		plt.savefig(path + name_gif + '/'+str(i)+ '.png', bbox_inches='tight')
-		print('новая картинка ' + path + name_gif + '/'+str(i)+ '.png')
 		plt.close()
 
 	def cli_progress_test(end_val, bar_length=20):
