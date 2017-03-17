@@ -195,10 +195,7 @@ def do_it(input_data):
 			sv_x.append(-sdvigka)
 			PLOT_all(x_itta,y_teta,z_intese,(math.degrees(dTeta)*3600), sdvigka, sv_x,sv_y,i)
 			i+=1
-			if shagi_po_Dtheta_uvellichenie[0]<=(math.degrees(dTeta)*3600)<=shagi_po_Dtheta_uvellichenie[1]:
-				dTeta+=shagi_po_Dtheta_uvellichenie[2]
-			else:
-				dTeta+=dTeta_shag
+			dTeta+=dTeta_shag
 		f.close()
 
 
