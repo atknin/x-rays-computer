@@ -48,6 +48,7 @@ from functions import (g_lambd,gauss,frenel_slit)
 
 def do_it(input_data):
 	print('do_it for:')
+	msge = {}
 	print(input_data)
 	path = os.path.dirname(os.path.abspath(__file__))+'/results/'
 	wavelength_1 = float(input_data['anod1']) * 1e-10
