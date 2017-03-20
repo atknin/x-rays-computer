@@ -20,7 +20,6 @@ def to_dict(string):
 	text_array = string.replace("'", "\"").replace("{", "").replace("}", "").replace('"', "").replace(' ', "").split(',')
 	for a in text_array:
 		b = a.split(':')
-		print(b)
 		dictt[b[0]] = b[1]
 	return dictt
 

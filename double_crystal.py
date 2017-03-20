@@ -51,7 +51,6 @@ def do_it(input_data):
 	print('do_it for:')
 	msge = {}
 	print(input_data)
-	koef = 2*abs(float(input_data['step_detail'])) # для компьютера
 	path = os.path.dirname(os.path.abspath(__file__))+'/results/'
 	wavelength_1 = float(input_data['anod1']) * 1e-10
 	wavelength_2 = float(input_data['anod2']) * 1e-10
@@ -84,19 +83,31 @@ def do_it(input_data):
 	svertka_plot_x_lim = [ float(input_data['teta_start']), float(input_data['teta_end'])]  # для линейной шкалы
 	svertka_plot_shkala = input_data['logarifm_scale']
 	#--------------------------------------------шаг по длине волны------------------------------------------------
-	shag_itta = math.radians(5/3600)* koef
+	try:
+		shag_itta = math.radians(5/3600)* float(input_data['step_lambda'])
+	except Exception as e:
+		shag_itta =  math.radians(5/3600)
+		print('shag_itta не определен')
 	itta_1 = 0.996 # предел интегрирования от
 	itta_2 = 1.01# предел интегрирования до
 	n_itta = int((itta_2 - itta_1)/shag_itta)
 	#--------------------------------------------шаг по углу, разлет от источника------------------------------------------------
-	shag_teta = math.radians(float(1/3600))/8 * koef
+	try:
+		shag_teta = math.radians(float(1/3600))/8 * float(input_data['step_teta'])
+	except Exception as e:
+		shag_teta = math.radians(float(1/3600))/8
+		print('shag_teta не определен')
 	teta_1 = math.radians(surf_plot_x_lim[0]/3600)
 	teta_2 =math.radians(surf_plot_x_lim[1]/3600)
 	# -----------------------------------------------------Шаг, поворот образца----------------------------------------------------------------------
 	n_teta = int(2*teta_2/shag_teta)
 	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
 	dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
-	dTeta_shag = math.radians(1/3600)
+	try:
+		dTeta_shag = math.radians(float(input_data['step_shag_teta'])/3600)
+	except Exception as e:
+		dTeta_shag = math.radians(2/3600)
+		print('dTeta_shag не определен')
 	print('параметры успешно определены: double crystla experiment')
 	def gif(path_gif):
 		filenam = os.listdir(path_gif)
