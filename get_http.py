@@ -30,7 +30,7 @@ def do_something(sc):
 		string = f.read().decode('utf-8')
 		son_obj = json.loads(string)
 		if son_obj['status'] == 'Nodata':
-			return print('NODATA')
+			print('NODATA')
 		else:
 			a = main.compute(to_dict(son_obj['JSON']))
 			a.start()
@@ -39,7 +39,7 @@ def do_something(sc):
 			payload['pc'] = comp
 			data = parse.urlencode(payload)
 			f = request.urlopen(url + "?" + data)
-			return print(f.read())
+			print(f.read())
 	except Exception as e:
 		# ошибка, сообщаем -------сюда не заходит
 		payload = {'error_during_compute': son_obj['pk'],'text_error':'ERROR IN do_something: '+ str(e)}
@@ -47,7 +47,7 @@ def do_something(sc):
 		data = parse.urlencode(payload)
 		f = request.urlopen(url + "?" + data)
 		print(f.read())
-		return print(e)
+		print(e)
 	s.enter(60, 1, do_something, (sc,))
 s.enter(2, 1, do_something, (s,))
 s.run()
