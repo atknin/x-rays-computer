@@ -28,8 +28,17 @@ def compute(input_data):
 	try:
 		a = main.compute(input_data)
 		a.start()
+		payload = {'complited': son_obj['pk']}
+		payload['pc'] = comp
+		data = parse.urlencode(payload)
+		f = request.urlopen(url + "?" + data)
+		print(f.read())
+
 	except Exception as e:
-		print('ERROR IN COMPUTE')
+		payload = {'error_during_compute': son_obj['pk'],'text_error': str(e)}
+		payload['pc'] = comp
+		f = request.urlopen(url + "?" + data)
+		print(f.read())
 		print(e)
 
 
@@ -45,11 +54,6 @@ def do_something(sc):
 			print('NODATA')
 		else:
 			compute(to_dict(son_obj['JSON']))
-			payload = {'complited': son_obj['pk']}
-			payload['pc'] = comp
-			data = parse.urlencode(payload)
-			f = request.urlopen(url + "?" + data)
-			print(f.read())
 
 	except Exception as e:
 		print('ERROR IN GET')
