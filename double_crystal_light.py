@@ -99,7 +99,6 @@ def do_it(input_data):
 		print('shag_teta не определен')
 	teta_1 = math.radians(surf_plot_x_lim[0]/3600)
 	teta_2 =math.radians(surf_plot_x_lim[1]/3600)
-	print(teta_1,teta_2)
 	n_teta = int((teta_2 - teta_1)/shag_teta)
 
 	# -----------------------------------------------------Шаг, поворот образца----------------------------------------------------------------------
