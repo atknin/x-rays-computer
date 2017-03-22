@@ -14,6 +14,7 @@ from computer import *
 url = 'http://x-rays.world/diffraction/compute/'
 s = sched.scheduler(time.time, time.sleep)
 print('started')
+son_obj = {}
 
 def to_dict(string):
 	dictt = {}
@@ -28,6 +29,7 @@ def compute(input_data):
 	try:
 		a = main.compute(input_data)
 		a.start()
+		# все хорошо, сообщаем
 		payload = {'complited': son_obj['pk']}
 		payload['pc'] = comp
 		data = parse.urlencode(payload)
@@ -35,8 +37,10 @@ def compute(input_data):
 		print(f.read())
 
 	except Exception as e:
-		payload = {'error_during_compute': son_obj['pk'],'text_error': str(e)}
+		# ошибка, сообщаем -------сюда не заходит
+		payload = {'error_during_compute': son_obj['pk'],'text_error':'ERROR IN compute: '+ str(e)}
 		payload['pc'] = comp
+		data = parse.urlencode(payload)
 		f = request.urlopen(url + "?" + data)
 		print(f.read())
 		print(e)
@@ -56,9 +60,13 @@ def do_something(sc):
 			compute(to_dict(son_obj['JSON']))
 
 	except Exception as e:
+		payload = {'error_during_compute': son_obj['pk'],'text_error': 'ERROR IN do_something: '+ str(e)}
+		payload['pc'] = comp
+		data = parse.urlencode(payload)
+		f = request.urlopen(url + "?" + data)
+		print(f.read())
 		print('ERROR IN GET')
 		print(e)
-		time.sleep(15)
 
 
 	s.enter(60, 1, do_something, (sc,))

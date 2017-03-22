@@ -99,6 +99,7 @@ def do_it(input_data):
 		print('shag_teta не определен')
 	teta_1 = math.radians(surf_plot_x_lim[0]/3600)
 	teta_2 =math.radians(surf_plot_x_lim[1]/3600)
+	print(teta_1,teta_2)
 	n_teta = int((teta_2 - teta_1)/shag_teta)
 
 	# -----------------------------------------------------Шаг, поворот образца----------------------------------------------------------------------
@@ -110,6 +111,24 @@ def do_it(input_data):
 		dTeta_shag = math.radians(2/3600)
 		print('dTeta_shag не определен')
 	print('параметры успешно определены: double crystla experiment')
+
+	def predel_teta(sdvig):
+		a1 = slits[0]+sdvig
+		a2 = slits[1]+sdvig
+		a3 = slits[2]
+		a4 = slits[3]
+		if a4>=a1 and a1>=a3:
+			if a2<=a4:
+				return [math.radians(a1/3600),math.radians(a2/3600)]
+			else:
+				return [math.radians(a1/3600),math.radians(a4/3600)]
+		elif a4>=a2 and a2>=a3:
+			if a1>=a3:
+				return [math.radians(a1/3600),math.radians(a2/3600)]
+			else:
+				return  [math.radians(a3/3600),math.radians(a2/3600)]
+		else:
+			return [0,0]
 
 #-------------------вресмя уменьшилось на 10 процентов
 	def svertka(x_itta, y_teta, z_intese, sdvig = 0):
@@ -133,32 +152,30 @@ def do_it(input_data):
 	def omega(dTeta): # скан одной щелью относительно второй
 		i = 0
 		f = open(path + name_gif + '.dat', 'w')
-		x1,x2 = [],[] #itta
-		y1,y2 = [],[] #teta
-		z1,z2 = [],[] #intens
 		#1-------------------------------------------------------------------------------------------------------------------
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
 			itta =  itta_1
+			sdvigka = -2*(math.degrees(dTeta)*3600)
 			#----2----------------------------------------------------------------------------------------------------
+			P = 0
 			while itta <= itta_2:
-				teta = -teta_2
-				#----3----------------------------------------------------------------------------------------------------
-				while teta <= teta_2:
-					x2.append(itta*wavelength_1*1e10)
-					y2.append(math.degrees(teta)*3600)
-					z2.append(g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom))
-					teta += shag_teta
-				#----/3----------------------------------------------------------------------------------------------------
-				x1.append(x2)
-				y1.append(y2)
-				z1.append(z2)
-				del x2[:],y2[:],z2[:]
+				qwe = predel_teta(sdvigka)
+				if qwe == 0:
+					P += 0
+				else:
+					[teta_1,teta_2] = qwe
+					teta = teta_1
+					#----3----------------------------------------------------------------------------------------------------
+					while teta <= teta_2:
+						P+=g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom)
+						teta += shag_teta
+						#----/3----------------------------------------------------------------------------------------------------
 				itta += shag_itta
 			#/2------------------------------------------------------------------------------------------------------------
-			sdvigka = -2*(math.degrees(dTeta)*3600)
+
 			f.write('%14.8f' % (-sdvigka))
-			f.write('%14.8f' % svertka(x1,y1,z1,sdvigka))
+			f.write('%14.8f' % P)
 			f.write('\n')
 			del x1[:],y1[:],z1[:]
 			i+=1
@@ -171,34 +188,31 @@ def do_it(input_data):
 		i = 0
 
 		f = open(path + name_gif + '.dat', 'w')
-		x1,x2 = [],[] #itta
-		y1,y2 = [],[] #teta
-		z1,z2 = [],[] #intens
 		#1-------------------------------------------------------------------------------------------------------------------
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
 			itta =  itta_1
+			sdvigka = 0
 			#2-----------------------------------------------------------------------------------------------------------
+			P = 0
 			while itta <= itta_2:
-				teta = -teta_2
-				#3-----------------------------------------------------------------------------------------------------------
-				while teta <= teta_2:
-					x2.append(itta*wavelength_1*1e10)
-					y2.append(math.degrees(teta)*3600)
-					z2.append(g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom))
-					teta += shag_teta
-				#----3---------------------------------------------------------------------------------------------------------
-				x1.append(x2)
-				y1.append(y2)
-				z1.append(z2)
-				del x2[:],y2[:],z2[:]
+				qwe = predel_teta(sdvigka)
+				if qwe == 0:
+					P += 0
+				else:
+					[teta_1,teta_2] = qwe
+					teta = teta_1
+					#3-----------------------------------------------------------------------------------------------------------
+					while teta <= teta_2:
+						P+=g_lambd(itta,wavelength_1,wavelength_2)*gauss(sigma,0,math.degrees(teta)*3600)*sample_curve(dTeta, teta, itta,X0_2, Xh_2,bragg_2,fi_sample)*monohromator_curve(teta, itta,X0_1, Xh_1,bragg_1,fi_monohrom)
+						teta += shag_teta
+					#----3---------------------------------------------------------------------------------------------------------
 				itta += shag_itta
 			#-2------------------------------------------------------------------------------------------------------------
-			sdvigka = 0
+
 			f.write('%14.8f' % (math.degrees(dTeta)*3600))
-			f.write('%14.8f' % svertka(x1,y1,z1,sdvigka))
+			f.write('%14.8f' % P)
 			f.write('\n')
-			del x1[:],y1[:],z1[:]
 			i+=1
 			dTeta+=dTeta_shag
 		#1-------------------------------------------------------------------------------------------------------------------

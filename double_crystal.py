@@ -225,7 +225,7 @@ def do_it(input_data):
 			z_intese_lin = []
 			while itta <= itta_2:
 				#3-----------------------------------------------------------------------------------------------------------
-				teta = -teta_2
+				teta = teta_1
 				x_promegutochn = []
 				y_promegutochn = []
 				z_promegutochn = []
@@ -261,6 +261,7 @@ def do_it(input_data):
 
 	print('начался расчет...')
 	msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
+	0/0
 	if not os.path.exists(path + name_gif + '/'):
 		os.makedirs(path + name_gif + '/')
 		print('создаем папку: ' + path + name_gif + '/')
