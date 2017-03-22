@@ -93,14 +93,15 @@ def do_it(input_data):
 	n_itta = int((itta_2 - itta_1)/shag_itta)
 	#--------------------------------------------шаг по углу, разлет от источника------------------------------------------------
 	try:
-		shag_teta = math.radians(float(1/3600))/8 * float(input_data['step_teta'])
+		shag_teta = math.radians(float(1/3600)) * float(input_data['step_teta'])/8
 	except Exception as e:
 		shag_teta = math.radians(float(1/3600))/8
 		print('shag_teta не определен')
 	teta_1 = math.radians(surf_plot_x_lim[0]/3600)
 	teta_2 =math.radians(surf_plot_x_lim[1]/3600)
+	n_teta = int((teta_2 - teta_1)/shag_teta)
+
 	# -----------------------------------------------------Шаг, поворот образца----------------------------------------------------------------------
-	n_teta = int(2*teta_2/shag_teta)
 	dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
 	dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
 	try:
@@ -132,9 +133,9 @@ def do_it(input_data):
 	def omega(dTeta): # скан одной щелью относительно второй
 		i = 0
 		f = open(path + name_gif + '.dat', 'w')
-		x1,x2 = [] #itta
-		y1,y2 = [] #teta
-		z1,z2 = [] #intens
+		x1,x2 = [],[] #itta
+		y1,y2 = [],[] #teta
+		z1,z2 = [],[] #intens
 		#1-------------------------------------------------------------------------------------------------------------------
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
@@ -168,10 +169,11 @@ def do_it(input_data):
 
 	def theta(dTeta): # скан одной щелью относительно второй
 		i = 0
+
 		f = open(path + name_gif + '.dat', 'w')
-		x1,x2 = [] #itta
-		y1,y2 = [] #teta
-		z1,z2 = [] #intens
+		x1,x2 = [],[] #itta
+		y1,y2 = [],[] #teta
+		z1,z2 = [],[] #intens
 		#1-------------------------------------------------------------------------------------------------------------------
 		while dTeta <=dTeta_end:
 			cli_progress_test((dTeta-dTeta_st+dTeta_shag)/(dTeta_end - dTeta_st)*100)
@@ -203,7 +205,7 @@ def do_it(input_data):
 		f.close()
 
 
-	print('начался расчет...')
+	print('начался расчет... лайт')
 	msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
 
 	if input_data['scan'] == '2theta':
