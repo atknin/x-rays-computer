@@ -12,7 +12,6 @@ from computer import *
 url = 'http://x-rays.world/diffraction/compute/'
 s = sched.scheduler(time.time, time.sleep)
 print('started')
-son_obj = {}
 
 def to_dict(string):
 	dictt = {}
@@ -49,6 +48,8 @@ def do_something(sc):
 		f = request.urlopen(url + "?" + data)
 		print(f.read())
 		print(e)
+	finally:
+		print('finaly exception')
 	s.enter(60, 1, do_something, (sc,))
 s.enter(2, 1, do_something, (s,))
 s.run()
