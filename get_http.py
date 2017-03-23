@@ -23,7 +23,7 @@ def to_dict(string):
 	return dictt
 def do_something(sc):
 	global url
-	global son_obj
+	son_obj = {}
 	try:
 		payload = {'check': comp}
 		data = parse.urlencode(payload)
