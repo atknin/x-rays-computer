@@ -1,0 +1,4 @@
+[Default]
+bears = PEP8Bear, PycodestyleBear
+default_actions = *: ApplyPatchAction
+files = *.py

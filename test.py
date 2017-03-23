@@ -1,21 +1,24 @@
-from functions import sample_curve_broken,sample_curve,sample_curve_broken_integrate
-import math,cmath
+from functions import sample_curve
+from functions import sample_curve_broken
+from functions import sample_curve_broken_integrate
+import math
+import cmath
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 import numpy as np
-a = [1,2]
+a = [1, 2]
 b = a
 a = []
 print(a)
 
-a = [1,2]
+a = [1, 2]
 b = a
-del a[:],b[:]
-print(a,b)
+del a[:], b[:]
+print(a, b)
 
 dTeta = 0
 
-teta_start = teta =  -7
+teta_start = teta = -7
 teta_end = +4
 teta_shag = 0.1
 itta = 1
@@ -33,16 +36,17 @@ x = []
 y = []
 ynorm = []
 
-while teta<=teta_end:
+while teta <= teta_end:
     teta_radians = math.radians(teta/3600)
-    Pnorm = sample_curve(dTeta,teta_radians,itta,X0,Xh,tetaprmtr_deg,fi)
+    Pnorm = sample_curve(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg, fi)
     ynorm.append(Pnorm)
 
-    P = sample_curve_broken(dTeta,teta_radians,itta,X0,Xh,tetaprmtr_deg,fi,extintion,l_plenka,da_plenka,fwhm,amorphizaciya)
+    P = sample_curve_broken(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg,
+                            fi, extintion, l_plenka, da_plenka, fwhm, amorphizaciya)
     x.append(teta)
     y.append(P)
-    teta+=teta_shag
+    teta += teta_shag
 
-plt.plot(x,y)
-plt.plot(x,ynorm)
+plt.plot(x, y)
+plt.plot(x, ynorm)
 plt.show()
