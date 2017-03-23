@@ -11,7 +11,7 @@ print(a)
 a = [1,2]
 b = a
 del a[:],b[:]
-print(a)
+print(a,b)
 
 dTeta = 0
 
