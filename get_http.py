@@ -12,6 +12,7 @@ from computer import *
 url = 'http://x-rays.world/diffraction/compute/'
 s = sched.scheduler(time.time, time.sleep)
 print('started')
+son_obj = {}
 
 def to_dict(string):
 	dictt = {}
@@ -20,9 +21,32 @@ def to_dict(string):
 		b = a.split(':')
 		dictt[b[0]] = b[1]
 	return dictt
+
+def compute(inputs):
+	global son_obj
+	try:
+		a = main.compute(inputs)
+		a.start()
+		# все хорошо, сообщаем
+		payload = {'complited': son_obj['pk']}
+		payload['pc'] = comp
+		data = parse.urlencode(payload)
+		f = request.urlopen(url + "?" + data)
+		print(f.read())
+
+	except Exception as e:
+		# ошибка, сообщаем -------сюда не заходит
+		payload = {'error_during_compute': son_obj['pk'],'text_error':'ERROR IN compute: '+ str(e)}
+		payload['pc'] = comp
+		data = parse.urlencode(payload)
+		f = request.urlopen(url + "?" + data)
+		print(f.read())
+		print(e)
+
+
 def do_something(sc):
 	global url
-	son_obj = {}
+	global son_obj
 	try:
 		payload = {'check': comp}
 		data = parse.urlencode(payload)
@@ -32,24 +56,10 @@ def do_something(sc):
 		if son_obj['status'] == 'Nodata':
 			print('NODATA')
 		else:
-			a = main.compute(to_dict(son_obj['JSON']))
-			a.start()
-			# все хорошо, сообщаем
-			payload = {'complited': son_obj['pk']}
-			payload['pc'] = comp
-			data = parse.urlencode(payload)
-			f = request.urlopen(url + "?" + data)
-			print(f.read())
+			compute(to_dict(son_obj['JSON']))
 	except Exception as e:
-		# ошибка, сообщаем -------сюда не заходит
-		payload = {'error_during_compute': son_obj['pk'],'text_error':'ERROR IN do_something: '+ str(e)}
-		payload['pc'] = comp
-		data = parse.urlencode(payload)
-		f = request.urlopen(url + "?" + data)
-		print(f.read())
-		print(e)
-	finally:
-		print('finaly exception')
+		print('Ошибка в do_something')
+
 	s.enter(60, 1, do_something, (sc,))
 s.enter(2, 1, do_something, (s,))
 s.run()
