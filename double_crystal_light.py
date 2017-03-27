@@ -182,7 +182,6 @@ def do_it(input_data):
             f.write('%14.8f' % (-sdvigka))
             f.write('%14.8f' % P)
             f.write('\n')
-            del x1[:], y1[:], z1[:]
             i += 1
             dTeta += dTeta_shag
         #/1--------------------------------------------------------------------
