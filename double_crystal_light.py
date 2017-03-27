@@ -160,7 +160,7 @@ def do_it(input_data):
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
                               (dTeta_end - dTeta_st)*100)
             itta = itta_1
-            sdvigka = +2*(math.degrees(dTeta)*3600)
+            sdvigka = -2*(math.degrees(dTeta)*3600)
             #----2-------------------------------------------------------------
             P = 0
             while itta <= itta_2:
@@ -179,7 +179,7 @@ def do_it(input_data):
                 itta += shag_itta
             #/2----------------------------------------------------------------
 
-            f.write('%14.8f' % (-sdvigka))
+            f.write('%14.8f' % (math.degrees(dTeta)*3600))
             f.write('%14.8f' % P)
             f.write('\n')
             i += 1
