@@ -207,7 +207,7 @@ def do_it(input_data):
                 itta += shag_itta
                 #-2------------------------------------------------------------
             sdvigka = -2*(math.degrees(dTeta)*3600)
-            f.write('%14.8f' % (math.degrees(dTeta)*3600)))
+            f.write('%14.8f' % (math.degrees(dTeta)*3600))
             f.write('%14.8f' % svertka(x_itta, y_teta, z_intese_lin, sdvigka))
             f.write('\n')
 
