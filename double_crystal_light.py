@@ -200,6 +200,7 @@ def do_it(input_data):
             P = 0
             while itta <= itta_2:
                 if chuev == True:
+                    print(203)
                     qwe = [teta_1, teta_2]
                     print(204)
                 else:
