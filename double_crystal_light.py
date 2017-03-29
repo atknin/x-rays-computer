@@ -187,7 +187,7 @@ def do_it(input_data):
         #/1--------------------------------------------------------------------
         f.close()
 
-    def theta(dTeta):  # скан одной щелью относительно второй
+    def theta(dTeta, chuev = False):  # скан одной щелью относительно второй
         i = 0
 
         f = open(path + name_gif + '.dat', 'w')
@@ -200,15 +200,24 @@ def do_it(input_data):
             # 2-----------------------------------------------------------------------------------------------------------
             P = 0
             while itta <= itta_2:
-                qwe = predel_teta(sdvigka)
+                if chuev == True:
+                    qwe = [teta_1, teta_2]
+                else:
+                    qwe = predel_teta(sdvigka)
+
                 if qwe == 0:
                     P += 0
                 else:
                     [teta_1, teta_2] = qwe
                     teta = teta_1
+                    func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                     # 3-----------------------------------------------------------------------------------------------------------
                     while teta <= teta_2:
-                        P += g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
+                        if chuev == True:
+                            funct_apparatnaya = apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
+                        else:
+                            funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
+                        P += func_lambda*funct_apparatnaya*sample_curve(
                                 dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                         teta += shag_teta
                     #----3-----------------------------------------------------
@@ -223,16 +232,25 @@ def do_it(input_data):
         # 1-------------------------------------------------------------------------------------------------------------------
         f.close()
 
-    print('начался расчет... лайт')
+
     msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
 
-    if input_data['scan'] == '2theta':
+    if input_data['apparatnaya'] == 'chuev':
+        print('начался расчет... лайт-2theta_chuev')
+        email_module.notification(
+                " Старт chuev: " + str(input_data['id_comment_calc']))
+        theta(dTeta,chuev=True)
+        email_module.notification(
+                'Расчет окончен для '+str(input_data['id_email']))
+    elif input_data['scan'] == '2theta':
+        print('начался расчет... лайт-2theta')
         email_module.notification(
                 " Старт: " + str(input_data['id_comment_calc']))
         theta(dTeta)
         email_module.notification(
                 'Расчет окончен для '+str(input_data['id_email']))
     else:
+        print('начался расчет... лайт-omega')
         email_module.notification(
                 " Старт: " + str(input_data['id_comment_calc']))
         omega(dTeta)

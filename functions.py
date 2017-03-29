@@ -56,9 +56,22 @@ def monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
 def gauss(sigma, mu, x):
     return 1/(sigma*math.sqrt(2*math.pi))*math.exp(-((x-mu)**2)/(2*sigma**2))
 
+# -----------Аппаратная функция Чуев-------------------
+def apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2,sigmaX = 0.0005):
+    def x1(teta):
+        return -(S1/2+abs(teta)*L1x)/(math.sqrt(2)*sigmaX)
+
+    def x2(teta):
+
+        if teta_1 >= abs(teta):
+            return (S1/2-abs(teta)*L1x)/(math.sqrt(2)*sigmaX)
+
+        elif abs(teta)>=teta_1 and abs(teta)<=teta_2:
+            return (S2/2-abs(teta)*L2x)/(math.sqrt(2)*sigmaX)
+
+    return integrate.quad(lambda x: math.exp(-x*x) ,x1(teta),x2(teta))[0]
+
 #-----------спектральная функция-----------
-
-
 def g_lambd(itta, wavelength_1, wavelength_2):
     d_lambd1 = wavelength_1*3e-4
     d_lambd2 = wavelength_2*3e-4
