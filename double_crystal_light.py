@@ -187,8 +187,7 @@ def do_it(input_data):
         #/1--------------------------------------------------------------------
         f.close()
 
-    def theta(dTeta, chuev = False):  # скан одной щелью относительно второй
-        global teta_1
+    def theta(dTeta, chuev = False, teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         print(teta_1)
         i = 0
         f = open(path + name_gif + '.dat', 'w')
