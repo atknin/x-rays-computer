@@ -189,8 +189,6 @@ def do_it(input_data):
 
     def theta(dTeta, chuev = False):  # скан одной щелью относительно второй
         i = 0
-        global teta_1
-        global teta_2
         f = open(path + name_gif + '.dat', 'w')
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
@@ -203,6 +201,7 @@ def do_it(input_data):
             while itta <= itta_2:
                 if chuev == True:
                     qwe = [teta_1, teta_2]
+                    print(204)
                 else:
                     qwe = predel_teta(sdvigka)
 
@@ -212,6 +211,8 @@ def do_it(input_data):
                     [teta_1, teta_2] = qwe
                     teta = teta_1
                     func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
+                    print(214)
+
                     # 3-----------------------------------------------------------------------------------------------------------
                     while teta <= teta_2:
                         if chuev == True:
