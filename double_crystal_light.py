@@ -189,7 +189,8 @@ def do_it(input_data):
 
     def theta(dTeta, chuev = False):  # скан одной щелью относительно второй
         i = 0
-
+        global teta_1
+        global teta_2
         f = open(path + name_gif + '.dat', 'w')
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
