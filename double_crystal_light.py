@@ -213,7 +213,7 @@ def do_it(input_data):
                     # 3-----------------------------------------------------------------------------------------------------------
                     while teta <= teta_2:
                         if chuev == True:
-                            funct_apparatnaya = slit_extensive_source(teta,sdvigka,L1x,L2x,S1,S2,0.19*1e-3)
+                            funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,0.19*1e-3)
                             # apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
                         else:
                             funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)

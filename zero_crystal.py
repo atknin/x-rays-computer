@@ -247,7 +247,7 @@ def do_it(input_data):
                 while teta <= teta_2:
                     P += g_lambd(itta, wavelength_1, wavelength_2) * \
                                             gauss(sigma, 0, math.degrees(teta)*3600) * \
-                                            slit_extensive_source(teta,sdvigka,L1x,L2x,S1,S2,sigma_metr)
+                                            slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
                     teta += shag_teta
 
                 #----3---------------------------------------------------------

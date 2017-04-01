@@ -102,7 +102,7 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
 
     norm = sigma*L2/2
 
-    if znak_s>((S2)/2+sdvigka) or znak_s<(-(S2)/2+sdvigka) :
+    if znak_s>((S2)/2+sdvigka) or znak_s<(-(S2)/2+sdvigka):
         return 0
     else:
         t_up = -(point_s - S1/2)/(L2-L1)*L2 + point_s
