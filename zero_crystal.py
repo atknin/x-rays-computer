@@ -37,7 +37,7 @@ import imageio
 
 import email_module
 
-from functions import (g_lambd, gauss, frenel_slit)
+from functions import (g_lambd, gauss, frenel_slit, slit_extensive_source)
 
 
 def do_it(input_data):
@@ -232,7 +232,7 @@ def do_it(input_data):
     def new(dTeta):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
-        teta_1 = - S2/2/L2
+        teta_1 = - S2/2/L2x
         teta_2 = - teta_1
         while dTeta <= dTeta_end:
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
@@ -247,7 +247,7 @@ def do_it(input_data):
                 while teta <= teta_2:
                     P += g_lambd(itta, wavelength_1, wavelength_2) * \
                                             gauss(sigma, 0, math.degrees(teta)*3600) * \
-                                            slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma_metr)
+                                            slit_extensive_source(teta,sdvigka,L1x,L2x,S1,S2,sigma_metr)
                     teta += shag_teta
 
                 #----3---------------------------------------------------------
@@ -270,6 +270,7 @@ def do_it(input_data):
     email_module.notification(
             'Расчет начался' + str(input_data['id_comment_calc']))
     if input_data['slits'] == 'new':
+        print('new_slits')
         new(dTeta)
     else:
         one(dTeta)
