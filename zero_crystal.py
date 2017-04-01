@@ -269,7 +269,7 @@ def do_it(input_data):
     msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
     email_module.notification(
             'Расчет начался' + str(input_data['id_comment_calc']))
-    if input_data['slits'] = 'new':
+    if input_data['slits'] == 'new':
         new(dTeta)
     else:
         one(dTeta)
