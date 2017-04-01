@@ -92,7 +92,35 @@ def frenel_slit(lam, phi, slit, L, I0=1):
         u = math.pi*slit/lam*math.sin(argument)
         return I0*math.pow(math.sin(u)/u, 2)
 
+def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
 
+    sdvigka = math.radians(sdvigka/3600) * 2 * L2
+
+    teta_radian = abs(math.radians(teta/3600))
+    point_s = abs(math.radians(teta/3600)) * 2 * L2
+    znak_s = math.radians(teta/3600) * 2 * L2
+
+    norm = sigma*L2/2
+
+    if znak_s>((S2)/2+sdvigka) or znak_s<(-(S2)/2+sdvigka) :
+        return 0
+    else:
+        t_up = -(point_s - S1/2)/(L2-L1)*L2 + point_s
+        znak = abs(t_up)/t_up
+        if abs(t_up) > sigma/2:
+            a1 = znak * sigma/2
+        else:
+            a1 = t_up
+
+        t_down = -(S1/2+point_s)/(L2-L1)*L2 + point_s
+        znak = abs(t_down)/t_down
+        if abs(t_down) > sigma/2:
+            a2 = znak * sigma/2
+        else:
+            a2 = t_down
+        return (a1-a2)/2*L2/norm
+
+# Ниже две функции для образца с нарушенным слоем
 def sample_curve_broken(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, extintion, l_plenka, da_plenka, fwhm, amorphizaciya):
     wavelength = itta*0.709300*1e-10
     tetaprmtr = math.radians(tetaprmtr_deg)

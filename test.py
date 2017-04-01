@@ -1,6 +1,7 @@
 from functions import sample_curve
 from functions import sample_curve_broken
 from functions import sample_curve_broken_integrate
+from functions import slit_extensive_source
 import math
 import cmath
 import matplotlib.pyplot as plt
@@ -18,8 +19,8 @@ print(a, b)
 
 dTeta = 0
 
-teta_start = teta = -7
-teta_end = +4
+teta_start = teta = -40
+teta_end = 40
 teta_shag = 0.1
 itta = 1
 X0 = complex(-31.7799 + 0.1558j)*1e-7
@@ -35,18 +36,22 @@ amorphizaciya = 1
 x = []
 y = []
 ynorm = []
-
+L1 = 0.57
+L2 = 1.005
+S1 = 0.2*1e-3
+S2 = 0.2*1e-3
+sigma = 0.19*1e-3
+sdvigka = 0
 while teta <= teta_end:
     teta_radians = math.radians(teta/3600)
-    Pnorm = sample_curve(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg, fi)
-    ynorm.append(Pnorm)
-
-    P = sample_curve_broken(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg,
-                            fi, extintion, l_plenka, da_plenka, fwhm, amorphizaciya)
+    # Pnorm = sample_curve(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg, fi)
+    # ynorm.append(Pnorm)
+    P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
     x.append(teta)
     y.append(P)
     teta += teta_shag
+    # print(P)
 
 plt.plot(x, y)
-plt.plot(x, ynorm)
+# plt.plot(x, ynorm)
 plt.show()

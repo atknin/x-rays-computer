@@ -54,6 +54,7 @@ def do_it(input_data):
     L1x = float(input_data['input_l_slit1'])
     L2x = float(input_data['input_l_slit2'])
     sigma = float(input_data['source_divergence_arc'])
+    sigma_metr = 0.19*1e-3
     name_gif = input_data['name_result']
     slits = [1, 1, 1, 1]  # 1(движется)  и 2(не движется) щели
     # 2 щель (движется)- перед детектором
@@ -228,6 +229,39 @@ def do_it(input_data):
                 dTeta += dTeta_shag
         f.close()
 
+    def new(dTeta):  # скан одной щелью относительно второй
+        i = 0
+        f = open(path + name_gif + '.dat', 'w')
+        teta_1 = - S2/2/L2
+        teta_2 = - teta_1
+        while dTeta <= dTeta_end:
+            cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
+                              (dTeta_end - dTeta_st)*100)
+        # 1-------------------------------------------------------------------------------------------------------------------
+            itta = itta_1
+            sdvigka = -(math.degrees(dTeta)*3600)
+            P = 0
+            while itta <= itta_2:
+                #----3---------------------------------------------------------
+                teta = teta_1
+                while teta <= teta_2:
+                    P += g_lambd(itta, wavelength_1, wavelength_2) * \
+                                            gauss(sigma, 0, math.degrees(teta)*3600) * \
+                                            slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma_metr)
+                    teta += shag_teta
+
+                #----3---------------------------------------------------------
+                itta += shag_itta
+                #-2------------------------------------------------------------
+
+            f.write('%14.8f' % sdvigka)
+            f.write('%14.8f' % P)
+            f.write('\n')
+            i += 1
+
+            dTeta += dTeta_shag
+        f.close()
+
     if not os.path.exists(path + name_gif + '/'):
         os.makedirs(path + name_gif + '/')
         print('создаем папку: ' + path + name_gif + '/')
@@ -235,15 +269,19 @@ def do_it(input_data):
     msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
     email_module.notification(
             'Расчет начался' + str(input_data['id_comment_calc']))
-    one(dTeta)
+    if input_data['slits'] = 'new':
+        new(dTeta)
+    else:
+        one(dTeta)
+        print('сбока анимации...')
+        gif(path + name_gif + '/')
+        msge = {}
+        msge['gif'] = path + name_gif + '.gif'
+
     email_module.notification(
             'Расчет окончен для '+str(input_data['id_email']))
-    print('сбока анимации...')
-    gif(path + name_gif + '/')
-    msge = {}
     msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1) + \
         '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-    msge['gif'] = path + name_gif + '.gif'
     msge['dat'] = []
     msge['dat'].append(path + name_gif + '.dat')
     email_module.sendEmail(msge, input_data['id_email'])
