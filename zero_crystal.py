@@ -54,7 +54,11 @@ def do_it(input_data):
     L1x = float(input_data['input_l_slit1'])
     L2x = float(input_data['input_l_slit2'])
     sigma = float(input_data['source_divergence_arc'])
-    sigma_metr = 0.19*1e-3
+    try:
+        sigma_metr = float(input_data['source_divergence_mmetr']) * 1e-3
+    except Exception as e:
+        sigma_metr = 0.5*1e-3
+        print('sigma metr не определена, 0.5 по умолчанию')
     name_gif = input_data['name_result']
     slits = [1, 1, 1, 1]  # 1(движется)  и 2(не движется) щели
     # 2 щель (движется)- перед детектором
