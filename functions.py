@@ -93,32 +93,22 @@ def frenel_slit(lam, phi, slit, L, I0=1):
         return I0*math.pow(math.sin(u)/u, 2)
 
 def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
-
     sdvigka = math.radians(sdvigka/3600) * 2 * L2
+    teta_radian = math.radians(teta/3600)
 
-    teta_radian = abs(math.radians(teta/3600))
-    point_s = abs(math.radians(teta/3600)) * 2 * L2
-    znak_s = math.radians(teta/3600) * 2 * L2
+    b = -sigma/2
+    sum_res = 0
+    shag_b = sigma/300
+    while b < sigma/2:
+        slit_1 = teta_radian * L1 + b # kx+b на уровне первой щели
+        slit_2 = teta_radian * L2 + b# kx+b на уровне второй щели
+        if abs(slit_1) < abs(S1/2):
+            if slit_2 > (-S2/2+sdvigka) and slit_2 < (S2/2+sdvigka):
+                sum_res+=1
+        b+=shag_b
+    return sum_res/300
 
-    norm = sigma*L2/2
 
-    if znak_s>((S2)/2+sdvigka) or znak_s<(-(S2)/2+sdvigka):
-        return 0
-    else:
-        t_up = -(point_s - S1/2)/(L2-L1)*L2 + point_s
-        znak = abs(t_up)/t_up
-        if abs(t_up) > sigma/2:
-            a1 = znak * sigma/2
-        else:
-            a1 = t_up
-
-        t_down = -(S1/2+point_s)/(L2-L1)*L2 + point_s
-        znak = abs(t_down)/t_down
-        if abs(t_down) > sigma/2:
-            a2 = znak * sigma/2
-        else:
-            a2 = t_down
-        return (a1-a2)/2*L2/norm
 
 # Ниже две функции для образца с нарушенным слоем
 def sample_curve_broken(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, extintion, l_plenka, da_plenka, fwhm, amorphizaciya):
