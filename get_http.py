@@ -9,7 +9,7 @@ import json
 import main
 import time
 from computer import *
-url = 'http://x-rays.world/diffraction/compute/'
+url = 'http://62.109.0.242/diffraction/compute/'
 s = sched.scheduler(time.time, time.sleep)
 print('started')
 son_obj = {}
