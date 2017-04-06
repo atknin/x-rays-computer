@@ -19,8 +19,8 @@ print(a, b)
 
 dTeta = 0
 
-teta_start = teta = -40
-teta_end = 40
+teta_start = teta = -100
+teta_end = 100
 teta_shag = 0.1
 itta = 1
 X0 = complex(-31.7799 + 0.1558j)*1e-7
@@ -40,8 +40,8 @@ L1 = 0.57
 L2 = 1.005
 S1 = 0.1*1e-3
 S2 = 0.1*1e-3
-sigma = 0.19*1e-3
-sdvigka = 0
+sigma = 1*1e-3
+sdvigka = -28
 while teta <= teta_end:
     teta_radians = math.radians(teta/3600)
     # Pnorm = sample_curve(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg, fi)
