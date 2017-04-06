@@ -237,14 +237,17 @@ def do_it(input_data):
         i = 0
         f = open(path + name_gif + '.dat', 'w')
 
+
+
         while dTeta <= dTeta_end:
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
                               (dTeta_end - dTeta_st)*100)
+            teta_1 = (-(sigma_metr + S2)/2 )/L2x - dTeta
+            teta_2 = ((sigma_metr + S2)/2 )/L2x - dTeta
         # 1-------------------------------------------------------------------------------------------------------------------
             itta = itta_1
             sdvigka = -(math.degrees(dTeta)*3600)
-            teta_1 = - S2/2/L2x - dTeta
-            teta_2 = S2/2/L2x - dTeta
+
             P = 0
             while itta <= itta_2:
                 #----3---------------------------------------------------------
