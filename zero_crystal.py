@@ -94,16 +94,15 @@ def do_it(input_data):
     #--------------------------------------------шаг по углу, разлет от источн
 
     try:
-        shag_teta = math.radians(float(1/3600))/8 * \
+        shag_teta = math.radians(float(1/3600)) * \
                                                          float(
                                                              input_data['step_teta'])
     except Exception as e:
-        shag_teta = math.radians(float(1/3600))/8
+        shag_teta = math.radians(float(1/3600))
         print('shag_teta не определен')
     math.radians(surf_plot_x_lim[0]/3600)
     teta_2 = math.radians(surf_plot_x_lim[1]/3600)
     # -----------------------------------------------------Шаг, поворот образц
-    int(2*teta_2/shag_teta)
     dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
     dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
 

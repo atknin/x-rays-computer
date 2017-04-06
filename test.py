@@ -37,25 +37,34 @@ y = []
 ynorm = []
 L1 = 0.57
 L2 = 1.005
-S1 = 0.02*1e-3
-S2 = 0.2*1e-3
-sigma = 1*1e-3
-sdvigka = -40
-teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
-teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
+S1 = 0.25 * 1e-3
+S2 = 0.04 * 1e-3
+sigma = 1.5 * 1e-3
 
 
+# sdvigka = 0
+# teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
+# teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
+# while teta <= teta_end:
+#     teta_radians = math.radians(teta/3600)
+#     P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
+#     x.append(teta)
+#     y.append(P*100000)
+#     teta += teta_shag
+#
 
-while teta <= teta_end:
-    teta_radians = math.radians(teta/3600)
-    # Pnorm = sample_curve(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg, fi)
-    # ynorm.append(Pnorm)
-    P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
-    x.append(teta)
+sdvigka = -60
+while sdvigka<60:
+    P = 0
+    teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
+    teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
+    while teta <= teta_end:
+        teta_radians = math.radians(teta/3600)
+        P += slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
+        teta += teta_shag
+    x.append(sdvigka)
     y.append(P)
-    teta += teta_shag
-    # print(P)
+    sdvigka+=1
 
 plt.plot(x, y, 'o')
-# plt.plot(x, ynorm)
 plt.show()
