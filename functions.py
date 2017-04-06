@@ -98,7 +98,25 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
 
     b = -sigma/2
     sum_res = 0
-    shag_b = sigma/300
+    shag_b = sigma/500
+
+
+
+    minus = -sigma/2
+    plus = sigma/2
+
+    s1_minus = -S1/2 - teta_radian * L1
+    s1_plus = S1/2 - teta_radian * L1
+
+    s2_minus = -S2/2 - teta_radian * L2 + sdvigka
+    s2_plus = S2/2 - teta_radian * L2 + sdvigka
+
+    if abs(s1)
+
+
+    S1/2
+
+
     while b < sigma/2:
         slit_1 = teta_radian * L1 + b # kx+b на уровне первой щели
         slit_2 = teta_radian * L2 + b# kx+b на уровне второй щели
@@ -106,7 +124,7 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
             if slit_2 > (-S2/2+sdvigka) and slit_2 < (S2/2+sdvigka):
                 sum_res+=1
         b+=shag_b
-    return sum_res/300
+    return sum_res/500
 
 
 

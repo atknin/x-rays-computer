@@ -31,11 +31,17 @@ def compute(inputs):
         a = main.compute(inputs)
         a.start()
         # все хорошо, сообщаем
+        finish = True
         payload = {'complited': son_obj['pk']}
         payload['pc'] = comp
         data = parse.urlencode(payload)
-        f = request.urlopen(url + "?" + data)
-        print(f.read())
+        while finish:
+            f = request.urlopen(url + "?" + data)
+            if f.status == 200:
+                finish = False
+                print('Сообщили об окончании расчета')
+            else:
+                time.sleep(60)
 
     except Exception as e:
         # ошибка, сообщаем -------сюда не заходит

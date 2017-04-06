@@ -41,7 +41,7 @@ L2 = 1.005
 S1 = 0.1*1e-3
 S2 = 0.1*1e-3
 sigma = 0.19*1e-3
-sdvigka = 10
+sdvigka = 0
 while teta <= teta_end:
     teta_radians = math.radians(teta/3600)
     # Pnorm = sample_curve(dTeta, teta_radians, itta, X0, Xh, tetaprmtr_deg, fi)
@@ -52,6 +52,6 @@ while teta <= teta_end:
     teta += teta_shag
     # print(P)
 
-plt.plot(x, y)
+plt.plot(x, y, 'o')
 # plt.plot(x, ynorm)
 plt.show()
