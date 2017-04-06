@@ -242,8 +242,8 @@ def do_it(input_data):
         while dTeta <= dTeta_end:
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
                               (dTeta_end - dTeta_st)*100)
-            teta_1 = (-(sigma_metr + S2)/2 )/L2x - dTeta
-            teta_2 = ((sigma_metr + S2)/2 )/L2x - dTeta
+            teta_1 = (-(sigma_metr + S2)/2 )/L2x - 2*dTeta
+            teta_2 = ((sigma_metr + S2)/2 )/L2x - 2*dTeta
         # 1-------------------------------------------------------------------------------------------------------------------
             itta = itta_1
             sdvigka = -(math.degrees(dTeta)*3600)

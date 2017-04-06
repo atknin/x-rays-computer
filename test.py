@@ -40,7 +40,7 @@ L2 = 1.005
 S1 = 0.02*1e-3
 S2 = 0.2*1e-3
 sigma = 1*1e-3
-sdvigka = -50
+sdvigka = -40
 teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
 teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
 
