@@ -57,8 +57,8 @@ def do_it(input_data):
     try:
         sigma_metr = float(input_data['source_divergence_mmetr']) * 1e-3
     except Exception as e:
-        sigma_metr = 0.5*1e-3
-        print('sigma metr не определена, 0.5 по умолчанию')
+        sigma_metr = 0.2*1e-3
+        print('sigma metr не определена, 0.2 по умолчанию')
     name_gif = input_data['name_result']
     slits = [1, 1, 1, 1]  # 1(движется)  и 2(не движется) щели
     # 2 щель (движется)- перед детектором

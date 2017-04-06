@@ -48,6 +48,11 @@ def do_it(input_data):
     wavelength_1 = float(input_data['anod1']) * 1e-10
     wavelength_2 = float(input_data['anod2']) * 1e-10
     sigma = float(input_data['source_divergence_arc'])
+    try:
+        sigma_metr = float(input_data['source_divergence_mmetr']) * 1e-3
+    except Exception as e:
+        sigma_metr = 0.2*1e-3
+        print('sigma metr не определена, 0.2 по умолчанию')
     S1 = float(input_data['input_size_slit1']) * \
         1e-3  # S1, S2 - ширина колимирующих щелей
     S2 = float(input_data['input_size_slit2']) * 1e-3
@@ -91,7 +96,6 @@ def do_it(input_data):
         print('shag_itta не определен')
     itta_1 = 0.996  # предел интегрирования от
     itta_2 = 1.01  # предел интегрирования до
-    int((itta_2 - itta_1)/shag_itta)
     #--------------------------------------------шаг по углу, разлет от источн
     try:
         shag_teta = math.radians(float(1/3600)) * \
@@ -213,7 +217,7 @@ def do_it(input_data):
                     # 3-----------------------------------------------------------------------------------------------------------
                     while teta <= teta_2:
                         if chuev == True:
-                            funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,0.19*1e-3)
+                            funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
                             # apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
                         else:
                             funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
