@@ -4,6 +4,7 @@ import math
 import cmath
 import scipy.integrate as integrate
 from scipy.integrate import quad
+import operator
 
 # -----------Аппаратная функция-------------------
 
@@ -96,29 +97,16 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
     sdvigka = math.radians(sdvigka/3600) * 2 * L2
     teta_radian = math.radians(teta/3600)
 
-    b = -sigma/2
-    sum_res = 0
-    shag_b = sigma/500
-
-
-
-    minus = -sigma/2
-    plus = sigma/2
-
-    s1_minus = -S1/2 - teta_radian * L1
-    s1_plus = S1/2 - teta_radian * L1
-
-    s2_minus = -S2/2 - teta_radian * L2 + sdvigka
-    s2_plus = S2/2 - teta_radian * L2 + sdvigka
-
-    while b < sigma/2:
-        slit_1 = teta_radian * L1 + b # kx+b на уровне первой щели
-        slit_2 = teta_radian * L2 + b# kx+b на уровне второй щели
-        if abs(slit_1) < abs(S1/2):
-            if slit_2 > (-S2/2+sdvigka) and slit_2 < (S2/2+sdvigka):
-                sum_res+=1
-        b+=shag_b
-    return sum_res/500
+    m = [(-sigma/2),(-S1/2 - teta_radian * L1),(-S2/2 - teta_radian * L2 + sdvigka)]
+    p = [(sigma/2),(S1/2 - teta_radian * L1),(S2/2 - teta_radian * L2 + sdvigka)]
+    minus = max(m)
+    plus = min(p)
+    
+    if minus >= plus:
+        res = 0
+    else:
+        res = plus - minus
+    return res
 
 
 
