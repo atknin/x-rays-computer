@@ -5,7 +5,7 @@ import os
 from time import gmtime, strftime
 
 commit = input("Enter pass: ")
-if commit == 'vfntvfnbrf43':
+if commit == '123':
     print(os.system('sudo git fetch --all'))
     print(os.system('sudo git reset --hard origin/master'))
 else:

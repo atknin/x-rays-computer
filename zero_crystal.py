@@ -283,7 +283,6 @@ def do_it(input_data):
         one(dTeta)
         print('сбока анимации...')
         gif(path + name_gif + '/')
-        msge = {}
         msge['gif'] = path + name_gif + '.gif'
 
     email_module.notification(
