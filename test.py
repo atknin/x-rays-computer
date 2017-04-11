@@ -38,7 +38,7 @@ L1 = 0.57
 L2 = 1.005
 S1 = 0.05 * 1e-3
 S2 = 0.05 * 1e-3
-sigma = 0.2 * 1e-3
+sigma = 0.6 * 1e-3
 
 surf_plot_x_lim = [-100,500]
 surf_plot_y_lim = [0.706,0.716]
@@ -88,10 +88,8 @@ def slits_sh():
     teta_1 = math.degrees((S2-S1)/(2*(L2-L1)))*3600
     teta_2 = math.degrees((S2+S1)/(2*(L2-L1)))*3600
     teta = -teta_2
-    teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
-    teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
-    print(teta_2,teta_1)
-    print(teta_end,teta_start)
+    # teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
+    # teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
     while teta <= teta_2:
         teta_radians = math.radians(teta/3600)
         P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
