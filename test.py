@@ -1,7 +1,6 @@
-from functions import sample_curve
-from functions import sample_curve_broken
-from functions import sample_curve_broken_integrate
-from functions import slit_extensive_source
+from functions import *
+import matplotlib as mpl
+
 import math,os,imageio
 import cmath
 import matplotlib.pyplot as plt
@@ -11,12 +10,10 @@ from double_crystal import do_it
 a = [1, 2]
 b = a
 a = []
-print(a)
 
 a = [1, 2]
 b = a
 del a[:], b[:]
-print(a, b)
 
 dTeta = 0
 
@@ -28,6 +25,7 @@ Xh = complex(19.175 + 0.1505j)*1e-7
 tetaprmtr_deg = 10.6436
 fi = 0
 
+sigma = 500
 extintion = 11.572e-6
 l_plenka = 1e-3
 da_plenka = 0.8
@@ -42,19 +40,15 @@ S1 = 0.05 * 1e-3
 S2 = 0.05 * 1e-3
 sigma = 0.2 * 1e-3
 
+surf_plot_x_lim = [-100,500]
+surf_plot_y_lim = [0.706,0.716]
 
-# sdvigka = 0
-# teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
-# teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
-# while teta <= teta_end:
-#     teta_radians = math.radians(teta/3600)
-#     P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
-#     x.append(teta)
-#     y.append(P*100000/8)
-#     teta += teta_shag
+
+
 
 path = '/Users/Atknini/GDrive/work.science/Conference and Schools/Ломоносов 2017/move'
-def Plot(x,y,i):
+
+def Plot(x,y,i, method):
     axes = plt.gca()
     plt.plot(x, y, 'red', linewidth=3.0)
     # plt.plot(exp_x, exp_y, 'g.', linewidth=1.0, label = 'эксперимент')
@@ -65,43 +59,105 @@ def Plot(x,y,i):
     axes.set_xlim([-100,100])
     axes.set_ylim([0,0.0001])
     plt.legend(bbox_to_anchor=(1, 1), loc=1, borderaxespad=0.)
-    plt.savefig(path + '/'+str(i) + '.png', bbox_inches='tight')
-    # red_patch = mpatches.Patch(color='red', label='The red data')
-    # plt.legend(handles=[red_patch])
-    # axes.set_ylim([ymin,ymax])
-    # plt.show()
-    plt.close()
+    if method =='show':
+        plt.show()
+    else:
 
-sdvigka = -60
+        plt.savefig(path + '/'+str(i) + '.png', bbox_inches='tight')
+        plt.close()
 
-while sdvigka<60:
-    P = 0
-    teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 4*sdvigka
-    teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 4*sdvigka
-    graph_x = []
-    graph_y = []
+
+def PLOT_surf(X, Y, Z, i,method,n):
+    plt.style.use('ggplot')
+    ax1 = plt.subplot(1, 1, 1)
+    mpl.rcParams.update({'font.size': 15})
+    p1 = plt.pcolormesh(Y, X, Z, shading='gouraud',
+                        cmap='jet', vmin=n, vmax=-5)
+    plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
+    plt.ylim(surf_plot_y_lim[0], surf_plot_y_lim[1])
+    plt.colorbar()
+    if method == 'show':
+        plt.show()
+    else:
+        plt.savefig(path  + '_SURF_'+str(i) + '.png', bbox_inches='tight')
+        plt.close()
+
+def slits_sh():
+    sdvigka = 0
+    teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
+    teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
     while teta <= teta_end:
         teta_radians = math.radians(teta/3600)
-        P += slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
-        graph_x.append(teta)
-        graph_y.append(slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma))
+        P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
+        x.append(teta)
+        y.append(P*100000/8)
         teta += teta_shag
+    Plot(x,y,0,'show')
 
-    Plot(graph_x,graph_y,sdvigka+60)
-    x.append(sdvigka)
-    y.append(P)
-    sdvigka+=1
-def gif(path_gif):
-    filenam = os.listdir(path_gif)
-    filenames_a = sorted(filenam)
-    filenames = filter(lambda x: x.endswith('.png'), filenames_a)
-    images = []
+
+
+def svertka():
+    sdvigka = 60
     i = 0
-    for filename in filenames:
-        print(path_gif+str(i)+'.png')
-        images.append(imageio.imread(path_gif+str(i)+'.png'))
-        i += 1
-    print('!creating: ... |', path + '1' + '.gif')
-    imageio.mimsave(path + '1' + '.gif', images)
-    print('!done:', path + '1' + '.gif')
-gif(path+'/')
+    while sdvigka>-60:
+        teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 4*sdvigka
+        teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 4*sdvigka
+        graph_x = []
+        graph_y = []
+        while teta <= teta_end:
+            teta_radians = math.radians(teta/3600)
+            P += slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
+            graph_x.append(teta)
+            graph_y.append(slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma))
+            teta += teta_shag
+
+
+        Plot(graph_x,graph_y,i)
+        x.append(sdvigka)
+        y.append(P)
+        sdvigka-=1
+        i+=1
+        print(i)
+        gif(path)
+
+def spectr_teta(i):
+    itta_1 = teta = surf_plot_y_lim[0]  # предел интегрирования от
+    itta_2 = surf_plot_y_lim[1]  # предел интегрирования до
+    itta = itta_1
+    shag_itta = (itta_2-itta_1)/500
+    teta_start = teta = surf_plot_x_lim[0]
+    teta_end = surf_plot_x_lim[1]
+    teta_shag = (teta_end - teta_start)/500
+
+    graph_x = []
+    graph_y = []
+    graph_z = []
+    while itta <= itta_2:
+        #----3---------------------------------------------------------
+        teta = teta_start
+        x = []
+        y = []
+        z = []
+        while teta <= teta_end:
+            P = g_lambd(itta/(wavelength_1*1e10), wavelength_1, wavelength_2) * gauss(200, 0, teta)*monohromator_curve(math.radians(teta/3600), itta/(wavelength_1*1e10), X0, Xh, tetaprmtr_deg, 0) *sample_curve(math.radians(-300/3600), math.radians(teta/3600), itta/(wavelength_1*1e10), X0, Xh, tetaprmtr_deg, 0)
+            # P = 10000*gauss(1, 0.711, itta) * gauss(600, 0, teta)
+            x.append(teta)
+            y.append(itta)
+            z.append(math.log10(P+1e-12))
+
+            teta += teta_shag
+
+        #----3---------------------------------------------------------
+        graph_x.append(x)
+        graph_y.append(y)
+        graph_z.append(z)
+        itta += shag_itta
+        #-2------------------------------------------------------------
+    PLOT_surf(graph_y, graph_x, graph_z, i,'s',-14)
+
+wavelength_1 = 0.7093*1e-10
+wavelength_2 = 0.714*1e-10
+spectr_teta(0)
+# wavelength_1 = 1.540562 * 1e-10
+# wavelength_2 = 1.544398 * 1e-10
+# spectr_teta(1)

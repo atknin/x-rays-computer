@@ -194,6 +194,8 @@ def do_it(input_data):
     def theta(dTeta, chuev = False, teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
+        teta_1 = (-(sigma_metr + S2)/2 )/L2x
+        teta_2 = ((sigma_metr + S2)/2 )/L2x
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
@@ -203,28 +205,19 @@ def do_it(input_data):
             # 2-----------------------------------------------------------------------------------------------------------
             P = 0
             while itta <= itta_2:
-                if chuev == True:
-                    qwe = [teta_1, teta_2]
-                else:
-                    qwe = predel_teta(sdvigka)
-
-                if qwe == 0:
-                    P += 0
-                else:
-                    [teta_1, teta_2] = qwe
-                    teta = teta_1
-                    func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
-                    # 3-----------------------------------------------------------------------------------------------------------
-                    while teta <= teta_2:
-                        if chuev == True:
-                            funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
-                            # apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
-                        else:
-                            funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
-                        P += func_lambda*funct_apparatnaya*sample_curve(
-                                dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
-                        teta += shag_teta
-                    #----3-----------------------------------------------------
+                teta = teta_1
+                # 3-----------------------------------------------------------------------------------------------------------
+                while teta <= teta_2:
+                    if chuev == True:
+                        funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
+                        # apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
+                    else:
+                        funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
+                        
+                    P += func_lambda*funct_apparatnaya*sample_curve(
+                            dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
+                    teta += shag_teta
+                #----3-----------------------------------------------------
                 itta += shag_itta
             #-2----------------------------------------------------------------
 

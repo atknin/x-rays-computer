@@ -101,7 +101,7 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
     p = [(sigma/2),(S1/2 - teta_radian * L1),(S2/2 - teta_radian * L2 + sdvigka)]
     minus = max(m)
     plus = min(p)
-    
+
     if minus >= plus:
         res = 0
     else:
@@ -176,3 +176,19 @@ def sample_curve_broken_integrate(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, 
     R = (2*eps*gamma_0-X0)/Xh/C
     res = Rd + R
     return (gamma_h/gamma_0)*abs(res)*abs(res)
+
+
+def gif(path_gif):
+    filenam = os.listdir(path_gif)
+    filenames_a = sorted(filenam)
+    filenames = filter(lambda x: x.endswith('.png'), filenames_a)
+    images = []
+    i = 0
+    for filename in filenames:
+        print(path_gif+'/'+str(i)+'.png')
+        images.append(imageio.imread(path_gif+'/'+str(i)+'.png'))
+        i += 1
+    nme_file = path_gif.split("/")[-1]
+    print('!creating: ... |', path_gif +'_'+ nme_file + '.gif')
+    imageio.mimsave(path_gif +'_'+ nme_file + '.gif', images)
+    print('!done:', path_gif +'_'+ nme_file + '.gif')
