@@ -206,6 +206,7 @@ def do_it(input_data):
             P = 0
             while itta <= itta_2:
                 teta = teta_1
+                func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 # 3-----------------------------------------------------------------------------------------------------------
                 while teta <= teta_2:
                     if chuev == True:
@@ -213,7 +214,7 @@ def do_it(input_data):
                         # apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
                     else:
                         funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
-                        
+
                     P += func_lambda*funct_apparatnaya*sample_curve(
                             dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     teta += shag_teta
