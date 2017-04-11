@@ -194,8 +194,7 @@ def do_it(input_data):
     def theta(dTeta, chuev = False, teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
-        teta_1 = (-(sigma_metr + S2)/2 )/L2x
-        teta_2 = ((sigma_metr + S2)/2 )/L2x
+        teta_2 = (S2+S1)/(2*(L2x-L1x))
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
@@ -205,7 +204,7 @@ def do_it(input_data):
             # 2-----------------------------------------------------------------------------------------------------------
             P = 0
             while itta <= itta_2:
-                teta = teta_1
+                teta = -teta_2
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 # 3-----------------------------------------------------------------------------------------------------------
                 while teta <= teta_2:

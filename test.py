@@ -56,8 +56,8 @@ def Plot(x,y,i, method):
     #plt.title('s1='+str(round(S1*1000000,0))+', s2 =' + str(round(S2*1000000,0)))
     plt.xlabel('$ \Theta, угл. сек. $', fontsize=25)
     plt.ylabel('$ I, отн. ед. $', fontsize=25)
-    axes.set_xlim([-100,100])
-    axes.set_ylim([0,0.0001])
+    # axes.set_xlim([-100,100])
+    # axes.set_ylim([0,0.0001])
     plt.legend(bbox_to_anchor=(1, 1), loc=1, borderaxespad=0.)
     if method =='show':
         plt.show()
@@ -82,13 +82,22 @@ def PLOT_surf(X, Y, Z, i,method,n):
         plt.savefig(path  + '_SURF_'+str(i) + '.png', bbox_inches='tight')
         plt.close()
 
+
 def slits_sh():
     sdvigka = 0
+    teta_1 = math.degrees((S2-S1)/(2*(L2-L1)))*3600
+    teta_2 = math.degrees((S2+S1)/(2*(L2-L1)))*3600
+    teta = -teta_2
     teta_start = teta = math.degrees((-(sigma + S2)/2 )/L2)*3600 + 2*sdvigka
     teta_end = math.degrees(((S2+sigma)/2 )/L2)*3600 + 2*sdvigka
-    while teta <= teta_end:
+    print(teta_2,teta_1)
+    print(teta_end,teta_start)
+    while teta <= teta_2:
         teta_radians = math.radians(teta/3600)
         P = slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma)
+
+        # P = apparatnaya(teta_radians,teta_1,teta_2,L1,L2,S1,S2)
+
         x.append(teta)
         y.append(P*100000/8)
         teta += teta_shag
@@ -157,7 +166,8 @@ def spectr_teta(i):
 
 wavelength_1 = 0.7093*1e-10
 wavelength_2 = 0.714*1e-10
-spectr_teta(0)
+# spectr_teta(0)
 # wavelength_1 = 1.540562 * 1e-10
 # wavelength_2 = 1.544398 * 1e-10
 # spectr_teta(1)
+slits_sh()
