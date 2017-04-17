@@ -191,7 +191,7 @@ def do_it(input_data):
         #/1--------------------------------------------------------------------
         f.close()
 
-    def theta(dTeta, chuev = False, teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
+    def theta(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
         teta_2 = (S2+S1)/(2*(L2x-L1x))
@@ -208,9 +208,10 @@ def do_it(input_data):
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 # 3-----------------------------------------------------------------------------------------------------------
                 while teta <= teta_2:
-                    if chuev == True:
+                    if app == 'our':
                         funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
-                        # apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
+                    elif app == 'chuev':
+                        apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
                     else:
                         funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
 
@@ -232,18 +233,12 @@ def do_it(input_data):
 
     msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
 
-    if input_data['apparatnaya'] == 'chuev':
-        print('начался расчет... лайт-2theta_chuev')
-        email_module.notification(
-                " Старт chuev: " + str(input_data['id_comment_calc']))
-        theta(dTeta,chuev=True)
-        email_module.notification(
-                'Расчет окончен для '+str(input_data['id_email']))
-    elif input_data['scan'] == '2theta':
+    if input_data['scan'] == '2theta':
         print('начался расчет... лайт-2theta')
+        print(str(input_data['apparatnaya']))
         email_module.notification(
                 " Старт: " + str(input_data['id_comment_calc']))
-        theta(dTeta)
+        theta(dTeta, app = str(input_data['apparatnaya']))
         email_module.notification(
                 'Расчет окончен для '+str(input_data['id_email']))
     else:
