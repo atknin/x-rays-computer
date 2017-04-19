@@ -235,11 +235,12 @@ def do_it(input_data):
         i = 0
         f = open(path + name_gif + '.dat', 'w')
 
-
-        teta_2 = (S2+S1)/(2*(L2x-L1x))
         while dTeta <= dTeta_end:
             cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
                               (dTeta_end - dTeta_st)*100)
+
+            teta_1 = (-(sigma_metr + S2)/2 )/L2x - 2*dTeta
+            teta_2 = ((sigma_metr + S2)/2 )/L2x - 2*dTeta
         # 1-------------------------------------------------------------------------------------------------------------------
             itta = itta_1
             sdvigka = -(math.degrees(dTeta)*3600)
@@ -247,7 +248,7 @@ def do_it(input_data):
             P = 0
             while itta <= itta_2:
                 #----3---------------------------------------------------------
-                teta = -teta_2
+                teta = teta_1
                 while teta <= teta_2:
                     P += g_lambd(itta, wavelength_1, wavelength_2) * \
                                             gauss(sigma, 0, math.degrees(teta)*3600) * \
