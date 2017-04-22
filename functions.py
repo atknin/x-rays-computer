@@ -11,8 +11,8 @@ import operator
 
 def sample_curve(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
     tetaprmtr = math.radians(tetaprmtr_deg)
-    gamma_0 = math.sin(math.radians(90-fi) + tetaprmtr)
-    gamma_h = math.sin(math.radians(90-fi) - tetaprmtr)
+    gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
+    gamma_h = math.sin(math.radians(fi) - tetaprmtr)
     # коэффициент ассиметрии брэговского отражения    # Ignore
     # SpaceConsistencyBear
     b = gamma_0/abs(gamma_h)
@@ -29,14 +29,14 @@ def sample_curve(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
     else:
         eps = prover
     R = (2*eps*gamma_0-X0)/Xh/C
-    return (gamma_h/gamma_0)*abs(R)*abs(R)
+    return (abs(gamma_h)/gamma_0)*abs(R)*abs(R)
 
 
 #-----------Монохроматор-----------
 def monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
     tetaprmtr = math.radians(tetaprmtr_deg)
-    gamma_0 = math.sin(math.radians(90-fi) + tetaprmtr)
-    gamma_h = math.sin(math.radians(90-fi) - tetaprmtr)
+    gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
+    gamma_h = math.sin(math.radians(fi) - tetaprmtr)
     b = gamma_0/abs(gamma_h)  # коэффициент ассиметрии брэговского отражения
     C = 1
     monohrom = teta-(itta-1)*math.tan(tetaprmtr)
@@ -51,7 +51,7 @@ def monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
     else:
         eps = prover
     R = (2*eps*gamma_0-X0)/Xh/C
-    return (gamma_h/gamma_0)*abs(R)*abs(R)
+    return (abs(gamma_h)/gamma_0)*abs(R)*abs(R)
 
 
 def gauss(sigma, mu, x):
@@ -94,7 +94,7 @@ def frenel_slit(lam, phi, slit, L, I0=1):
         return I0*math.pow(math.sin(u)/u, 2)
 
 def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
-    sdvigka = math.radians(sdvigka/3600) * 2 * L2
+    sdvigka = math.radians(sdvigka/3600) * L2
     teta_radian = math.radians(teta/3600)
 
     m = [(-sigma/2),(-S1/2 - teta_radian * L1),(-S2/2 - teta_radian * L2 + sdvigka)]
@@ -114,8 +114,8 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
 def sample_curve_broken(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, extintion, l_plenka, da_plenka, fwhm, amorphizaciya):
     wavelength = itta*0.709300*1e-10
     tetaprmtr = math.radians(tetaprmtr_deg)
-    gamma_0 = math.sin(math.radians(90-fi) + tetaprmtr)
-    gamma_h = math.sin(math.radians(90-fi) - tetaprmtr)
+    gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
+    gamma_h = math.sin(math.radians(fi) - tetaprmtr)
     b = gamma_0/abs(gamma_h)  # коэффициент ассиметрии брэговского отражения
     C = 1
     sample = dTeta+teta-(itta-1)*math.tan(tetaprmtr)
@@ -138,14 +138,14 @@ def sample_curve_broken(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, extintion,
                                l_plenka+1j*koef_l/koef_teta)*(cmath.exp(-1j * koef_l/koef_teta) - 1)
     R = (2*eps*gamma_0-X0)/Xh/C
     res = Rd + R
-    return (gamma_h/gamma_0)*abs(res)*abs(res)
+    return (abs(gamma_h)/gamma_0)*abs(res)*abs(res)
 
 
 def sample_curve_broken_integrate(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, extintion, l_plenka, da_plenka, fwhm, amorphizaciya):
     wavelength = itta*0.709300*1e-10
     tetaprmtr = math.radians(tetaprmtr_deg)
-    gamma_0 = math.sin(math.radians(90-fi) + tetaprmtr)
-    gamma_h = math.sin(math.radians(90-fi) - tetaprmtr)
+    gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
+    gamma_h = math.sin(math.radians(fi) - tetaprmtr)
     b = gamma_0/abs(gamma_h)  # коэффициент ассиметрии брэговского отражения
     C = 1
     sample = dTeta+teta-(itta-1)*math.tan(tetaprmtr)
@@ -175,7 +175,7 @@ def sample_curve_broken_integrate(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi, 
     Rd = -1j/extintion*I
     R = (2*eps*gamma_0-X0)/Xh/C
     res = Rd + R
-    return (gamma_h/gamma_0)*abs(res)*abs(res)
+    return (abs(gamma_h)/gamma_0)*abs(res)*abs(res)
 
 
 def gif(path_gif):

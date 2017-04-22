@@ -5,7 +5,6 @@ import sched
 import time
 import main
 import time
-
 token = '285455287:AAERVWhSH53FLL1zWERx_u7f7pJJMMP97qA'
 method = 'getUpdates'
 s = sched.scheduler(time.time, time.sleep)
