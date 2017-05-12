@@ -150,12 +150,12 @@ def do_it(input_data):
                         suma += z_intese[i][j]
         return suma
 
-    def PLOT_all(X, Y, Z, dTeta, sdvig, svert_x, svert_y, i):
+    def PLOT_all(X, Y, Z, dTeta, sdvig, i):
         plt.style.use('ggplot')
-        ax1 = plt.subplot(2, 1, 2)
+        ax1 = plt.subplot(1, 1, 1)
         mpl.rcParams.update({'font.size': 15})
         p1 = plt.pcolormesh(Y, X, Z, shading='gouraud',
-                            cmap='jet', vmin=-14, vmax=0)
+                            cmap='jet', vmin=-19, vmax=0)
         ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3],
                                                                              surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red', alpha=0.2)
 
@@ -166,9 +166,6 @@ def do_it(input_data):
         plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
         plt.ylim(surf_plot_y_lim[0], surf_plot_y_lim[1])
         plt.colorbar()
-        plt.subplot(2, 1, 1)
-        plt.plot(svert_x, svert_y)
-        plt.xlim(svertka_plot_x_lim[0], svertka_plot_x_lim[1])
         plt.savefig(path + name_gif + '/'+str(i) + '.png', bbox_inches='tight')
         plt.close()
 
@@ -182,11 +179,12 @@ def do_it(input_data):
 
     def theta(dTeta):  # скан одной щелью относительно второй
         i = 0
-        sv_x = []
-        sv_y = []
+
         f = open(path + name_gif + '.dat', 'w')
         epsilon = dTeta_st
         while epsilon<=dTeta_end:
+            sv_x = []
+            sv_y = []
             dTeta = dTeta_st
             cli_progress_test((epsilon-dTeta_st+dTeta_shag) /
                               (dTeta_end - dTeta_st)*100)
@@ -206,7 +204,7 @@ def do_it(input_data):
                     z_promegutochn_lin = []
                     while teta <= teta_2:
                         P = g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
-                                dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*analyzer_curve(epsilon,teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
+                                dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*analyzer_curve(epsilon,dTeta,teta, itta, X0_1, Xh_1, bragg_1, fi_analayzer)
                         x_promegutochn.append(itta*wavelength_1*1e10)
                         y_promegutochn.append(math.degrees(teta)*3600)
                         z_promegutochn.append(math.log10(P))
@@ -228,7 +226,7 @@ def do_it(input_data):
 
                 sv_x.append(math.degrees(dTeta)*3600)
                 PLOT_all(x_itta, y_teta, z_intese,
-                         (math.degrees(dTeta)*3600), sdvigka, sv_x, sv_y, i)
+                         (math.degrees(dTeta)*3600), sdvigka, i)
                 i += 1
                 dTeta += dTeta_shag
             epsilon += dTeta_shag
