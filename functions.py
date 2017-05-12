@@ -8,6 +8,27 @@ import operator
 
 # -----------Аппаратная функция-------------------
 
+def analyzer_curve(epsilon,dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
+    tetaprmtr = math.radians(tetaprmtr_deg)
+    gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
+    gamma_h = math.sin(math.radians(fi) - tetaprmtr)
+    # коэффициент ассиметрии брэговского отражения    # Ignore
+    # SpaceConsistencyBear
+    b = gamma_0/abs(gamma_h)
+    C = 1
+    sample = 2*dTeta-epsilon+teta-(itta-1)*math.tan(tetaprmtr)  # поменять знак плюсь
+    # угловая отстройка падающего излучения от угла Брегга
+    alfa = -4*math.sin(tetaprmtr) * \
+        (math.sin(tetaprmtr+sample)-math.sin(tetaprmtr))
+    prover = (1/4/gamma_0)*(X0*(1-b)-b*alfa+cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa)
+                                                        )-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+    if prover.imag < float(0):
+        eps = (1/4/gamma_0)*(X0*(1-b)-b*alfa-cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa)
+                                                         )-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+    else:
+        eps = prover
+    R = (2*eps*gamma_0-X0)/Xh/C
+    return (abs(gamma_h)/gamma_0)*abs(R)*abs(R)
 
 def sample_curve(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
     tetaprmtr = math.radians(tetaprmtr_deg)
