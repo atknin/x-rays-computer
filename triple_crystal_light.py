@@ -177,15 +177,8 @@ def do_it(input_data):
     email_module.notification(
             'Расчет окончен для '+str(input_data['id_email']))
 
-    print('сбока анимации...')
-    gif(path + name_gif + '/')
     msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1) + \
         '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-    msge['gif'] = path + name_gif + '.gif'
     msge['dat'] = []
     msge['dat'].append(path + name_gif + '.dat')
-    try:
-        email_module.sendEmail(msge, input_data['id_email'])
-    except Exception as e:
-        del msge['gif']
-        email_module.sendEmail(msge, input_data['id_email'])
+    email_module.sendEmail(msge, input_data['id_email'])
