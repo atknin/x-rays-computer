@@ -112,8 +112,8 @@ def do_it(input_data):
     except Exception as e:
         shag_teta = math.radians(float(1/3600))/8
         print('shag_teta не определен')
-    teta_1 = slits[2]
-    teta_2 = slits[3]
+    teta_1 = -math.atan(S1/2/L1x)
+    teta_2 = -teta_1
     # -----------------------------------------------------Шаг, поворот образц
     dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
     dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
