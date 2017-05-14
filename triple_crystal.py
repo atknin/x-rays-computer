@@ -155,7 +155,7 @@ def do_it(input_data):
         ax1 = plt.subplot(1, 1, 1)
         mpl.rcParams.update({'font.size': 15})
         p1 = plt.pcolormesh(Y, X, Z, shading='gouraud',
-                            cmap='jet', vmin=-19, vmax=0)
+                            cmap='jet', vmin=-21, vmax=0)
         ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3],
                                                                              surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red', alpha=0.2)
 
