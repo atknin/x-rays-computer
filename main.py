@@ -32,9 +32,12 @@ import imageio
 # import psutil
 import zero_crystal
 import single_crystal
+
 import double_crystal
 import double_crystal_light
+
 import triple_crystal
+import triple_crystal_light
 import random
 
 
@@ -69,6 +72,10 @@ class compute:
             return 1
         elif self.cumpute_dict['schem'] == 'triple_crystal':
             triple_crystal.do_it(self.cumpute_dict)
+            return 1
+
+        elif self.cumpute_dict['schem'] == 'triple_crystal_light':
+            triple_crystal_light.do_it(self.cumpute_dict)
             return 1
         else:
             return 0

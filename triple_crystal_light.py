@@ -177,8 +177,6 @@ def do_it(input_data):
         f = open(path + name_gif + '.dat', 'w')
         epsilon = dTeta_st
         while epsilon<=dTeta_end:
-            sv_x = []
-            sv_y = []
             dTeta = dTeta_st
             cli_progress_test((epsilon-dTeta_st+dTeta_shag) /
                               (dTeta_end - dTeta_st)*100)
@@ -194,33 +192,24 @@ def do_it(input_data):
                     teta = teta_1
                     x_promegutochn = []
                     y_promegutochn = []
-                    z_promegutochn = []
                     z_promegutochn_lin = []
                     while teta <= teta_2:
                         P = g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
                                 dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*analyzer_curve(epsilon,dTeta,teta, itta, X0_1, Xh_1, bragg_1, fi_analayzer)
                         x_promegutochn.append(itta*wavelength_1*1e10)
                         y_promegutochn.append(math.degrees(teta)*3600)
-                        z_promegutochn.append(math.log10(P))
                         z_promegutochn_lin.append(P)
                         teta += shag_teta
                     #----3---------------------------------------------------------
                     x_itta.append(x_promegutochn)
                     y_teta.append(y_promegutochn)
-                    z_intese.append(z_promegutochn)
                     z_intese_lin.append(z_promegutochn_lin)
                     itta += shag_itta
                     #-2------------------------------------------------------------
-                sdvigka = 0
                 f.write('%14.8f' % (math.degrees(dTeta)*3600))
                 f.write('%14.8f' % (math.degrees(epsilon)*3600))
-                f.write('%14.8f' % svertka(x_itta, y_teta, z_intese_lin, sdvigka))
+                f.write('%14.8f' % svertka(x_itta, y_teta, z_intese_lin, 0))
                 f.write('\n')
-
-
-                sv_x.append(math.degrees(dTeta)*3600)
-                PLOT_all(x_itta, y_teta, z_intese,
-                         (math.degrees(dTeta)*3600), sdvigka, i)
                 i += 1
                 dTeta += dTeta_shag
             epsilon += dTeta_shag
