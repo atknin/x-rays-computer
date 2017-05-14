@@ -112,8 +112,8 @@ def do_it(input_data):
     except Exception as e:
         shag_teta = math.radians(float(1/3600))/8
         print('shag_teta не определен')
-    teta_1 = math.radians(surf_plot_x_lim[0]/3600)
-    teta_2 = math.radians(surf_plot_x_lim[1]/3600)
+    teta_1 = slits[2]
+    teta_2 = slits[3]
     # -----------------------------------------------------Шаг, поворот образц
     dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
     dTeta_end = math.radians(surf_plot_x_lim[1]/3600)
@@ -124,44 +124,6 @@ def do_it(input_data):
         print('dTeta_shag не определен')
     print('параметры успешно определены: double crystla experiment')
 
-    def gif(path_gif):
-        filenam = os.listdir(path_gif)
-        filenames_a = sorted(filenam)
-        filenames = filter(lambda x: x.endswith('.png'), filenames_a)
-        images = []
-        i = 0
-        for filename in filenames:
-            print(path_gif+str(i)+'.png')
-            images.append(imageio.imread(path_gif+str(i)+'.png'))
-            i += 1
-        print('!creating: ... |', path + name_gif + '.gif')
-        imageio.mimsave(path + name_gif + '.gif', images)
-        print('!done:', path + name_gif + '.gif')
-#-------------------вресмя уменьшилось на 10 процентов
-
-    def svertka(x_itta, y_teta, z_intese, sdvig=0):
-        dlina = len(z_intese)
-        dlina_2 = len(z_intese[0])
-        suma = 0
-        for i in range(dlina):
-            for j in range(dlina_2):
-                if (slits[2]) < y_teta[i][j] < (slits[3]):
-                    suma += z_intese[i][j]
-        return suma
-
-    def PLOT_all(X, Y, Z, dTeta, sdvig, i):
-        plt.style.use('ggplot')
-        ax1 = plt.subplot(1, 1, 1)
-        mpl.rcParams.update({'font.size': 15})
-        p1 = plt.pcolormesh(Y, X, Z, shading='gouraud',
-                            cmap='jet', vmin=-21, vmax=0)
-        ax1.broken_barh([(surf_plot_x_lim[0], slits[2]-surf_plot_x_lim[0]), (slits[3],
-                                                                             surf_plot_x_lim[1]-slits[3])], (0.5, 0.5), facecolors='red', alpha=0.2)
-        plt.xlim(surf_plot_x_lim[0], surf_plot_x_lim[1])
-        plt.ylim(surf_plot_y_lim[0], surf_plot_y_lim[1])
-        plt.colorbar()
-        plt.savefig(path + name_gif + '/'+str(i) + '.png', bbox_inches='tight')
-        plt.close()
 
     def cli_progress_test(end_val, bar_length=20):
         percent = end_val
@@ -183,32 +145,20 @@ def do_it(input_data):
             while dTeta <= dTeta_end:
             # 1-------------------------------------------------------------------------------------------------------------------
                 itta = itta_1
-                x_itta = []
-                y_teta = []
-                z_intese = []
-                z_intese_lin = []
+                P = 0
                 while itta <= itta_2:
                     # 3-----------------------------------------------------------------------------------------------------------
                     teta = teta_1
-                    x_promegutochn = []
-                    y_promegutochn = []
-                    z_promegutochn_lin = []
                     while teta <= teta_2:
-                        P = g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
+                        P += g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
                                 dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*analyzer_curve(epsilon,dTeta,teta, itta, X0_1, Xh_1, bragg_1, fi_analayzer)
-                        x_promegutochn.append(itta*wavelength_1*1e10)
-                        y_promegutochn.append(math.degrees(teta)*3600)
-                        z_promegutochn_lin.append(P)
                         teta += shag_teta
                     #----3---------------------------------------------------------
-                    x_itta.append(x_promegutochn)
-                    y_teta.append(y_promegutochn)
-                    z_intese_lin.append(z_promegutochn_lin)
                     itta += shag_itta
                     #-2------------------------------------------------------------
                 f.write('%14.8f' % (math.degrees(dTeta)*3600))
                 f.write('%14.8f' % (math.degrees(epsilon)*3600))
-                f.write('%14.8f' % svertka(x_itta, y_teta, z_intese_lin, 0))
+                f.write('%14.8f' % P)
                 f.write('\n')
                 i += 1
                 dTeta += dTeta_shag
