@@ -69,7 +69,7 @@ def do_it(input_data):
 
     bragg_1 = float(input_data['bragg_1'])
     bragg_2 = float(input_data['bragg_2'])
-    bragg_2 = float(input_data['bragg_3'])
+    bragg_3 = float(input_data['bragg_3'])
 
     fi_monohrom = float(input_data['fi_1'])
     fi_sample = float(input_data['fi_2'])
@@ -151,7 +151,7 @@ def do_it(input_data):
                     teta = teta_1
                     while teta <= teta_2:
                         P += g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
-                                dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*analyzer_curve(epsilon,dTeta,teta, itta, X0_1, Xh_1, bragg_1, fi_analayzer)
+                                dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*analyzer_curve(epsilon,dTeta,teta, itta, X0_3, Xh_3, bragg_3, fi_analayzer)
                         teta += shag_teta
                     #----3---------------------------------------------------------
                     itta += shag_itta
