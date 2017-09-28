@@ -59,6 +59,7 @@ def monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
     gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
     gamma_h = math.sin(math.radians(fi) - tetaprmtr)
     b = gamma_0/abs(gamma_h)  # коэффициент ассиметрии брэговского отражения
+    # print(b)
     C = 1
     monohrom = teta-(itta-1)*math.tan(tetaprmtr)
     # угловая отстройка падающего излучения от угла Брегга
@@ -129,6 +130,20 @@ def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
         res = plus - minus
     return res
 
+def slit1(teta,sdvigka,L,S,sigma):
+    sdvigka = math.radians(sdvigka/3600) * L
+    teta_radian = math.radians(teta/3600)
+
+    m = [(sigma/2),(S/2 + teta_radian * L)] # a1
+    p = [(sigma/2),(S/2 - teta_radian * L)] # a2
+    minus = -min(m)# a2
+    plus = min(p)# a1
+
+    if minus >= plus:
+        res = 0
+    else:
+        res = plus - minus
+    return res
 
 
 # Ниже две функции для образца с нарушенным слоем
