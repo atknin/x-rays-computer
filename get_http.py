@@ -28,6 +28,7 @@ def to_dict(string):
 def compute(inputs):
     global son_obj
     try:
+        inputs['pk'] = son_obj['pk']
         a = main.compute(inputs)
         a.start()
         # все хорошо, сообщаем

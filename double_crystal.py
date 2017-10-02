@@ -180,8 +180,14 @@ def do_it(input_data):
         f = open(path + name_gif + '.dat', 'w')
 
         while dTeta <= dTeta_end:
-            cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
-                              (dTeta_end - dTeta_st)*100)
+            # Обновляем прогресс бар
+            prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
+            try:
+                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                get_request('http://62.109.0.242/diffraction/compute/',payload)
+            except Exception as e:
+                print('ошибка обновления прогресс бара: ',e)
+            cli_progress_test(prcents)
         # 1-------------------------------------------------------------------------------------------------------------------
             itta = itta_1
             x_itta = []
@@ -233,8 +239,15 @@ def do_it(input_data):
         sv_y = []
         f = open(path + name_gif + '.dat', 'w')
         while dTeta <= dTeta_end:
-            cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
-                              (dTeta_end - dTeta_st)*100)
+            # Обновляем прогресс бар
+            prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
+            try:
+                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                get_request('http://62.109.0.242/diffraction/compute/',payload)
+            except Exception as e:
+                print('ошибка обновления прогресс бара: ',e)
+            cli_progress_test(prcents)
+            
         # 1-------------------------------------------------------------------------------------------------------------------
             itta = itta_1
             x_itta = []

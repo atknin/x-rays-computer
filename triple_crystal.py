@@ -180,8 +180,15 @@ def do_it(input_data):
             sv_x = []
             sv_y = []
             dTeta = dTeta_st
-            cli_progress_test((epsilon-dTeta_st+dTeta_shag) /
-                              (dTeta_end - dTeta_st)*100)
+            # Обновляем прогресс бар
+            prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
+            try:
+                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                get_request('http://62.109.0.242/diffraction/compute/',payload)
+            except Exception as e:
+                print('ошибка обновления прогресс бара: ',e)
+            cli_progress_test(prcents)
+            
             while dTeta <= dTeta_end:
             # 1-------------------------------------------------------------------------------------------------------------------
                 itta = itta_1

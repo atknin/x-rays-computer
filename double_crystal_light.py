@@ -161,8 +161,15 @@ def do_it(input_data):
         f = open(path + name_gif + '.dat', 'w')
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
-            cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
-                              (dTeta_end - dTeta_st)*100)
+            # Обновляем прогресс бар
+            prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
+            try:
+                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                get_request('http://62.109.0.242/diffraction/compute/',payload)
+            except Exception as e:
+                print('ошибка обновления прогресс бара: ',e)
+            cli_progress_test(prcents)
+
             itta = itta_1
             sdvigka = -2*(math.degrees(dTeta)*3600)
             #----2-------------------------------------------------------------
@@ -197,8 +204,14 @@ def do_it(input_data):
         teta_2 = (S2+S1)/(2*(L2x-L1x))
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
-            cli_progress_test((dTeta-dTeta_st+dTeta_shag) /
-                              (dTeta_end - dTeta_st)*100)
+            # Обновляем прогресс бар
+            prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
+            try:
+                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                get_request('http://62.109.0.242/diffraction/compute/',payload)
+            except Exception as e:
+                print('ошибка обновления прогресс бара: ',e)
+            cli_progress_test(prcents)
             itta = itta_1
             sdvigka = 0
             # 2-----------------------------------------------------------------------------------------------------------
@@ -229,7 +242,7 @@ def do_it(input_data):
             dTeta += dTeta_shag
         # 1-------------------------------------------------------------------------------------------------------------------
         f.close()
-
+  
 
     msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
 

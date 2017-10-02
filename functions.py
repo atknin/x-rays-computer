@@ -6,6 +6,8 @@ import scipy.integrate as integrate
 from scipy.integrate import quad
 import operator
 
+from urllib import request
+import urllib.parse as parse
 # -----------Аппаратная функция-------------------
 
 def analyzer_curve(epsilon,dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
@@ -228,3 +230,7 @@ def gif(path_gif):
     print('!creating: ... |', path_gif +'_'+ nme_file + '.gif')
     imageio.mimsave(path_gif +'_'+ nme_file + '.gif', images)
     print('!done:', path_gif +'_'+ nme_file + '.gif')
+
+def get_request(url,payload):
+    data = parse.urlencode(payload)
+    f = request.urlopen(url + "?" + data)
