@@ -12,70 +12,111 @@ import matplotlib as mpl
 
 # QDesktopWidget предоставляет информацию о компьютере пользователя
 # QMainWindow - создает статус бар
-from numpy import random
 
-plt.style.use('ggplot')
-
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-from numpy import array
-
-from matplotlib import animation
-from matplotlib import cm
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib.ticker import LinearLocator
-from numpy import array
-import matplotlib.colors as colors
-from PIL import Image
-from PIL import ImageSequence
-import imageio
-# import psutil
-import zero_crystal
-import single_crystal
-
-import double_crystal
-import double_crystal_light
-
-import triple_crystal
-import triple_crystal_light
 import random
+from urllib import request
+import urllib.parse as parse
+import json
+import time
+from computer import *
+import diffraction
+import email_module
 
 
-
-class compute:
-    def __init__(self, cumpute_dict):
-        self.cumpute_dict = cumpute_dict
-        self.cumpute_dict['name_result'] = self.randomword(10)
-
-    def randomword(self, length):
-        valid_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-        return ''.join((random.choice(valid_letters) for i in range(length)))
-
-    def get_scheme(self):
-        if self.cumpute_dict['schem'] == 'zero_crystal':
-            return 'Схема: "прямой пучок"'
+def check_tasks_base(url):
+    son_obj = {}
+    # проверка на наличие задачи в базе
+    try:
+        payload = {'check': comp}
+        data = parse.urlencode(payload)
+        f = request.urlopen(url + "?" + data)
+        string = f.read().decode('utf-8')
+        son_obj = json.loads(string)
+        
+        if son_obj['status'] == 'Nodata':
+            print('no data...')
+            time.sleep(100)
+            check_tasks_base(url)
+        elif son_obj['type']==0:
+            return son_obj
+        elif son_obj['type']==1:
+            print('остановить текущий расчет')
+        # загрузка Расчета дифракции на сайт
+        elif son_obj['type']==2:
+            print('загрузка Расчета дифракции на сайт')
+        # повторная отправка результатов расчет 
+        elif son_obj['type']==3:
+            try:
+                print('отправка расчета по почте')
+                path = os.path.dirname(os.path.abspath(__file__))+'/results/'+str(son_obj['pk'])
+                email = son_obj['email']
+                title = 'xrayd: повторная отправка'
+                text = str(open(path+'/info.dat','r').read())
+                email_module.sendEmail(class_compute.return_path(),email,title,text)
+            except Exception as e:
+                print('ошибка при повторной отправке параметров')
         else:
-            return 'Схема: неизвестная для расчета'
+            print('the data is exist, but error in main.py...')
+            time.sleep(100)
+            check_tasks_base(url)
 
-    def start(self):
-        if self.cumpute_dict['schem'] == 'zero_crystal':
-            zero_crystal.do_it(self.cumpute_dict)
-            return 1
-        elif self.cumpute_dict['schem'] == 'single_crystal':
-            single_crystal.do_it(self.cumpute_dict)
-            return 1
-        elif self.cumpute_dict['schem'] == 'double_crystal':
-            double_crystal.do_it(self.cumpute_dict)
-            return 1
-        elif self.cumpute_dict['schem'] == 'double_crystal_light':
-            double_crystal_light.do_it(self.cumpute_dict)
-            return 1
-        elif self.cumpute_dict['schem'] == 'triple_crystal':
-            triple_crystal.do_it(self.cumpute_dict)
-            return 1
 
-        elif self.cumpute_dict['schem'] == 'triple_crystal_light':
-            triple_crystal_light.do_it(self.cumpute_dict)
-            return 1
+    except Exception as e:
+        print('Ошибка в check_tasks_base')
+
+
+
+if __name__ == "__main__":
+    print('the program is started!')
+    url = 'http://62.109.0.242/diffraction/compute/'
+    while True:
+        # ff = open('text_json_data','w')
+        json_data = check_tasks_base(url)
+        # ff.write(str(json_data))
+        # break
+
+        class_compute = diffraction.compute(json_data)
+        print(1000*'*','\n\n',class_compute.show_parametrs(),100*'-')
+        # расчитать алгоритм
+        try:
+            status = class_compute.start_algoritm()
+        except Exception as e:
+            print('[!!!] неизвестная ошибка - там где ее не должно быть')
+
+        if status==200:
+            # отпрвить результаты на почту
+            title = 'успешно: ' + class_compute.return_input_data()['id_comment_calc']
+            text = class_compute.show_parametrs()
+            email = class_compute.return_input_data()['id_email']
+            email_module.sendEmail(class_compute.return_path(),email,title,text)
+
+            # отпрвить отчет на сервер
+            payload = {'complited': json_data['pk']}
+            payload['pc'] = comp
+            data = parse.urlencode(payload)
+            f = request.urlopen(url + "?" + data)
+            while f.status !=200: 
+                f = request.urlopen(url + "?" + data)
+                time.sleep(10)
+            print('Сообщили об окончании расчета')
+
+        elif status ==500:
+            print('ОШИБКА:')
+            er_text = class_compute.return_status()
+            print(er_text)
+            payload = {'error_during_compute': json_data['pk'], 'text_error': 'ERROR 2: ' + er_text}
+            payload['pc'] = comp
+            data = parse.urlencode(payload)
+            f = request.urlopen(url + "?" + data)
+            while f.status !=200: 
+                f = request.urlopen(url + "?" + data)
+                time.sleep(10)
+
+        elif status ==404:
+            print('ОШИБКА: не существующий алгоритм')
         else:
-            return 0
+            print('ОШИБКА: неизвестная ошибка ')
+        time.sleep(100)
+
+
+

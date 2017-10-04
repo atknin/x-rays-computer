@@ -42,9 +42,8 @@ from functions import (g_lambd, gauss, frenel_slit, slit_extensive_source)
 
 def do_it(input_data):
     print('do_it for:')
-    msge = {}
     print(input_data)
-    path = os.path.dirname(os.path.abspath(__file__))+'/results/'
+    path = input_data['path'] + '/'
     wavelength_1 = float(input_data['anod1']) * 1e-10
     wavelength_2 = float(input_data['anod2']) * 1e-10
     S1 = float(input_data['input_size_slit1']) * \
@@ -181,7 +180,7 @@ def do_it(input_data):
             # Обновляем прогресс бар
             prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
             try:
-                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                payload = {'progress':input_data['name_result'],'value':int(prcents)}
                 get_request('http://62.109.0.242/diffraction/compute/',payload)
             except Exception as e:
                 print('ошибка обновления прогресс бара: ',e)
@@ -277,7 +276,6 @@ def do_it(input_data):
         os.makedirs(path + name_gif + '/')
         print('создаем папку: ' + path + name_gif + '/')
     print('начался расчет...')
-    msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
     email_module.notification(
             'Расчет начался' + str(input_data['id_comment_calc']))
     if input_data['slits'] == 'new':
@@ -291,8 +289,3 @@ def do_it(input_data):
 
     email_module.notification(
             'Расчет окончен для '+str(input_data['id_email']))
-    msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1) + \
-        '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-    msge['dat'] = []
-    msge['dat'].append(path + name_gif + '.dat')
-    email_module.sendEmail(msge, input_data['id_email'])

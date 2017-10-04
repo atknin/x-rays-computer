@@ -13,6 +13,7 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+
 # QDesktopWidget предоставляет информацию о компьютере пользователя
 # QMainWindow - создает статус бар
 from numpy import random
@@ -41,10 +42,7 @@ from functions import *
 
 
 def do_it(input_data):
-    print('do_it for:')
-    msge = {}
-    print(input_data)
-    path = os.path.dirname(os.path.abspath(__file__))+'/results/'
+    path = input_data['path'] + '/'
     wavelength_1 = float(input_data['anod1']) * 1e-10
     wavelength_2 = float(input_data['anod2']) * 1e-10
     sigma = float(input_data['source_divergence_arc'])
@@ -67,7 +65,7 @@ def do_it(input_data):
     bragg_2 = float(input_data['bragg_2'])
     fi_monohrom = float(input_data['fi_1'])
     fi_sample = float(input_data['fi_2'])
-    name_gif = input_data['name_result']
+    name_gif = str(input_data['name_result'])
     slits = [1, 1, 1, 1]  # 1(движется)  и 2(не движется) щели
     # 2 щель (движется)- перед детектором
     slits[0] = -math.degrees(math.atan(S2/2/L2x))*3600
@@ -116,25 +114,8 @@ def do_it(input_data):
     except Exception as e:
         dTeta_shag = math.radians(2/3600)
         print('dTeta_shag не определен')
-    print('параметры успешно определены: double crystla experiment')
+    print('параметры успешно определены: double crystal experiment')
 
-    def predel_teta(sdvig):
-        a1 = slits[0]+sdvig
-        a2 = slits[1]+sdvig
-        a3 = slits[2]
-        a4 = slits[3]
-        if a4 >= a1 and a1 >= a3:
-            if a2 <= a4:
-                return [math.radians(a1/3600), math.radians(a2/3600)]
-            else:
-                return [math.radians(a1/3600), math.radians(a4/3600)]
-        elif a4 >= a2 and a2 >= a3:
-            if a1 >= a3:
-                return [math.radians(a1/3600), math.radians(a2/3600)]
-            else:
-                return [math.radians(a3/3600), math.radians(a2/3600)]
-        else:
-            return [0, 0]
 
 #-------------------вресмя уменьшилось на 10 процентов
     def svertka(x_itta, y_teta, z_intese, sdvig=0):
@@ -148,6 +129,7 @@ def do_it(input_data):
                         suma += z_intese[i][j]
         return suma
 
+
     def cli_progress_test(end_val, bar_length=20):
         percent = end_val
         hashes = '#' * int(round(percent * bar_length)/100)
@@ -155,6 +137,9 @@ def do_it(input_data):
         sys.stdout.write("\rPercent: [{0}] {1}%".format(
                 hashes + spaces, int(round(percent))))
         sys.stdout.flush()
+
+
+
 
     def omega(dTeta):  # скан одной щелью относительно второй
         i = 0
@@ -164,7 +149,7 @@ def do_it(input_data):
             # Обновляем прогресс бар
             prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
             try:
-                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                payload = {'progress':input_data['name_result'],'value':int(prcents)}
                 get_request('http://62.109.0.242/diffraction/compute/',payload)
             except Exception as e:
                 print('ошибка обновления прогресс бара: ',e)
@@ -175,18 +160,14 @@ def do_it(input_data):
             #----2-------------------------------------------------------------
             P = 0
             while itta <= itta_2:
-                qwe = predel_teta(sdvigka)
-                if qwe == 0:
-                    P += 0
-                else:
-                    [teta_1, teta_2] = qwe
-                    teta = teta_1
-                    #----3-----------------------------------------------------
-                    while teta <= teta_2:
-                        P += g_lambd(itta, wavelength_1, wavelength_2)*gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
-                                dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
-                        teta += shag_teta
-                        #----/3------------------------------------------------
+                teta = -teta_2
+                func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
+                #----3-----------------------------------------------------
+                while teta <= teta_2:
+                    P += slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr) * func_lambda * gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
+                            dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
+                    teta += shag_teta
+                    #----/3------------------------------------------------
                 itta += shag_itta
             #/2----------------------------------------------------------------
 
@@ -198,6 +179,9 @@ def do_it(input_data):
         #/1--------------------------------------------------------------------
         f.close()
 
+
+
+
     def theta(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
@@ -207,7 +191,7 @@ def do_it(input_data):
             # Обновляем прогресс бар
             prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
             try:
-                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                payload = {'progress':input_data['name_result'],'value':int(prcents)}
                 get_request('http://62.109.0.242/diffraction/compute/',payload)
             except Exception as e:
                 print('ошибка обновления прогресс бара: ',e)
@@ -224,7 +208,7 @@ def do_it(input_data):
                     if app == 'our':
                         funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
                     elif app == 'chuev':
-                        apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
+                        funct_apparatnaya = apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
                     else:
                         funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
 
@@ -244,8 +228,6 @@ def do_it(input_data):
         f.close()
   
 
-    msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
-
     if input_data['scan'] == '2theta':
         print('начался расчет... лайт-2theta')
         print(str(input_data['apparatnaya']))
@@ -261,11 +243,6 @@ def do_it(input_data):
         omega(dTeta)
         email_module.notification(
                 'Расчет окончен для '+str(input_data['id_email']))
-    msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1) + \
-        '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-    msge['dat'] = []
-    msge['dat'].append(path + name_gif + '.dat')
-    try:
-        email_module.sendEmail(msge, input_data['id_email'])
-    except Exception as e:
-        email_module.sendEmail(msge, input_data['id_email'])
+    
+
+    

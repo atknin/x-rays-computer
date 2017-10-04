@@ -37,7 +37,7 @@ def do_it(input_data):
     print('do_it for:')
     msge = {}
     print(input_data)
-    path = os.path.dirname(os.path.abspath(__file__))+'/results/'
+    path = input_data['path'] + '/'
     wavelength_1 = float(input_data['anod1']) * 1e-10
     wavelength_2 = float(input_data['anod2']) * 1e-10
     sigma = float(input_data['source_divergence_arc'])
@@ -51,7 +51,7 @@ def do_it(input_data):
     Xh_1 = complex(input_data['Xh_1'])*1e-7
     bragg_1 = float(input_data['bragg_1'])
     fi_1 = float(input_data['fi_1'])
-    name_gif = input_data['name_result']
+    name_gif = str(input_data['name_result'])
     slits = [1, 1, 1, 1]  # 1(движется)  и 2(не движется) щели
     # 2 щель (движется)- перед детектором
     slits[0] = -math.degrees(math.atan(S2/2/L2x))*3600

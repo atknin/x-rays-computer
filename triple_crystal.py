@@ -42,9 +42,8 @@ from functions import *
 
 def do_it(input_data):
     print('do_it for:')
-    msge = {}
     print(input_data)
-    path = os.path.dirname(os.path.abspath(__file__))+'/results/'
+    path = input_data['path'] + '/'
     wavelength_1 = float(input_data['anod1']) * 1e-10
     wavelength_2 = float(input_data['anod2']) * 1e-10
 
@@ -75,7 +74,7 @@ def do_it(input_data):
     fi_sample = float(input_data['fi_2'])
     fi_analayzer = float(input_data['fi_3'])
 
-    name_gif = input_data['name_result']
+    name_gif = str(input_data['name_result'])
     slits = [1, 1, 1, 1]  # 1(движется)  и 2(не движется) щели
     # 2 щель (движется)- перед детектором
     slits[0] = -math.degrees(math.atan(S2/2/L2x))*3600
@@ -183,7 +182,7 @@ def do_it(input_data):
             # Обновляем прогресс бар
             prcents = (dTeta-dTeta_st+dTeta_shag) / (dTeta_end - dTeta_st)*100
             try:
-                payload = {'progress':input_data['pk'],'value':int(prcents)}
+                payload = {'progress':input_data['name_result'],'value':int(prcents)}
                 get_request('http://62.109.0.242/diffraction/compute/',payload)
             except Exception as e:
                 print('ошибка обновления прогресс бара: ',e)
@@ -234,7 +233,6 @@ def do_it(input_data):
         f.close()
 
     print('начался расчет...')
-    msge['title'] = 'Расчет: ' + str(input_data['id_comment_calc'])
     if not os.path.exists(path + name_gif + '/'):
         os.makedirs(path + name_gif + '/')
         print('создаем папку: ' + path + name_gif + '/')
@@ -247,13 +245,4 @@ def do_it(input_data):
 
     print('сбока анимации...')
     gif(path + name_gif + '/')
-    msge['text'] = 'Источник (р.трубка): (' + str(wavelength_1) + \
-        '; ' + str(wavelength_2) + '). Input Data: ' + str(input_data)
-    msge['gif'] = path + name_gif + '.gif'
-    msge['dat'] = []
-    msge['dat'].append(path + name_gif + '.dat')
-    try:
-        email_module.sendEmail(msge, input_data['id_email'])
-    except Exception as e:
-        del msge['gif']
-        email_module.sendEmail(msge, input_data['id_email'])
+    

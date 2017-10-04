@@ -21,25 +21,40 @@ def notification(message):
         print(comp_name + message+' (bad telegram)')
 
 
-def sendEmail(msge, email):
+def sendEmail(path,email,title,text):
+    included_extenstions = ['dat','gif','pdf','docx']
+    file_names = [fn for fn in os.listdir(path+'/')
+                    if any(fn.endswith(ext) for ext in included_extenstions)]
+    print('найдено файлов: ',len(file_names))   
+    msge = {}
+    msge['dat'] = []
+    msge['gif'] = []
+    for i in file_names:
+        if i.endswith('gif'):
+            msge['gif'].append(path+'/' + str(i))
+        elif i.endswith('dat'):
+            msge['dat'].append(path+'/' + str(i))
+
+# ------------------------
+# ------------------------
     me = 'info@crys.ras.ru'
     you = email
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = u"Ваш Результат: " + msge['title']
+    msg['Subject'] = u"xrayd.ru: " + title
     msg['From'] = me
     msg['To'] = you
     htmlmsgtext = """<h2>Расчет окончен</h2>
 				<p>\
-				 """ + msge['text'] + """\
+				 """ + text + """\
 				 </p>
 				<p><strong>Имеется два вложения</strong></p><br />"""
 # добавляем анимацию
     body = MIMEMultipart('alternative')
-    body.attach(MIMEText(msge['text']))
+    body.attach(MIMEText(text))
     body.attach(MIMEText(htmlmsgtext, 'html'))
     msg.attach(body)
     try:
-        with open(msge['gif'], 'rb') as fil:
+        with open(msge['gif'][0], 'rb') as fil:
             part2 = MIMEImage(fil.read(), name=os.path.basename(msge['gif']))
             msg.attach(part2)
             print('gif вложен в письмо')

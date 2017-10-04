@@ -120,12 +120,10 @@ def frenel_slit(lam, phi, slit, L, I0=1):
 def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
     sdvigka = math.radians(sdvigka/3600) * L2
     teta_radian = math.radians(teta/3600)
-
     m = [(-sigma/2),(-S1/2 - teta_radian * L1),(-S2/2 - teta_radian * L2 + sdvigka)]
     p = [(sigma/2),(S1/2 - teta_radian * L1),(S2/2 - teta_radian * L2 + sdvigka)]
     minus = max(m)
     plus = min(p)
-
     if minus >= plus:
         res = 0
     else:
