@@ -22,6 +22,7 @@ from computer import *
 import diffraction
 import email_module
 import sys
+import os
 
 def check_updates():
     with open('version.time','r') as ver:
@@ -29,12 +30,13 @@ def check_updates():
     f = request.urlopen('https://api.github.com/repos/atknin/x-rays-computer/events')
     string = f.read().decode('utf-8')
     created_at = json.loads(string)[0]['created_at']
-    if ver_old != created_at
+    if ver_old != created_at:
         with open('version.time','w') as ver:
             ver.write(created_at)
-        return False
-    else:
+            print('need update')
         return True
+    else:
+        return False
 
 
 def check_tasks_base(url):
@@ -84,6 +86,9 @@ if __name__ == "__main__":
     url = 'http://62.109.0.242/diffraction/compute/'
     while True:
         if check_updates():
+            # sudoPassword = 'vfntvfnbrf43'
+            # command = 'sudo git fetch --all'
+            # os.system('echo %s|sudo -S %s' % (sudoPassword, command))
             os.system('git pull')
             os.system('python3 main.py')
             sys.exit()
