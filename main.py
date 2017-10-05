@@ -21,6 +21,20 @@ import time
 from computer import *
 import diffraction
 import email_module
+import sys
+
+def check_updates():
+    with open('version.time','r') as ver:
+        ver_old = ver.read()
+    f = request.urlopen('https://api.github.com/repos/atknin/x-rays-computer/events')
+    string = f.read().decode('utf-8')
+    created_at = json.loads(string)[0]['created_at']
+    if ver_old != created_at
+        with open('version.time','w') as ver:
+            ver.write(created_at)
+        return False
+    else:
+        return True
 
 
 def check_tasks_base(url):
@@ -32,7 +46,6 @@ def check_tasks_base(url):
         f = request.urlopen(url + "?" + data)
         string = f.read().decode('utf-8')
         son_obj = json.loads(string)
-        
         if son_obj['status'] == 'Nodata':
             print('no data...')
             time.sleep(100)
@@ -70,11 +83,14 @@ if __name__ == "__main__":
     print('the program is started!')
     url = 'http://62.109.0.242/diffraction/compute/'
     while True:
+        if check_updates():
+            os.system('git pull')
+            os.system('python3 main.py')
+            sys.exit()
         # ff = open('text_json_data','w')
         json_data = check_tasks_base(url)
         # ff.write(str(json_data))
         # break
-
         class_compute = diffraction.compute(json_data)
         print(1000*'*','\n\n',class_compute.show_parametrs(),100*'-')
         # расчитать алгоритм

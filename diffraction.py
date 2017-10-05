@@ -17,6 +17,7 @@ import email_module
 class compute():
 	"""docstring for compute"""
 	def __init__(self, input_data):
+		print(input_data)
 		self.input_data = self.to_dict(input_data['JSON'])
 		self.input_data['name_result'] = input_data['pk']        
 		self.input_data['path'] = input_data['pk']        

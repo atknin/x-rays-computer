@@ -164,7 +164,7 @@ def do_it(input_data):
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 #----3-----------------------------------------------------
                 while teta <= teta_2:
-                    P += slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr) * func_lambda * gauss(sigma, 0, math.degrees(teta)*3600)*sample_curve(
+                    P += slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr) * func_lambda *sample_curve(
                             dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     teta += shag_teta
                     #----/3------------------------------------------------

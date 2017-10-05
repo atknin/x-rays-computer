@@ -232,3 +232,4 @@ def gif(path_gif):
 def get_request(url,payload):
     data = parse.urlencode(payload)
     f = request.urlopen(url + "?" + data)
+    return f
