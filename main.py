@@ -53,7 +53,7 @@ def check_tasks_base(url):
         string = f.read().decode('utf-8')
         son_obj = json.loads(string)
         if son_obj['status'] == 'Nodata':
-            print('no data...')
+            print('[.]')
             time.sleep(100)
             check_tasks_base(url)
         elif son_obj['type']==0:
