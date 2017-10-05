@@ -40,6 +40,10 @@ def check_updates():
 
 
 def check_tasks_base(url):
+    if check_updates():
+        os.system('git pull')
+        os.system('python3 main.py')
+        sys.exit()
     son_obj = {}
     # проверка на наличие задачи в базе
     try:
@@ -85,13 +89,6 @@ if __name__ == "__main__":
     print('the program is started!')
     url = 'http://62.109.0.242/diffraction/compute/'
     while True:
-        if check_updates():
-            # sudoPassword = 'vfntvfnbrf43'
-            # command = 'sudo git fetch --all'
-            # os.system('echo %s|sudo -S %s' % (sudoPassword, command))
-            os.system('git pull')
-            os.system('python3 main.py')
-            sys.exit()
         # ff = open('text_json_data','w')
         json_data = check_tasks_base(url)
         # ff.write(str(json_data))
