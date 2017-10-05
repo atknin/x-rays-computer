@@ -2,3 +2,4 @@ results/
 computer.py
 .DS_Store
 __pycache__/
+version.time

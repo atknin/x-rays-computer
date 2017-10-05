@@ -10,4 +10,3 @@ if commit == '123':
     print(os.system('sudo git reset --hard origin/master'))
 else:
     print('Пароль не верен')
-    #sdasd
