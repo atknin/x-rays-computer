@@ -167,11 +167,11 @@ def do_it(input_data):
 
             itta = itta_1
             sdvigka = -2*(math.degrees(dTeta)*3600)
-            teta_2 = teta_2_start - 2*dTeta #второй знак
+            teta_2 = teta_2_start  #второй знак
             #----2-------------------------------------------------------------
             P = 0
             while itta <= itta_2:
-                teta = -teta_2_start + 2*dTeta  #второй знак
+                teta = -teta_2_start  #второй знак
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 #----3-----------------------------------------------------
                 while teta <= teta_2:
