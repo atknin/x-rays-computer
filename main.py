@@ -101,7 +101,7 @@ def check_tasks_base(url):
             check_tasks_base(url)
     except Exception as e:
         print('Ошибка в check_tasks_base')
-        
+
     check_tasks_base(url)
 
 
@@ -112,7 +112,11 @@ if __name__ == "__main__":
     url_file = 'http://62.109.0.242/diffraction/load_files/'
     while True:
         # ff = open('text_json_data','w')
-        json_data = check_tasks_base(url)
+        while True:
+            json_data = check_tasks_base(url)
+            if 'JSON' in json_data:
+                break
+       
         print(json_data)
         # ff.write(str(json_data))
         # break
