@@ -104,8 +104,13 @@ def do_it(input_data):
         shag_teta = math.radians(float(1/3600))/8
         print('shag_teta не определен')
     teta_1 = math.radians(surf_plot_x_lim[0]/3600)
-    teta_2 = math.radians(surf_plot_x_lim[1]/3600)
-    int((teta_2 - teta_1)/shag_teta)
+    
+    # определим сигма
+    if S1 < sigma_metr:
+       teta_2 = (S2+S1)/(2*(L2x-L1x))
+    else:
+        teta_2 = (sigma_metr+S1)/(2*(L1x))
+    # teta_2 = math.radians(surf_plot_x_lim[1]/3600)
 
     # -----------------------------------------------------Шаг, поворот образц
     dTeta = dTeta_st = math.radians(surf_plot_x_lim[0]/3600)
@@ -142,10 +147,9 @@ def do_it(input_data):
 
 
 
-    def omega(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
+    def omega(dTeta, app = 'our', teta_1 = teta_1, teta_2_start = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
-        teta_2 = (S1+sigma_metr)/(2*(L1x))
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             # Обновляем прогресс бар
@@ -163,10 +167,11 @@ def do_it(input_data):
 
             itta = itta_1
             sdvigka = -2*(math.degrees(dTeta)*3600)
+            teta_2 = teta_2_start + sdvigka #второй знак
             #----2-------------------------------------------------------------
             P = 0
             while itta <= itta_2:
-                teta = -teta_2
+                teta = -teta_2_start - sdvigka  #второй знак
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 #----3-----------------------------------------------------
                 while teta <= teta_2:
@@ -198,7 +203,6 @@ def do_it(input_data):
     def theta(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
-        teta_2 = (S2+S1)/(2*(L2x-L1x))
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             # Обновляем прогресс бар
@@ -246,19 +250,21 @@ def do_it(input_data):
         return True
   
 
+
     if input_data['scan'] == '2theta':
         print('начался расчет... лайт-2theta')
         print(str(input_data['apparatnaya']))
         email_module.notification(
                 " Старт: " + str(input_data['id_comment_calc']))
-        stopped = theta(dTeta, app = str(input_data['apparatnaya']))
+
+        stopped = theta(dTeta, app = str(input_data['apparatnaya']),teta_2 = teta_2)
         email_module.notification(
                 'Расчет окончен для '+str(input_data['id_email']))
     else:
         print('начался расчет... лайт-omega')
         email_module.notification(
                 " Старт: " + str(input_data['id_comment_calc']))
-        stopped = omega(dTeta, app = str(input_data['apparatnaya']))
+        stopped = omega(dTeta, app = str(input_data['apparatnaya']),teta_2_start = teta_2)
         email_module.notification(
                 'Расчет окончен для '+str(input_data['id_email']))
     if not stopped:
