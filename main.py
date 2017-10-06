@@ -40,10 +40,13 @@ def check_updates():
 
 
 def check_tasks_base(url):
-    if check_updates():
-        os.system('git pull')
-        os.system('python3 main.py')
-        sys.exit()
+    try:
+        if check_updates():
+            os.system('git pull')
+            os.system('python3 main.py')
+            sys.exit()
+    except Exception as e:
+        print('не удалось проверить обновлениеы')
     son_obj = {}
     # проверка на наличие задачи в базе
     try:
