@@ -88,11 +88,13 @@ if __name__ == "__main__":
     url = 'http://62.109.0.242/diffraction/compute/'
     while True:
         # ff = open('text_json_data','w')
-        json_data = check_tasks_base(url)
+        while not 'schem' in check_tasks_base(url):
+            pass
         # ff.write(str(json_data))
         # break
         class_compute = diffraction.compute(json_data)
         print(1000*'*','\n\n',class_compute.show_parametrs(),100*'-')
+
         # расчитать алгоритм
         try:
             status = class_compute.start_algoritm()
@@ -143,9 +145,7 @@ if __name__ == "__main__":
             print('ОШИБКА: не существующий алгоритм')
         else:
             print('ОШИБКА: неизвестная ошибка ')
-        print('sleep')
         time.sleep(1)
-        print('sleep up')
 
 
 
