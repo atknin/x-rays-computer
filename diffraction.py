@@ -51,22 +51,23 @@ class compute():
 	def start_algoritm(self):
 		try:
 			if self.input_data['schem'] == 'zero_crystal':
-				self.rezult = zero_crystal.do_it(self.input_data)
+				self.status = zero_crystal.do_it(self.input_data)
 				return 200
 			elif self.input_data['schem'] == 'single_crystal':
-				self.rezult = single_crystal.do_it(self.input_data)
+				self.status = single_crystal.do_it(self.input_data)
 				return 200
 			elif self.input_data['schem'] == 'double_crystal':
-				self.rezult = double_crystal.do_it(self.input_data)
+				self.status = double_crystal.do_it(self.input_data)
 				return 200
 			elif self.input_data['schem'] == 'double_crystal_light':
-				self.rezult = double_crystal_light.do_it(self.input_data)
-				return 200
+				self.status = double_crystal_light.do_it(self.input_data)
+				print(self.status)
+				return self.status
 			elif self.input_data['schem'] == 'triple_crystal':
-				self.rezult = triple_crystal.do_it(self.input_data)
+				self.status = triple_crystal.do_it(self.input_data)
 				return 200
 			elif self.input_data['schem'] == 'triple_crystal_light':
-				self.rezult = triple_crystal_light.do_it(self.input_data)
+				self.status = triple_crystal_light.do_it(self.input_data)
 				return 200
 			else:
 				return 404

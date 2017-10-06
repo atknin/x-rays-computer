@@ -56,10 +56,8 @@ def check_tasks_base(url):
             print('[.]')
             time.sleep(100)
             check_tasks_base(url)
-        elif son_obj['type']==0:
+        elif son_obj['type']==0 or son_obj['type']==1:
             return son_obj
-        elif son_obj['type']==1:
-            print('остановить текущий расчет')
         # загрузка Расчета дифракции на сайт
         elif son_obj['type']==2:
             print('загрузка Расчета дифракции на сайт')
@@ -118,6 +116,17 @@ if __name__ == "__main__":
                 time.sleep(10)
             print('Сообщили об окончании расчета')
 
+        elif status ==155: # остановка расчета
+            # отпрвить отчет на сервер
+            payload = {'error_during_compute': json_data['pk'], 'text_error': 'stoped'}
+            payload['pc'] = comp
+            data = parse.urlencode(payload)
+            f = request.urlopen(url + "?" + data)
+            while f.status !=200: 
+                f = request.urlopen(url + "?" + data)
+                time.sleep(10)
+            print('Сообщили об остановке расчета расчета')
+
         elif status ==500:
             print('ОШИБКА:')
             er_text = class_compute.return_status()
@@ -134,7 +143,10 @@ if __name__ == "__main__":
             print('ОШИБКА: не существующий алгоритм')
         else:
             print('ОШИБКА: неизвестная ошибка ')
-        time.sleep(100)
+        print('sleep')
+        time.sleep(1)
+        print('sleep up')
+
 
 
 
