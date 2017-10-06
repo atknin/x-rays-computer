@@ -99,10 +99,10 @@ def check_tasks_base(url):
             print('the data is exist, but error in main.py...')
             time.sleep(100)
             check_tasks_base(url)
-
-
     except Exception as e:
         print('Ошибка в check_tasks_base')
+        
+    check_tasks_base(url)
 
 
 
