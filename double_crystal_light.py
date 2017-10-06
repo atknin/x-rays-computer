@@ -106,10 +106,10 @@ def do_it(input_data):
     teta_1 = math.radians(surf_plot_x_lim[0]/3600)
     
     # определим сигма
-    if S1 < sigma_metr:
-       teta_2 = (S2+S1)/(2*(L2x-L1x))
+    if S2 < sigma_metr:
+        teta_2 = (S2+S1)/(2*(L2x-L1x))
     else:
-        teta_2 = (sigma_metr+S1)/(2*(L1x))
+        teta_2 = (sigma_metr+S2)/(2*(L1x))
     # teta_2 = math.radians(surf_plot_x_lim[1]/3600)
 
     # -----------------------------------------------------Шаг, поворот образц
