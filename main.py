@@ -23,6 +23,23 @@ import diffraction
 import email_module
 import sys
 import os
+import requests
+
+def load_files_to_db(url,path,pk):
+    included_extenstions = ['dat','gif','pdf','docx']
+    file_names = [fn for fn in os.listdir(path+'/')
+                    if any(fn.endswith(ext) for ext in included_extenstions)]
+    print('найдено файлов: ',len(file_names))   
+    files = {}
+
+    for i in file_names:
+        f = path+'/' + str(i)
+        files[i] = open(f, 'rb')
+    print(files)
+    values = {'pk':pk}
+    r = requests.post(url, files=files, data = values)
+    print('файлы отправлены')
+    return r
 
 def check_updates():
     with open('version.time','r') as ver:
@@ -89,6 +106,7 @@ def check_tasks_base(url):
 if __name__ == "__main__":
     print('the program is started!')
     url = 'http://62.109.0.242/diffraction/compute/'
+    url_file = 'http://62.109.0.242/diffraction/load_files/'
     while True:
         # ff = open('text_json_data','w')
         json_data = check_tasks_base(url)
@@ -110,7 +128,8 @@ if __name__ == "__main__":
             text = class_compute.show_parametrs()
             email = class_compute.return_input_data()['id_email']
             email_module.sendEmail(class_compute.return_path(),email,title,text)
-
+            # отпрвить файлы на сервер
+            load_files_to_db(url_file,class_compute.return_path(),json_data['pk'])
             # отпрвить отчет на сервер
             payload = {'complited': json_data['pk']}
             payload['pc'] = comp
@@ -127,9 +146,11 @@ if __name__ == "__main__":
             payload['pc'] = comp
             data = parse.urlencode(payload)
             f = request.urlopen(url + "?" + data)
-            while f.status !=200: 
+            kk = 0
+            while kk<10: 
                 f = request.urlopen(url + "?" + data)
                 time.sleep(10)
+                kk+=1
             print('Сообщили об остановке расчета расчета')
 
         elif status ==500:
