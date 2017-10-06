@@ -263,6 +263,9 @@ def do_it(input_data):
                 'Расчет окончен для '+str(input_data['id_email']))
     if not stopped:
         return 155
+    else:
+        return 200
+
         
 
 
