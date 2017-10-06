@@ -115,6 +115,7 @@ if __name__ == "__main__":
         while True:
             json_data = check_tasks_base(url)
             if 'JSON' in json_data:
+                print('..')
                 break
        
         print(json_data)
