@@ -92,6 +92,7 @@ if __name__ == "__main__":
     while True:
         # ff = open('text_json_data','w')
         json_data = check_tasks_base(url)
+        print(json_data)
         # ff.write(str(json_data))
         # break
         class_compute = diffraction.compute(json_data)
