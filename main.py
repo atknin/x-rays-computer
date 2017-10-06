@@ -77,7 +77,10 @@ def check_tasks_base(url):
             time.sleep(100)
             check_tasks_base(url)
         elif son_obj['type']==0 or son_obj['type']==1:
-            return son_obj
+            if 'JSON' in son_obj:
+                return son_obj
+            else:
+                check_tasks_base(url)
         # загрузка Расчета дифракции на сайт
         elif son_obj['type']==2:
             print('загрузка Расчета дифракции на сайт')
