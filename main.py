@@ -103,7 +103,7 @@ if __name__ == "__main__":
             status = class_compute.start_algoritm()
         except Exception as e:
             print('[!!!] неизвестная ошибка - там где ее не должно быть')
-
+        print('status: ',status)
         if status==200:
             # отпрвить результаты на почту
             title = 'успешно: ' + class_compute.return_input_data()['id_comment_calc']
