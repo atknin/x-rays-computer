@@ -109,7 +109,7 @@ def do_it(input_data):
     if S2 < sigma_metr:
         teta_2 = (S2+S1)/(2*(L2x-L1x))
     else:
-        teta_2 = (sigma_metr+S2)/(2*(L1x))
+        teta_2 = (sigma_metr+S1)/(2*(L1x))
     # teta_2 = math.radians(surf_plot_x_lim[1]/3600)
 
     # -----------------------------------------------------Шаг, поворот образц
@@ -232,7 +232,6 @@ def do_it(input_data):
                         funct_apparatnaya = apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
                     else:
                         funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
-
                     P += func_lambda*funct_apparatnaya*sample_curve(
                             dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     teta += shag_teta
