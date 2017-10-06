@@ -88,8 +88,7 @@ if __name__ == "__main__":
     url = 'http://62.109.0.242/diffraction/compute/'
     while True:
         # ff = open('text_json_data','w')
-        while not 'schem' in check_tasks_base(url):
-            pass
+        check_tasks_base(url):
         # ff.write(str(json_data))
         # break
         class_compute = diffraction.compute(json_data)
