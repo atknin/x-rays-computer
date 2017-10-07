@@ -85,7 +85,7 @@ def check_tasks_base(url):
             return check_tasks_base(url)
 
         # если есть и их тип определен
-        elif (son_obj['type']==0 or son_obj['type']==1) and ('JSON' in son_obj):
+        elif 'JSON' in son_obj:
             return son_obj
 
         # # загрузка Расчета дифракции на сайт
