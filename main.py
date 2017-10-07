@@ -109,6 +109,7 @@ def check_tasks_base(url):
             time.sleep(10)
             check_tasks_base(url)
     except Exception as e:
+        print(e)
         print('Ошибка в check_tasks_base')
 
     time.sleep(10)
