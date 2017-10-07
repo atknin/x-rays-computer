@@ -75,6 +75,8 @@ def check_tasks_base(url):
         while f.status !=200: 
             f = request.urlopen(url + "?" + data)
             time.sleep(10)
+
+        print(f.read())
         string = f.read().decode('utf-8')
         son_obj = {}
         son_obj = json.loads(string)
