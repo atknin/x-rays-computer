@@ -25,6 +25,7 @@ import sys
 import os
 import requests
 
+
 def load_files_to_db(url,path,pk):
     included_extenstions = ['dat','gif','pdf','docx']
     file_names = [fn for fn in os.listdir(path+'/')
@@ -42,10 +43,11 @@ def load_files_to_db(url,path,pk):
     return r
 
 def check_updates():
+
     with open('version.time','r') as ver:
         ver_old = ver.read()
-    f = request.urlopen('https://api.github.com/repos/atknin/x-rays-computer/events')
-    string = f.read().decode('utf-8')
+    r = requests.get('https://atknin:24fdf9551e219c7103993b34050afc0f4141d053@api.github.com/repos/atknin/x-rays-computer/events')
+    string = r.text
     created_at = json.loads(string)[0]['created_at']
     if ver_old != created_at:
         with open('version.time','w') as ver:
@@ -64,44 +66,52 @@ def check_tasks_base(url):
             sys.exit()
     except Exception as e:
         print('не удалось проверить обновлениеы')
-    son_obj = {}
-    # проверка на наличие задачи в базе
+    
     try:
+        # проверка на наличие задачи в базе
         payload = {'check': comp}
         data = parse.urlencode(payload)
         f = request.urlopen(url + "?" + data)
+        while f.status !=200: 
+            f = request.urlopen(url + "?" + data)
+            time.sleep(10)
         string = f.read().decode('utf-8')
+        son_obj = {}
         son_obj = json.loads(string)
+
+        # если нет рсчетов в базе
         if son_obj['status'] == 'Nodata':
             print('[.]')
             time.sleep(100)
             check_tasks_base(url)
-        elif son_obj['type']==0 or son_obj['type']==1:
-            if 'JSON' in son_obj:
-                return son_obj
-            else:
-                check_tasks_base(url)
-        # загрузка Расчета дифракции на сайт
-        elif son_obj['type']==2:
-            print('загрузка Расчета дифракции на сайт')
-        # повторная отправка результатов расчет 
-        elif son_obj['type']==3:
-            try:
-                print('отправка расчета по почте')
-                path = os.path.dirname(os.path.abspath(__file__))+'/results/'+str(son_obj['pk'])
-                email = son_obj['email']
-                title = 'xrayd: повторная отправка'
-                text = str(open(path+'/info.dat','r').read())
-                email_module.sendEmail(class_compute.return_path(),email,title,text)
-            except Exception as e:
-                print('ошибка при повторной отправке параметров')
+
+        # если есть и их тип определен
+        elif (son_obj['type']==0 or son_obj['type']==1) and ('JSON' in son_obj):
+            return son_obj
+
+        # # загрузка Расчета дифракции на сайт
+        # elif son_obj['type']==2:
+        #     print('загрузка Расчета дифракции на сайт')
+        # # повторная отправка результатов расчет 
+        # elif son_obj['type']==3:
+        #     try:
+        #         print('отправка расчета по почте')
+        #         path = os.path.dirname(os.path.abspath(__file__))+'/results/'+str(son_obj['pk'])
+        #         email = son_obj['email']
+        #         title = 'xrayd: повторная отправка'
+        #         text = str(open(path+'/info.dat','r').read())
+        #         email_module.sendEmail(class_compute.return_path(),email,title,text)
+        #     except Exception as e:
+        #         print('ошибка при повторной отправке параметров')
+        
         else:
-            print('the data is exist, but error in main.py...')
-            time.sleep(100)
+            print('check_tasks_base else')
+            time.sleep(10)
             check_tasks_base(url)
     except Exception as e:
         print('Ошибка в check_tasks_base')
 
+    time.sleep(10)
     check_tasks_base(url)
 
 
