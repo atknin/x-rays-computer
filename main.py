@@ -119,8 +119,8 @@ def check_tasks_base(url):
 
 if __name__ == "__main__":
     print('the program is started!')
-    url = 'http://62.109.0.242/diffraction/compute/'
-    url_file = 'http://62.109.0.242/diffraction/load_files/'
+    url = 'http://xrayd.ru/diffraction/compute/'
+    url_file = 'http://xrayd.ru/diffraction/load_files/'
     while True:
         # ff = open('text_json_data','w')
         while True:
