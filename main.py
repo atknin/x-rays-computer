@@ -75,8 +75,6 @@ def check_tasks_base(url):
         while f.status !=200: 
             f = request.urlopen(url + "?" + data)
             time.sleep(10)
-
-        print(f.read())
         string = f.read().decode('utf-8')
         son_obj = {}
         son_obj = json.loads(string)
@@ -111,7 +109,6 @@ def check_tasks_base(url):
             time.sleep(10)
             check_tasks_base(url)
     except Exception as e:
-        print(e)
         print('Ошибка в check_tasks_base')
 
     time.sleep(10)
@@ -121,8 +118,8 @@ def check_tasks_base(url):
 
 if __name__ == "__main__":
     print('the program is started!')
-    url = 'http://xrayd.ru/diffraction/compute/'
-    url_file = 'http://xrayd.ru/diffraction/load_files/'
+    url = 'http://62.109.0.242/diffraction/compute/'
+    url_file = 'http://62.109.0.242/diffraction/load_files/'
     while True:
         # ff = open('text_json_data','w')
         while True:
