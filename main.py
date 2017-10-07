@@ -123,10 +123,12 @@ if __name__ == "__main__":
     while True:
         # ff = open('text_json_data','w')
         while True:
-            json_data = check_tasks_base(url)
-            if 'JSON' in json_data:
-                print('..')
+            try:
+                json_data = check_tasks_base(url)
+                json_data['JSON']
                 break
+            except Exception as e:
+                pass
        
         print(json_data)
         # ff.write(str(json_data))
