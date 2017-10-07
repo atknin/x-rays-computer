@@ -59,6 +59,7 @@ def check_updates():
 
 
 def check_tasks_base(url):
+    time.sleep(100)
     try:
         if check_updates():
             os.system('git pull')
@@ -78,12 +79,10 @@ def check_tasks_base(url):
         string = f.read().decode('utf-8')
         son_obj = {}
         son_obj = json.loads(string)
-
         # если нет рсчетов в базе
         if son_obj['status'] == 'Nodata':
             print('[.]')
-            time.sleep(100)
-            check_tasks_base(url)
+            return check_tasks_base(url)
 
         # если есть и их тип определен
         elif (son_obj['type']==0 or son_obj['type']==1) and ('JSON' in son_obj):
@@ -106,13 +105,10 @@ def check_tasks_base(url):
         
         else:
             print('check_tasks_base else')
-            time.sleep(10)
-            check_tasks_base(url)
+            return check_tasks_base(url)
     except Exception as e:
         print('Ошибка в check_tasks_base')
-
-    time.sleep(10)
-    check_tasks_base(url)
+    return check_tasks_base(url)
 
 
 
