@@ -59,9 +59,7 @@ def check_updates():
 
 
 def check_tasks_base(url):
-    time.sleep(100)
-    
-    
+    time.sleep(200)
     try:
         # проверка на наличие задачи в базе
         payload = {'check': comp}
@@ -69,7 +67,7 @@ def check_tasks_base(url):
         f = request.urlopen(url + "?" + data)
         while f.status !=200: 
             f = request.urlopen(url + "?" + data)
-            time.sleep(10)
+            time.sleep(50)
         string = f.read().decode('utf-8')
         son_obj = {}
         son_obj = json.loads(string)
