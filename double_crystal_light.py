@@ -76,10 +76,30 @@ def do_it(input_data):
     slits[3] = math.degrees(math.atan(S1/2/L1x))*3600  # 1 щель(не движется)
     surf_plot_x_lim = [float(input_data['teta_start']),
                        float(input_data['teta_end'])]
-    left = float(input_data['anod1']) - 0.5 * \
-        abs(float(input_data['anod2']) - float(input_data['anod1']))
-    right = float(input_data['anod2']) + 0.5 * \
-        abs(float(input_data['anod2']) - float(input_data['anod1']))
+
+    # Определение  источника
+    if ('type_source' in input_data) and (input_data['type_source'] == 'ss'):
+        print('источник СИ')
+        wavelength_1 = float(input_data['anod']) * 0.8
+        wavelength_2 = float(input_data['anod']) * 1.2
+        g_lambd = ss_lambd
+    else:
+        g_lambd = ls_lambd
+
+    if ('type_monochromator' in input_data) and (input_data['type_monochromator'] == 'double_crystal'):
+        print('Двухкристальный монохроматор')
+        monohromator_curve = doubelCr_monohromator_curve
+    else:
+        monohromator_curve = singlelCr_monohromator_curve
+        print('однокристальный монохроматор')
+
+
+    
+
+    left = wavelength_1 - 0.5 * \
+        abs(wavelength_2 - wavelength_1)
+    right = wavelength_2 + 0.5 * \
+        abs(wavelength_2 - wavelength_1)
     if wavelength_2 > wavelength_1:
         [left, right]
     else:
@@ -123,6 +143,7 @@ def do_it(input_data):
     print('параметры успешно определены: double crystal experiment')
 
 
+    
 #-------------------вресмя уменьшилось на 10 процентов
     def svertka(x_itta, y_teta, z_intese, sdvig=0):
         dlina = len(z_intese)
@@ -149,7 +170,18 @@ def do_it(input_data):
 
     def omega(dTeta, app = 'our', teta_1 = teta_1, teta_2_start = teta_2):  # скан одной щелью относительно второй
         i = 0
+
         f = open(path + name_gif + '.dat', 'w')
+
+# нормировка
+        teta = -teta_2_start -2*dTeta
+        app_norm = 0
+        while teta <= teta_2:
+            app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
+            teta += shag_teta
+# / нормировка
+            
+
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             # Обновляем прогресс бар
@@ -175,12 +207,7 @@ def do_it(input_data):
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 #----3-----------------------------------------------------
                 while teta <= teta_2:
-                    if app == 'our':
-                        funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
-                    elif app == 'chuev':
-                        funct_apparatnaya = apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
-                    else:
-                        funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
+                    funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
                     P += func_lambda*funct_apparatnaya*sample_curve(
                             dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     teta += shag_teta
@@ -189,7 +216,7 @@ def do_it(input_data):
             #/2----------------------------------------------------------------
 
             f.write('%14.8f' % (math.degrees(dTeta)*3600))
-            f.write('%14.8f' % P)
+            f.write('%14.8f' % (P/app_norm))
             f.write('\n')
             i += 1
             dTeta += dTeta_shag
@@ -203,6 +230,14 @@ def do_it(input_data):
     def theta(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
         f = open(path + name_gif + '.dat', 'w')
+# нормировка
+        teta = -teta_2
+        app_norm = 0
+        while teta <= teta_2:
+            app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
+            teta += shag_teta
+# / нормировка
+
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             # Обновляем прогресс бар
@@ -225,22 +260,17 @@ def do_it(input_data):
                 teta = -teta_2
                 func_lambda = g_lambd(itta, wavelength_1, wavelength_2)
                 # 3-----------------------------------------------------------------------------------------------------------
+               
                 while teta <= teta_2:
-                    if app == 'our':
-                        funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
-                    elif app == 'chuev':
-                        funct_apparatnaya = apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2)
-                    else:
-                        funct_apparatnaya = gauss(sigma, 0, math.degrees(teta)*3600)
+                    funct_apparatnaya = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
                     P += func_lambda*funct_apparatnaya*sample_curve(
                             dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     teta += shag_teta
                 #----3-----------------------------------------------------
                 itta += shag_itta
             #-2----------------------------------------------------------------
-
             f.write('%14.8f' % (math.degrees(dTeta)*3600))
-            f.write('%14.8f' % P)
+            f.write('%14.8f' %  (P/app_norm))
             f.write('\n')
             i += 1
             dTeta += dTeta_shag

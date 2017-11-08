@@ -59,7 +59,6 @@ def check_updates():
 
 
 def check_tasks_base(url):
-    time.sleep(200)
     try:
         # проверка на наличие задачи в базе
         payload = {'check': comp}
@@ -67,6 +66,7 @@ def check_tasks_base(url):
         f = request.urlopen(url + "?" + data)
         while f.status !=200: 
             f = request.urlopen(url + "?" + data)
+            print('Сервер статус: ' +f.status)
             time.sleep(50)
         string = f.read().decode('utf-8')
         son_obj = {}
@@ -74,6 +74,7 @@ def check_tasks_base(url):
         # если нет рсчетов в базе
         if son_obj['status'] == 'Nodata':
             print('[.]')
+            time.sleep(200)
             return check_tasks_base(url)
 
         # если есть и их тип определен
@@ -99,7 +100,9 @@ def check_tasks_base(url):
             print('check_tasks_base else')
             return check_tasks_base(url)
     except Exception as e:
-        print('Ошибка в check_tasks_base')
+        print('Ошибка в check_tasks_base: '+e)
+    print('sleep 200')
+    time.sleep(200)
     return check_tasks_base(url)
 
 
@@ -124,6 +127,7 @@ if __name__ == "__main__":
                 json_data['JSON']
                 break
             except Exception as e:
+                print(e)
                 pass
        
         print(json_data)

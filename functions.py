@@ -56,7 +56,7 @@ def sample_curve(dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
 
 
 #-----------Монохроматор-----------
-def monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
+def singlelCr_monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
     tetaprmtr = math.radians(tetaprmtr_deg)
     gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
     gamma_h = math.sin(math.radians(fi) - tetaprmtr)
@@ -76,6 +76,27 @@ def monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
         eps = prover
     R = (2*eps*gamma_0-X0)/Xh/C
     return (abs(gamma_h)/gamma_0)*abs(R)*abs(R)
+
+def doubelCr_monohromator_curve(teta, itta, X0, Xh, tetaprmtr_deg, fi):
+    tetaprmtr = math.radians(tetaprmtr_deg)
+    gamma_0 = math.sin(math.radians(fi) + tetaprmtr)
+    gamma_h = math.sin(math.radians(fi) - tetaprmtr)
+    b = gamma_0/abs(gamma_h)  # коэффициент ассиметрии брэговского отражения
+    # print(b)
+    C = 1
+    monohrom = teta-(itta-1)*math.tan(tetaprmtr)
+    # угловая отстройка падающего излучения от угла Брегга
+    alfa = -4*math.sin(tetaprmtr) * \
+        (math.sin(tetaprmtr+monohrom)-math.sin(tetaprmtr))
+    prover = (1/4/gamma_0)*(X0*(1-b)-b*alfa+cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa)
+                                                        )-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+    if prover.imag < float(0):
+        eps = (1/4/gamma_0)*(X0*(1-b)-b*alfa-cmath.sqrt(((X0*(1+b)+b*alfa)*(X0*(1+b)+b*alfa)
+                                                         )-4*b*(C*C)*((Xh.real)*(Xh.real)-(Xh.imag)*(Xh.imag)-2j*Xh.real*Xh.imag)))
+    else:
+        eps = prover
+    R = (2*eps*gamma_0-X0)/Xh/C
+    return math.pow((abs(gamma_h)/gamma_0)*abs(R)*abs(R),2)
 
 
 def gauss(sigma, mu, x):
@@ -97,10 +118,16 @@ def apparatnaya(teta,teta_1,teta_2,L1x,L2x,S1,S2,sigmaX = 0.0005):
     return integrate.quad(lambda x: math.exp(-x*x) ,x1(teta),x2(teta))[0]
 
 #-----------спектральная функция-----------
-def g_lambd(itta, wavelength_1, wavelength_2):
+
+def ls_lambd(itta, wavelength_1, wavelength_2):
     d_lambd1 = wavelength_1*3e-4
     d_lambd2 = wavelength_2*3e-4
     return 2/3/math.pi*((d_lambd1/wavelength_1)/(math.pow((itta-1), 2)+math.pow(d_lambd1/wavelength_1, 2))+0.5*(d_lambd2/wavelength_1)/(math.pow((itta-wavelength_2/wavelength_1), 2)+math.pow((d_lambd2/wavelength_1), 2)))
+
+def ss_lambd(itta, wavelength_1, wavelength_2):
+    d_lambd1 = wavelength_1*3e-4
+    d_lambd2 = wavelength_2*3e-4
+    return 1/(d_lambd2 - d_lambd1)
 
 
 def frenel_slit(lam, phi, slit, L, I0=1):

@@ -37,7 +37,7 @@ import imageio
 
 import email_module
 
-from functions import (g_lambd, gauss, frenel_slit, slit_extensive_source)
+from functions import *
 
 
 def do_it(input_data):
