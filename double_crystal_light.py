@@ -174,12 +174,18 @@ def do_it(input_data):
         f = open(path + name_gif + '.dat', 'w')
 
 # нормировка
+        itta = itta_1
+        app_norm_itta = 0
+        while itta <= itta_2:
+            app_norm_itta += g_lambd(itta, wavelength_1, wavelength_2)
+            itta += shag_itta
+
         teta = -teta_2
         app_norm = 0
         while teta <= teta_2:
             app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
             teta += shag_teta
-        app_norm = app_norm/shag_teta/shag_itta
+        app_norm = (app_norm_itta*app_norm)/shag_teta/shag_itta
 # / нормировка
             
 
@@ -232,6 +238,12 @@ def do_it(input_data):
         i = 0
         f = open(path + name_gif + '.dat', 'w')
 # нормировка
+        itta = itta_1
+        app_norm_itta = 0
+        while itta <= itta_2:
+            app_norm_itta += g_lambd(itta, wavelength_1, wavelength_2)
+            itta += shag_itta
+            
         teta = -teta_2
         app_norm = 0
         while teta <= teta_2:
