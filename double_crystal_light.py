@@ -174,8 +174,8 @@ def do_it(input_data):
         f = open(path + name_gif + '.dat', 'w')
 
 # нормировка
-        teta = -teta_2_start -2*dTeta
-        app_norm = app_norm*2*teta_2*(itta_2-itta_1)
+        teta = -teta_2
+        app_norm = app_norm/(2*teta_2/shag_teta)/((itta_2-itta_1)/shag_itta)
         while teta <= teta_2:
             app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
             teta += shag_teta
@@ -215,7 +215,7 @@ def do_it(input_data):
                 itta += shag_itta
             #/2----------------------------------------------------------------
 
-            f.write('%14.8f' % (math.degrees(dTeta)*3600))
+            f.write('%14.8f' % round((math.degrees(dTeta)*3600),4))
             f.write('%14.8f' % (P/app_norm))
             f.write('\n')
             i += 1
@@ -236,8 +236,8 @@ def do_it(input_data):
         while teta <= teta_2:
             app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
             teta += shag_teta
-            
-        app_norm = app_norm*2*teta_2*(itta_2-itta_1)
+
+        app_norm = app_norm/(2*teta_2/shag_teta)/((itta_2-itta_1)/shag_itta)
 # / нормировка
 
         # 1-------------------------------------------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ def do_it(input_data):
                 itta += shag_itta
             
             #-2----------------------------------------------------------------
-            f.write('%14.8f' % (math.degrees(dTeta)*3600))
+            f.write('%14.8f' % round((math.degrees(dTeta)*3600),4))
             f.write('%14.8f' %  (P/app_norm))
             f.write('\n')
             i += 1
