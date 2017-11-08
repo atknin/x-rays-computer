@@ -222,7 +222,7 @@ def do_it(input_data):
                 itta += shag_itta
             #/2----------------------------------------------------------------
 
-            f.write('%14.8f' % round((math.degrees(dTeta)*3600),4))
+            f.write('%14.8f' % (math.degrees(dTeta)*3600))
             f.write('%14.8f' % (P/app_norm))
             f.write('\n')
             i += 1
@@ -243,14 +243,15 @@ def do_it(input_data):
         while itta <= itta_2:
             app_norm_itta += g_lambd(itta, wavelength_1, wavelength_2)
             itta += shag_itta
-            
+        print(app_norm_itta)
+
         teta = -teta_2
         app_norm = 0
         while teta <= teta_2:
             app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
             teta += shag_teta
 
-        app_norm = app_norm/shag_teta/shag_itta
+        # app_norm = app_norm/shag_teta/shag_itta
 # / нормировка
 
         # 1-------------------------------------------------------------------------------------------------------------------
@@ -284,7 +285,7 @@ def do_it(input_data):
                 itta += shag_itta
             
             #-2----------------------------------------------------------------
-            f.write('%14.8f' % round((math.degrees(dTeta)*3600),4))
+            f.write('%14.8f' % (math.degrees(dTeta)*3600))
             f.write('%14.8f' %  (P/app_norm))
             f.write('\n')
             i += 1
