@@ -175,6 +175,7 @@ def do_it(input_data):
 
 # нормировка
         teta = -teta_2
+        app_norm = 0
         while teta <= teta_2:
             app_norm += slit_extensive_source(math.degrees(teta)*3600,0,L1x,L2x,S1,S2,sigma_metr)
             teta += shag_teta
