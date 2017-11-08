@@ -295,7 +295,7 @@ def do_it(input_data):
         print('начался расчет... лайт-omega')
         email_module.notification(
                 " Старт: " + str(input_data['id_comment_calc']))
-        stopped = omega(dTeta, app = str(input_data['apparatnaya']),teta_2_start = teta_2)
+        stopped = omega(dTeta, app = str(input_data['apparatnaya']),teta_2 = teta_2)
         email_module.notification(
                 'Расчет окончен для '+str(input_data['id_email']))
     if not stopped:
