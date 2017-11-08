@@ -168,7 +168,7 @@ def do_it(input_data):
 
 
 
-    def omega(dTeta, app = 'our', teta_1 = teta_1, teta_2_start = teta_2):  # скан одной щелью относительно второй
+    def omega(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
         i = 0
 
         f = open(path + name_gif + '.dat', 'w')
