@@ -49,14 +49,6 @@ class double():
         self.data['dTeta_end']          =    math.radians(self.data['surf_plot_x_lim'][1]       /3600)
         self.data['dTeta_shag']         =    math.radians(float(input_data['step_shag_teta'])   /3600)
 
-        # Teta 2  - определение
-        if  self.data['S2']  < self.data['sigma_metr']:
-            self.data['teta_2']        =    \
-           (self.data['S2'] +self.data['S1'] )/(2*(self.data['L2x'] - self.data['L1x'] ))
-        else:
-            self.data['teta_2']        =    \
-           (self.data['sigma_metr'] +self.data['S1'] )/(2*self.data['L1x'])
-
         #Определяем тип источника /ss - синхротрон, иначе трубка
         if  ('type_source' in input_data) and (input_data['type_source'] == 'ss'):
             print('[.] источник СИ')
@@ -110,7 +102,6 @@ class double():
         itta_1 = self.data['itta_1']
         itta_2 = self.data['itta_2']
         shag_itta = self.data['shag_itta']
-        teta_2 = self.data['teta_2']
         shag_teta = self.data['shag_teta']
         wavelength_1 = self.data['wavelength_1']
         wavelength_2 = self.data['wavelength_2']
@@ -130,6 +121,7 @@ class double():
 
         sdvigka = 0
         i = 0
+        tet = teta_lims(0,L1x,L2x,S1,S2,sigma_metr)
         # 1-------------------------------------------------------------------------------------------------------------------
         while dTeta <= dTeta_end:
             # Обновляем прогресс бар
@@ -143,10 +135,10 @@ class double():
             P = 0
             normirovka = 0
             while itta <= itta_2:
-                teta = -teta_2
+                teta = tet[0]
                 func_lambda = self.g_lambd(itta, wavelength_1, wavelength_2)
                 # 3-----------------------------------------------------------------------------------------------------------
-                while teta <= teta_2:
+                while teta <= tet[1]:
                     without_sample = func_lambda*slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)*self.monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)
                     normirovka += without_sample 
@@ -176,7 +168,6 @@ class double():
         itta_1 = self.data['itta_1']
         itta_2 = self.data['itta_2']
         shag_itta = self.data['shag_itta']
-        teta_2 = self.data['teta_2']
         shag_teta = self.data['shag_teta']
         wavelength_1 = self.data['wavelength_1']
         wavelength_2 = self.data['wavelength_2']
@@ -206,14 +197,16 @@ class double():
 
             itta = itta_1
             sdvigka = -2*(math.degrees(dTeta)*3600)
+            # определяем пределы интегрирования по тета
+            tet = teta_lims(sdvigka,L1x,L2x,S1,S2,sigma_metr)
             #----2-------------------------------------------------------------
             P = 0
             normirovka = 0
             while itta <= itta_2:
-                teta = -teta_2 #- 2*dTeta  #второй знак
+                teta = tet[0] #- 2*dTeta  #второй знак
                 func_lambda = self.g_lambd(itta, wavelength_1, wavelength_2)
                 #----3-----------------------------------------------------
-                while teta <= teta_2:
+                while teta <= tet[1]:
                     without_sample = func_lambda*slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)*self.monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)
                     normirovka += without_sample  

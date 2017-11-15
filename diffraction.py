@@ -62,10 +62,12 @@ class compute():
 			elif self.input_data['schem'] == 'double_crystal':
 				a = double(self.input_data)
 				a.start()
+				self.status = 200
 				return 200
 			elif self.input_data['schem'] == 'double_crystal_light':
 				a = double(self.input_data)
 				a.start()
+				self.status = 200
 				# self.status = double_crystal_light.do_it(self.input_data)
 				# print(self.status)
 				return self.status

@@ -146,6 +146,39 @@ def frenel_slit(lam, phi, slit, L, I0=1):
         u = math.pi*slit/lam*math.sin(argument)
         return I0*math.pow(math.sin(u)/u, 2)
 
+
+def teta_lims(sdvigka,L1,L2,S1,S2,sigma):
+    teta = 0
+    while True:
+        teta_radian = math.radians(teta/3600)
+        sdvigka = math.radians(sdvigka/3600) * L2
+        m = [(-sigma/2),(-S1/2 - teta_radian * L1),(-S2/2 - teta_radian * L2 + sdvigka)]
+        p = [(sigma/2),(S1/2 - teta_radian * L1),(S2/2 - teta_radian * L2 + sdvigka)]
+        minus = max(m)
+        plus = min(p)
+        if minus>plus:
+            teta-=5
+            teta_start = math.radians(teta/3600)
+            break
+        else:
+            teta-=2
+    teta = 0
+    while True:
+        teta_radian = math.radians(teta/3600)
+        sdvigka = math.radians(sdvigka/3600) * L2
+        m = [(-sigma/2),(-S1/2 - teta_radian * L1),(-S2/2 - teta_radian * L2 + sdvigka)]
+        p = [(sigma/2),(S1/2 - teta_radian * L1),(S2/2 - teta_radian * L2 + sdvigka)]
+        minus = max(m)
+        plus = min(p)
+        if minus>plus:
+            teta+=2
+            teta_end = math.radians(teta/3600)
+            break
+        else:
+            teta+=5
+    
+    return [teta_start,teta_end]
+
 def slit_extensive_source(teta,sdvigka,L1,L2,S1,S2,sigma):
     sdvigka = math.radians(sdvigka/3600) * L2
     teta_radian = math.radians(teta/3600)

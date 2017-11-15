@@ -113,13 +113,13 @@ if __name__ == "__main__":
     url_file = 'http://62.109.0.242/diffraction/load_files/'
     while True:
         # ff = open('text_json_data','w')
-        try:
-            if check_updates():
-                os.system('git pull')
-                os.system('python3 main.py')
-                sys.exit()
-        except Exception as e:
-            print('не удалось проверить обновлениеы')
+        # try:
+        #     if check_updates():
+        #         os.system('git pull')
+        #         os.system('python3 main.py')
+        #         sys.exit()
+        # except Exception as e:
+        #     print('не удалось проверить обновлениеы')
 
         while True:
             try:

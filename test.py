@@ -32,9 +32,26 @@ data['path'] = path
 if not os.path.exists(path):
 	os.makedirs(path)
 
+L1x = 0.54
+L2x = 0.99
+S1 = 0.02/1000
+S2 = 0.06/1000
+sigma_metr = 0.02/1000
+sdvigka = 0
+tet = teta_lims(sdvigka,L1x,L2x,S1,S2,sigma_metr)
+shag_teta = 4.24211970970844/10000000
+
+normirovka = 0
+teta = tet[0]
+while teta <= tet[1]:
+    without_sample = slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
+    # P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)
+    normirovka += without_sample  
+    teta += shag_teta
+print(normirovka)
 # double_crystal_light.do_it(data)
-a = double(data)
-a.start()
+# a = double(data)
+# a.start()
 # double()
 
 # class_compute = diffraction.compute(data)
