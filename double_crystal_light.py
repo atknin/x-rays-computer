@@ -142,8 +142,6 @@ def do_it(input_data):
         print('dTeta_shag не определен')
     print('параметры успешно определены: double crystal experiment')
 
-
-    
 #-------------------вресмя уменьшилось на 10 процентов
     def svertka(x_itta, y_teta, z_intese, sdvig=0):
         dlina = len(z_intese)
@@ -235,6 +233,9 @@ def do_it(input_data):
 
 
     def theta(dTeta, app = 'our', teta_1 = teta_1, teta_2 = teta_2):  # скан одной щелью относительно второй
+        # for f, b in zip(vars().keys(), vars().values()):
+        #     print(f, b)
+
         i = 0
         f = open(path + name_gif + '.dat', 'w')
 # нормировка

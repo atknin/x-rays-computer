@@ -7,6 +7,7 @@ import single_crystal
 
 import double_crystal
 import double_crystal_light
+from DoubleCrClass import double
 
 import triple_crystal
 import triple_crystal_light
@@ -51,23 +52,30 @@ class compute():
 	def start_algoritm(self):
 		try:
 			if self.input_data['schem'] == 'zero_crystal':
-				self.status = zero_crystal.do_it(self.input_data)
+				# self.status = zero_crystal.do_it(self.input_data)
+				print('Ноль-кристальный алгоритм отсутсвует')
 				return 200
 			elif self.input_data['schem'] == 'single_crystal':
-				self.status = single_crystal.do_it(self.input_data)
+				# self.status = single_crystal.do_it(self.input_data)
+				print('Одно-кристальный алгоритм отсутсвует')
 				return 200
 			elif self.input_data['schem'] == 'double_crystal':
-				self.status = double_crystal.do_it(self.input_data)
+				a = double(self.input_data)
+				a.start()
 				return 200
 			elif self.input_data['schem'] == 'double_crystal_light':
-				self.status = double_crystal_light.do_it(self.input_data)
-				print(self.status)
+				a = double(self.input_data)
+				a.start()
+				# self.status = double_crystal_light.do_it(self.input_data)
+				# print(self.status)
 				return self.status
 			elif self.input_data['schem'] == 'triple_crystal':
-				self.status = triple_crystal.do_it(self.input_data)
+				# self.status = triple_crystal.do_it(self.input_data)
+				print('Трех-кристальный алгоритм отсутсвует')
 				return 200
 			elif self.input_data['schem'] == 'triple_crystal_light':
-				self.status = triple_crystal_light.do_it(self.input_data)
+				print('Трех-кристальный алгоритм отсутсвует')
+				# self.status = triple_crystal_light.do_it(self.input_data)
 				return 200
 			else:
 				return 404

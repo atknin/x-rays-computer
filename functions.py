@@ -8,6 +8,8 @@ import operator
 
 from urllib import request
 import urllib.parse as parse
+import sys
+
 # -----------Аппаратная функция-------------------
 
 def analyzer_curve(epsilon,dTeta, teta, itta, X0, Xh, tetaprmtr_deg, fi):
@@ -260,3 +262,22 @@ def get_request(url,payload):
     data = parse.urlencode(payload)
     f = request.urlopen(url + "?" + data)
     return f
+
+def cli_progress_test(end_val, bar_length=20):
+    percent = end_val
+    hashes = '#' * int(round(percent * bar_length)/100)
+    spaces = ' ' * (bar_length - len(hashes))
+    sys.stdout.write("\rPercent: [{0}] {1}%".format(
+            hashes + spaces, int(round(percent))))
+    sys.stdout.flush()
+
+def svertka(x_itta, y_teta, z_intese, sdvig=0):
+    dlina = len(z_intese)
+    dlina_2 = len(z_intese[0])
+    suma = 0
+    for i in range(dlina):
+        for j in range(dlina_2):
+            if (slits[2]) < y_teta[i][j] < (slits[3]):
+                if (slits[0]+sdvig) < y_teta[i][j] < (slits[1]+sdvig):
+                    suma += z_intese[i][j]
+    return suma
