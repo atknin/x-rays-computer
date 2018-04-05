@@ -7,6 +7,7 @@ import json
 
 class double():
     def __init__(self, input_data):
+        print('расчет с кристаллом в качестве монохроматора')
         self.data = {}
 
         self.data['scan']               =    str(input_data['scan'])

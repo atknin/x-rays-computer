@@ -8,7 +8,7 @@ import single_crystal
 import double_crystal
 import double_crystal_light
 from DoubleCrClass import double
-from Double3CrClass import double_axis_3_crystal
+from Double3CrClass import double as double_axis_3_crystal
 
 import triple_crystal
 import triple_crystal_light
