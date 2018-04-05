@@ -1,4 +1,4 @@
-
+ 
 sudo apt install python3-pip
 sudo pip3 install scipy
 sudo pip3 install numpy
@@ -6,3 +6,7 @@ sudo apt-get install python3-tk
 sudo pip3 install imageio
 sudo pip3 install telebot
 sudo pip3 install python-telegram-bot
+sudo pip3 install matplotlib
+
+
+//sudo apt-get install language-pack-id

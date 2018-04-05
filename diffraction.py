@@ -8,6 +8,7 @@ import single_crystal
 import double_crystal
 import double_crystal_light
 from DoubleCrClass import double
+from Double3CrClass import double_axis_3_crystal
 
 import triple_crystal
 import triple_crystal_light
@@ -71,6 +72,14 @@ class compute():
 				# self.status = double_crystal_light.do_it(self.input_data)
 				# print(self.status)
 				return self.status
+			elif self.input_data['schem'] == 'double_crystal_with_3_crystal':
+				a = double_axis_3_crystal(self.input_data)
+				a.start()
+				self.status = 200
+				# self.status = double_crystal_light.do_it(self.input_data)
+				# print(self.status)
+				return self.status
+
 			elif self.input_data['schem'] == 'triple_crystal':
 				# self.status = triple_crystal.do_it(self.input_data)
 				print('Трех-кристальный алгоритм отсутсвует')
