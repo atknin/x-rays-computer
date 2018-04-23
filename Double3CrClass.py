@@ -140,8 +140,8 @@ class double():
                 func_lambda = self.g_lambd(itta, wavelength_1, wavelength_2)
                 # 3-----------------------------------------------------------------------------------------------------------
                 while teta <= tet[1]:
-                    without_sample = func_lambda*slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)*self.monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
-                    P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*sample_curve(math.radians(sdvigka)/3600, teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
+                    without_sample = func_lambda*slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
+                    P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*sample_curve(math.radians(sdvigka)/3600, teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*self.monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     normirovka += without_sample 
                     teta += shag_teta
                 #----3-----------------------------------------------------
@@ -208,8 +208,8 @@ class double():
                 func_lambda = self.g_lambd(itta, wavelength_1, wavelength_2)
                 #----3-----------------------------------------------------
                 while teta <= tet[1]:
-                    without_sample = func_lambda*slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)*self.monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
-                    P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*sample_curve(math.radians(sdvigka)/3600, teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
+                    without_sample = func_lambda*slit_extensive_source(math.degrees(teta)*3600,sdvigka,L1x,L2x,S1,S2,sigma_metr)
+                    P += without_sample*sample_curve(dTeta, teta, itta, X0_2, Xh_2, bragg_2, fi_sample)*sample_curve(math.radians(sdvigka)/3600, teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)*self.monohromator_curve(teta, itta, X0_1, Xh_1, bragg_1, fi_monohrom)
                     normirovka += without_sample  
                     teta += shag_teta
                     #----/3------------------------------------------------
